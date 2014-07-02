@@ -1,11 +1,19 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -21,6 +29,14 @@ public class VirusSimulation extends JFrame {
 	Vector<Sewer> allSewers;
 	Vector<Hospital> allHospitals;
 	
+	JTextField ratField;
+	JTextField humansField;
+	JTextField contagionField;
+	JComboBox virusStrengthCombo;
+	JPanel lowerPanel;
+	JPanel topPanel, bottomPanel;
+	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
+
 	VirusSimulation(){
 		super("Virus Simulation");
 		
@@ -29,9 +45,44 @@ public class VirusSimulation extends JFrame {
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
 		
-		add(new Panel());
+		parseXMLData("./test2.xml");
 		
-		parseXMLData("./test1.xml");
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+		//setLayout(new BorderLayout());
+		// TODO add these to the north and south
+		//add(new Panel());
+//		JPanel testP = new JPanel();
+//		Component c = new Component();
+//		testP.add(c);
+//		
+//		JFrame win = new JFrame();
+//		
+		JPanel upP = new Panel();
+		JPanel lowP = newLowerPanel();
+		upP.setPreferredSize(new Dimension(1200, 605));
+		lowP.setPreferredSize(new Dimension(1200, 195));
+		//upP.setBounds(0, 0, 1200, 600);
+		//lowP.setBounds(0, 600, 1200, 200);
+//		
+//		add(upP, BorderLayout.CENTER);
+//		add(lowP, BorderLayout.SOUTH);
+		mainPanel.add(upP);
+		mainPanel.add(lowP);
+		
+		//add(new Panel(), BorderLayout.NORTH);
+////		add(new Component(), BorderLayout.NORTH);
+//		add(newLowerPanel(), BorderLayout.SOUTH);
+		
+		//add(upP, BorderLayout.NORTH);
+		//add(lowP, BorderLayout.SOUTH);
+		
+//		win.add(testP);
+//		JPanel p = newLowerPanel();
+//		p.setBounds(0, 600, 1200, 200);
+//		//win.add(p);
+//		
+		add(mainPanel);
 		
 		
 		setSize(1200, 800);
@@ -39,6 +90,12 @@ public class VirusSimulation extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+//		win.setSize(1200, 800);
+//		win.setLocation(100, 0);
+//		win.setResizable(false);
+//		win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//		win.setVisible(true);
 	}
 	
 	public static void main(String args[]){
@@ -174,10 +231,15 @@ public class VirusSimulation extends JFrame {
 	}
 	
 	public class Panel extends JPanel{
+	//public class Component extends JComponent{
 		
 		Panel(){
 			
 		}
+		
+//		Component(){
+//			
+//		}
 		
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
@@ -187,11 +249,58 @@ public class VirusSimulation extends JFrame {
 			drawHospitals(g);
 			//g.fillRect(100, 100, 5, 5);
 			
+			//add(newLowerPanel());
 		}
+		
+		
 		
 	}
 	
+	
+	public JPanel newLowerPanel(){
+		
+		// TODO add all of the componenets that will go here
+		//need a jtextfield for the number of rats and humansa
+		//need a jtextfield for the contagion level
+		//need a combobox for the strength of virus
+		
+		lowerPanel = new JPanel();
+		topPanel = new JPanel();
+		bottomPanel = new JPanel();
+		ratField = new JTextField(10);
+		humansField = new JTextField(10);
+		contagionField = new JTextField(10);
+		virusStrengthCombo = new JComboBox();
+		
+		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));
+		
+		ratLabel =  new JLabel("Number of Rats ");
+		humanLabel = new JLabel("Number of Humans ");
+		strengthLabel = new JLabel("Strength of Virus");
+		contagionLabel = new JLabel("Contagion Level");
+		
+		//TODO intsert a question mark button so people can see how many to enter etc
+		
+		topPanel.add(ratLabel);
+		topPanel.add(ratField);
+		topPanel.add(humanLabel);
+		topPanel.add(humansField);
+		bottomPanel.add(strengthLabel);
+		bottomPanel.add(virusStrengthCombo);
+		bottomPanel.add(contagionLabel);
+		bottomPanel.add(contagionField);
+		
+		lowerPanel.add(topPanel);
+		lowerPanel.add(bottomPanel);
+		
+		
+		return lowerPanel;
+	}
+	
+	
 	public void drawStreets(Graphics g){
+		
+		//System.out.println("here");
 		
 		g.setColor(Color.blue);//Change color
 		

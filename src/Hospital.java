@@ -19,7 +19,7 @@ public class Hospital {
 	
 	//We need to write a method that will incrament the number of patients but I'm not sure how
 	//we want to do this in practice so I haven't included it for now
-	//test
+
 	
 	public int getXLocation(){
 		return this.hospitalXLocation;
