@@ -34,6 +34,7 @@ public class VirusSimulation extends JFrame {
 	JTextField contagionField;
 	JComboBox virusStrengthCombo;
 	JPanel lowerPanel;
+	JPanel mainPanel, upperPanel;
 	JPanel topPanel, bottomPanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 
@@ -45,43 +46,21 @@ public class VirusSimulation extends JFrame {
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
 		
+		//Parse the data
 		parseXMLData("./test2.xml");
 		
-		JPanel mainPanel = new JPanel();
+		//
+		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		//setLayout(new BorderLayout());
-		// TODO add these to the north and south
-		//add(new Panel());
-//		JPanel testP = new JPanel();
-//		Component c = new Component();
-//		testP.add(c);
-//		
-//		JFrame win = new JFrame();
-//		
-		JPanel upP = new Panel();
-		JPanel lowP = newLowerPanel();
-		upP.setPreferredSize(new Dimension(1200, 605));
-		lowP.setPreferredSize(new Dimension(1200, 195));
-		//upP.setBounds(0, 0, 1200, 600);
-		//lowP.setBounds(0, 600, 1200, 200);
-//		
-//		add(upP, BorderLayout.CENTER);
-//		add(lowP, BorderLayout.SOUTH);
-		mainPanel.add(upP);
-		mainPanel.add(lowP);
-		
-		//add(new Panel(), BorderLayout.NORTH);
-////		add(new Component(), BorderLayout.NORTH);
-//		add(newLowerPanel(), BorderLayout.SOUTH);
-		
-		//add(upP, BorderLayout.NORTH);
-		//add(lowP, BorderLayout.SOUTH);
-		
-//		win.add(testP);
-//		JPanel p = newLowerPanel();
-//		p.setBounds(0, 600, 1200, 200);
-//		//win.add(p);
-//		
+
+		// TODO fix the formatting and spacing of the lower panel
+		upperPanel = new Panel();
+		lowerPanel = newLowerPanel();
+		upperPanel.setPreferredSize(new Dimension(1200, 605));
+		lowerPanel.setPreferredSize(new Dimension(1200, 195));
+
+		mainPanel.add(upperPanel);
+		mainPanel.add(lowerPanel);
 		add(mainPanel);
 		
 		
@@ -90,12 +69,7 @@ public class VirusSimulation extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		
-//		win.setSize(1200, 800);
-//		win.setLocation(100, 0);
-//		win.setResizable(false);
-//		win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		win.setVisible(true);
+
 	}
 	
 	public static void main(String args[]){
@@ -259,17 +233,14 @@ public class VirusSimulation extends JFrame {
 	
 	public JPanel newLowerPanel(){
 		
-		// TODO add all of the componenets that will go here
-		//need a jtextfield for the number of rats and humansa
-		//need a jtextfield for the contagion level
-		//need a combobox for the strength of virus
-		
+
 		lowerPanel = new JPanel();
 		topPanel = new JPanel();
 		bottomPanel = new JPanel();
 		ratField = new JTextField(10);
 		humansField = new JTextField(10);
 		contagionField = new JTextField(10);
+		// TODO add the numbers to the combobox 1-10
 		virusStrengthCombo = new JComboBox();
 		
 		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));
@@ -279,7 +250,7 @@ public class VirusSimulation extends JFrame {
 		strengthLabel = new JLabel("Strength of Virus");
 		contagionLabel = new JLabel("Contagion Level");
 		
-		//TODO intsert a question mark button so people can see how many to enter etc
+		//TODO insert a question mark button so people can see how many to enter etc
 		
 		topPanel.add(ratLabel);
 		topPanel.add(ratField);
