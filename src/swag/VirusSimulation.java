@@ -95,7 +95,7 @@ public class VirusSimulation extends JFrame {
 			parseStreets(doc);
 			parseSewers(doc);
 			parseHospitals(doc);
-			
+			generatePixels();
 			
 			
 		} catch (Exception e) {
@@ -211,6 +211,10 @@ public class VirusSimulation extends JFrame {
 		}
 	}
 	
+	public void generatePixels(){
+		//
+	}
+	
 	/******** Panel Methods ********/
 	public class Panel extends JPanel{
 	//public class Component extends JComponent{
@@ -309,6 +313,7 @@ public class VirusSimulation extends JFrame {
 		g.setColor(Color.blue);//Change color
 		
 		for(int i=0; i< allStreets.size(); i++){
+			if(allStreets.get(i).getStartXLocation())
 			g.drawLine(allStreets.get(i).getStartXLocation(), allStreets.get(i).getStartYLocation(), 
 					allStreets.get(i).getEndXLocation(), allStreets.get(i).getEndYLocation());
 		}
