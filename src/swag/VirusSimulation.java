@@ -39,6 +39,9 @@ public class VirusSimulation extends JFrame {
 	JPanel mainPanel, upperPanel;
 	JPanel topPanel, bottomPanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
+	public static int totalHumans;
+	public static int totalRats;
+	
 
 	/******** Constructor ********/
 	VirusSimulation(){
@@ -290,14 +293,14 @@ public class VirusSimulation extends JFrame {
 		
 	}
 	
-	public int getNumberofHumans(){
-		int humans = Integer.parseInt(humansField.getText());
-		return humans;
+	public void getNumberofHumans(){
+		totalHumans = Integer.parseInt(humansField.getText());
+		//return humans;
 	}
 	
-	public int getNumberofRats(){
-		int rats = Integer.parseInt(ratField.getText());
-		return rats;
+	public void getNumberofRats(){
+		totalRats = Integer.parseInt(ratField.getText());
+		//return rats;
 	}
 	
 	public int getVirusStrength(){
