@@ -241,10 +241,14 @@ public class VirusSimulation extends JFrame {
 		humansField = new JTextField(10);
 		contagionField = new JTextField(10);
 		// TODO add the numbers to the combobox 1-10
-		virusStrengthCombo = new JComboBox();
 		
-		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));
+		String options[] = new String[10];
+		for(int j=0; j< 10; j++){
+			options[j] = String.valueOf(j+1);
+		}
+		virusStrengthCombo = new JComboBox(options);
 		
+		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));		
 		ratLabel =  new JLabel("Number of Rats ");
 		humanLabel = new JLabel("Number of Humans ");
 		strengthLabel = new JLabel("Strength of Virus");
@@ -267,6 +271,7 @@ public class VirusSimulation extends JFrame {
 		
 		return lowerPanel;
 	}
+	
 	
 	
 	public void drawStreets(Graphics g){
