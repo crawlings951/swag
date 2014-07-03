@@ -5,11 +5,26 @@ import java.util.Vector;
 public class Pixel {
 	
 	
-	int xLoc;
-	int yLoc;
+	private int xLoc;
+	private int yLoc;	
+	Vector<LivingBeing> livingBeingVector;
+	Vector<Pixel> pixelNeighborsVector;
+	private String type;
 	
-	Vector<LivingBeing> vl;
-	Vector<Pixel> pixel;
+	Pixel(){
+		
+	}
 	
-	String type;
+	public void setXLoc(int x){
+		this.xLoc = x;
+	}
+	
+	public void setYLoc(int y){
+		this.yLoc = y;
+	}
+	
+	public String getType(){
+		return this.type;
+	}
+	
 }

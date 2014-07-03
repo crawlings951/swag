@@ -41,6 +41,7 @@ public class VirusSimulation extends JFrame {
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 	public static int totalHumans;
 	public static int totalRats;
+	
 
 	/******** Constructor ********/
 	VirusSimulation(){
