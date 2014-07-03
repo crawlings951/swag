@@ -248,7 +248,7 @@ public class VirusSimulation extends JFrame {
 		ratLabel =  new JLabel("Number of Rats ");
 		humanLabel = new JLabel("Number of Humans ");
 		strengthLabel = new JLabel("Strength of Virus");
-		contagionLabel = new JLabel("Contagion Level");
+		contagionLabel = new JLabel("Contagion Level (0-1)");
 		
 		//TODO insert a question mark button so people can see how many to enter etc
 		
