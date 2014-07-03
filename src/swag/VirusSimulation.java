@@ -316,9 +316,22 @@ public class VirusSimulation extends JFrame {
 		g.setColor(Color.blue);//Change color
 		
 		for(int i=0; i< allStreets.size(); i++){
-			if(allStreets.get(i).getStartXLocation())
-			g.drawLine(allStreets.get(i).getStartXLocation(), allStreets.get(i).getStartYLocation(), 
-					allStreets.get(i).getEndXLocation(), allStreets.get(i).getEndYLocation());
+			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
+				//draw vertical line
+				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
+			}
+			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
+				//draw horizontal line
+				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15);
+			}
+			else{
+				//draw diagonal line
+				for(int x=0; x<15; x++){
+					g.drawLine(allStreets.get(i).getStartXLocation()+x, allStreets.get(i).getStartYLocation(), 
+							allStreets.get(i).getEndXLocation()+x, allStreets.get(i).getEndYLocation());
+				}
+			}
+			
 		}
 		
 		g.setColor(Color.BLACK); //reset color
@@ -327,13 +340,28 @@ public class VirusSimulation extends JFrame {
 
 	public void drawSewers(Graphics g){
 
-		
-		g.setColor(Color.GREEN);//Change color
+		g.setColor(Color.green);//Change color
 		
 		for(int i=0; i< allSewers.size(); i++){
-			g.drawLine(allSewers.get(i).getStartXLocation(), allSewers.get(i).getStartYLocation(),
-					allSewers.get(i).getEndXLocation(), allSewers.get(i).getEndYLocation());
+			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
+				//draw vertical line
+				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
+			}
+			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
+				//draw horizontal line
+				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10);
+			}
+			else{
+				//draw diagonal line
+				for(int x=0; x<20; x++){
+					g.drawLine(allSewers.get(i).getStartXLocation()+x, allSewers.get(i).getStartYLocation(), 
+							allSewers.get(i).getEndXLocation()+x, allSewers.get(i).getEndYLocation());
+					
+				}
+			}
+			
 		}
+		
 		g.setColor(Color.BLACK); //reset color
 		
 	}
