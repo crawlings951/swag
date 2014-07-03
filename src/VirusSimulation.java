@@ -38,18 +38,22 @@ public class VirusSimulation extends JFrame {
 	JPanel topPanel, bottomPanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 
+	/******** Constructor ********/
 	VirusSimulation(){
 		super("Virus Simulation");
 		
-		//Vector instantiations
+		/******** Vector Instantiations ********/
 		allStreets = new Vector<Street>();
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
 		
-		//Parse the data
+		/******** Parse Data ********/
+		//TODO change this so we can add in a single file or multiple files depending 
+		//on what the user wants to do
+		//TODO don't hardcode in the file 
 		parseXMLData("./test2.xml");
 		
-		//
+		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -63,7 +67,7 @@ public class VirusSimulation extends JFrame {
 		mainPanel.add(lowerPanel);
 		add(mainPanel);
 		
-		
+		/******** Window Specifications ********/
 		setSize(1200, 800);
 		setLocation(100, 0);
 		setResizable(false);
@@ -72,8 +76,8 @@ public class VirusSimulation extends JFrame {
 
 	}
 	
-	public static void main(String args[]){
-		
+	/******** Main Method ********/
+	public static void main(String args[]){	
 		VirusSimulation v = new VirusSimulation();
 	}
 	
