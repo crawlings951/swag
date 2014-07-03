@@ -1,19 +1,20 @@
+package swag;
 
-public class Sewer {
+public class Street {
 	
 	private int startXLocation;
 	private int startYLocation;
 	private int endXLocation;
 	private int endYLocation;
-	private int sewerThickness;
+	private int streetThickness;
 	
-	Sewer(int startX, int startY, int endX, int endY){
+	Street(int startX, int startY, int endX, int endY){
 		this.startXLocation = startX;
 		this.startYLocation = startY;
 		this.endXLocation = endX;
 		this.endYLocation = endY;
 		
-		sewerThickness = 5;
+		streetThickness = 10;
 	}
 	
 	public int getStartXLocation(){
@@ -32,8 +33,8 @@ public class Sewer {
 		return this.endYLocation;
 	}
 	
-	public int getSewerThickness(){
-		return this.sewerThickness;
+	public int getStreetThickness(){
+		return this.streetThickness;
 	}
 
 }

@@ -1,3 +1,4 @@
+package swag;
 
 public class Rat extends LivingBeing{
 	

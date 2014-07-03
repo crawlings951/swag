@@ -1,4 +1,4 @@
-
+package swag;
 
 public abstract class LivingBeing {
 	
