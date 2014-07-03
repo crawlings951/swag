@@ -5,11 +5,11 @@ import java.util.Vector;
 public class Pixel {
 	
 	
-	private int xLoc;
-	private int yLoc;	
+	 int xLoc;
+	int yLoc;	
 	Vector<LivingBeing> livingBeingVector;
 	Vector<Pixel> pixelNeighborsVector;
-	private String type;
+	String type;
 	
 	Pixel(){
 		
@@ -26,5 +26,7 @@ public class Pixel {
 	public String getType(){
 		return this.type;
 	}
-	
+	public void setType(String type){
+		this.type = type;
+	}
 }

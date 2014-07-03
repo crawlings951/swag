@@ -98,7 +98,6 @@ public class VirusSimulation extends JFrame {
 			parseStreets(doc);
 			parseSewers(doc);
 			parseHospitals(doc);
-			generatePixels();
 			
 			
 		} catch (Exception e) {
@@ -214,9 +213,6 @@ public class VirusSimulation extends JFrame {
 		}
 	}
 	
-	public void generatePixels(){
-		//
-	}
 	
 	/******** Panel Methods ********/
 	public class Panel extends JPanel{
@@ -318,17 +314,22 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
 				//draw vertical line
-				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
+				//g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street",g);
 			}
 			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
 				//draw horizontal line
-				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15);
+				//g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15);
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15,"street",g);
+
 			}
 			else{
 				//draw diagonal line
 				for(int x=0; x<15; x++){
-					g.drawLine(allStreets.get(i).getStartXLocation()+x, allStreets.get(i).getStartYLocation(), 
-							allStreets.get(i).getEndXLocation()+x, allStreets.get(i).getEndYLocation());
+					//g.drawLine(allStreets.get(i).getStartXLocation()+x, allStreets.get(i).getStartYLocation(), 
+						//	allStreets.get(i).getEndXLocation()+x, allStreets.get(i).getEndYLocation());
+					generatePixelsDiagonal(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation(),allStreets.get(i).getEndYLocation(),"street",g);
+
 				}
 			}
 			
@@ -345,18 +346,23 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
 				//draw vertical line
-				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
+				//g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"sewer",g);
+
 			}
 			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
 				//draw horizontal line
-				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10);
+				//g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10);
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15,"sewer",g);
+
 			}
 			else{
 				//draw diagonal line
 				for(int x=0; x<20; x++){
-					g.drawLine(allSewers.get(i).getStartXLocation()+x, allSewers.get(i).getStartYLocation(), 
-							allSewers.get(i).getEndXLocation()+x, allSewers.get(i).getEndYLocation());
-					
+					//g.drawLine(allSewers.get(i).getStartXLocation()+x, allSewers.get(i).getStartYLocation(), 
+						//	allSewers.get(i).getEndXLocation()+x, allSewers.get(i).getEndYLocation());
+					generatePixelsDiagonal(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation(),allStreets.get(i).getEndYLocation(),"sewer",g);
+
 				}
 			}
 			
@@ -369,12 +375,64 @@ public class VirusSimulation extends JFrame {
 	public void drawHospitals(Graphics g){
 		
 		g.setColor(Color.RED);//Change color
-		
+			
 		for(int i=0; i< allHospitals.size(); i++){
 			g.fillRect(allHospitals.get(i).getXLocation(), allHospitals.get(i).getYLocation(), 
 					allHospitals.get(i).getHospWidth(), allHospitals.get(i).getHospHeight());
 		}
 		g.setColor(Color.BLACK); //reset color
+	}
+	/*********** Pixel Generation Methods **********/
+	public void generatePixelsRectangle(int startX, int startY, int width, int height, String type, Graphics g){
+		g.setColor(Color.BLACK); 
+		System.out.println("Y: " + startY + ",  Start y + height: " + (startY+height));
+		System.out.println("X: " + startX + ",  Start X + width: " + (startX+width));
+		for(int y= startY; y<(height + startY); y++){
+			for(int x= startX; x<(width+startX); x++){				
+				Pixel p = new Pixel();
+				if(p.type != type){
+					p.type = "street_sewer";
+				}
+				p.type = type; 
+				p.xLoc= x;
+				p.yLoc= y;
+				g.fillRect(x, y, 1, 1);
+				//System.out.println("x"+x);
+				//System.out.println(y);
+			}
+		}
+	}
+	public void generatePixelsDiagonal(int startX, int startY, int endX, int endY, String type, Graphics g){
+		g.setColor(Color.BLACK); 
+		double slope = (endY-startY)/(endX-startX);
+		double b = startY - slope*startX;
+		double y = startY;
+		if(startX < endX){
+		for(double x=startX; x<endX; x++){
+			y = Math.floor(slope*x +b);
+			Pixel p = new Pixel();
+			if(p.type != type){
+				p.type = "street_sewer";
+			}
+			p.type = type; 
+			p.xLoc= (int)x;
+			p.yLoc= (int)y;
+			g.fillRect((int)x, (int)y, 1, 1);
+		}
+		}
+		else{
+			for(double x=endX; x>startX; x--){
+				y = Math.floor(slope*x +b);
+				Pixel p = new Pixel();
+				if(p.type != type){
+					p.type = "street_sewer";
+				}
+				p.type = type; 
+				p.xLoc= (int)x;
+				p.yLoc= (int)y;
+				g.fillRect((int)x, (int)y, 1, 1);
+			}
+		}
 	}
 }
 
