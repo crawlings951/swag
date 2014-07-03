@@ -77,6 +77,7 @@ public class VirusSimulation extends JFrame {
 		VirusSimulation v = new VirusSimulation();
 	}
 	
+	/******** Parsing Methods ********/
 	public void parseXMLData(String path){
 		try{
 			File fXmlFile = new File(path);
@@ -204,6 +205,7 @@ public class VirusSimulation extends JFrame {
 		}
 	}
 	
+	/******** Panel Methods ********/
 	public class Panel extends JPanel{
 	//public class Component extends JComponent{
 		
@@ -229,7 +231,6 @@ public class VirusSimulation extends JFrame {
 		
 		
 	}
-	
 	
 	public JPanel newLowerPanel(){
 		
@@ -271,9 +272,30 @@ public class VirusSimulation extends JFrame {
 		
 		return lowerPanel;
 	}
+	 
+	/******** Accessor Methods to User Input Data ********/
+	public double getContagionLevel(){		
+		double contagion = Double.parseDouble(contagionField.getText());	
+		return contagion;
+		
+	}
 	
+	public int getNumberofHumans(){
+		int humans = Integer.parseInt(humansField.getText());
+		return humans;
+	}
 	
+	public int getNumberofRats(){
+		int rats = Integer.parseInt(ratField.getText());
+		return rats;
+	}
 	
+	public int getVirusStrength(){
+		int strength = virusStrengthCombo.getSelectedIndex() + 1;
+		return strength;
+	}
+	
+	/******** Draw Components Methods ********/
 	public void drawStreets(Graphics g){
 		
 		//System.out.println("here");
