@@ -38,18 +38,22 @@ public class VirusSimulation extends JFrame {
 	JPanel topPanel, bottomPanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 
+	/******** Constructor ********/
 	VirusSimulation(){
 		super("Virus Simulation");
 		
-		//Vector instantiations
+		/******** Vector Instantiations ********/
 		allStreets = new Vector<Street>();
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
 		
-		//Parse the data
+		/******** Parse Data ********/
+		//TODO change this so we can add in a single file or multiple files depending 
+		//on what the user wants to do
+		//TODO don't hardcode in the file 
 		parseXMLData("./test2.xml");
 		
-		//
+		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
@@ -63,7 +67,7 @@ public class VirusSimulation extends JFrame {
 		mainPanel.add(lowerPanel);
 		add(mainPanel);
 		
-		
+		/******** Window Specifications ********/
 		setSize(1200, 800);
 		setLocation(100, 0);
 		setResizable(false);
@@ -72,11 +76,12 @@ public class VirusSimulation extends JFrame {
 
 	}
 	
-	public static void main(String args[]){
-		
+	/******** Main Method ********/
+	public static void main(String args[]){	
 		VirusSimulation v = new VirusSimulation();
 	}
 	
+	/******** Parsing Methods ********/
 	public void parseXMLData(String path){
 		try{
 			File fXmlFile = new File(path);
@@ -204,6 +209,7 @@ public class VirusSimulation extends JFrame {
 		}
 	}
 	
+	/******** Panel Methods ********/
 	public class Panel extends JPanel{
 	//public class Component extends JComponent{
 		
@@ -230,7 +236,6 @@ public class VirusSimulation extends JFrame {
 		
 	}
 	
-	
 	public JPanel newLowerPanel(){
 		
 
@@ -241,10 +246,14 @@ public class VirusSimulation extends JFrame {
 		humansField = new JTextField(10);
 		contagionField = new JTextField(10);
 		// TODO add the numbers to the combobox 1-10
-		virusStrengthCombo = new JComboBox();
 		
-		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));
+		String options[] = new String[10];
+		for(int j=0; j< 10; j++){
+			options[j] = String.valueOf(j+1);
+		}
+		virusStrengthCombo = new JComboBox(options);
 		
+		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));		
 		ratLabel =  new JLabel("Number of Rats ");
 		humanLabel = new JLabel("Number of Humans ");
 		strengthLabel = new JLabel("Strength of Virus");
@@ -267,8 +276,30 @@ public class VirusSimulation extends JFrame {
 		
 		return lowerPanel;
 	}
+	 
+	/******** Accessor Methods to User Input Data ********/
+	public double getContagionLevel(){		
+		double contagion = Double.parseDouble(contagionField.getText());	
+		return contagion;
+		
+	}
 	
+	public int getNumberofHumans(){
+		int humans = Integer.parseInt(humansField.getText());
+		return humans;
+	}
 	
+	public int getNumberofRats(){
+		int rats = Integer.parseInt(ratField.getText());
+		return rats;
+	}
+	
+	public int getVirusStrength(){
+		int strength = virusStrengthCombo.getSelectedIndex() + 1;
+		return strength;
+	}
+	
+	/******** Draw Components Methods ********/
 	public void drawStreets(Graphics g){
 		
 		//System.out.println("here");
