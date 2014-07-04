@@ -29,4 +29,10 @@ public class Pixel {
 	public void setType(String type){
 		this.type = type;
 	}
+	public int getxLoc(){
+		return this.xLoc;
+	}
+	public int getyLoc(){
+		return this.yLoc;
+	}
 }

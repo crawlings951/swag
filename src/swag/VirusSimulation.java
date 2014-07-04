@@ -316,20 +316,20 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
 				//draw vertical line
-				//g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
+				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street",g);
 			}
 			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
 				//draw horizontal line
-				//g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15);
+				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15);
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15,"street",g);
 
 			}
 			else{
 				//draw diagonal line
 				for(int x=0; x<15; x++){
-					//g.drawLine(allStreets.get(i).getStartXLocation()+x, allStreets.get(i).getStartYLocation(), 
-						//	allStreets.get(i).getEndXLocation()+x, allStreets.get(i).getEndYLocation());
+					g.drawLine(allStreets.get(i).getStartXLocation()+x, allStreets.get(i).getStartYLocation(), 
+							allStreets.get(i).getEndXLocation()+x, allStreets.get(i).getEndYLocation());
 					generatePixelsDiagonal(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation(),allStreets.get(i).getEndYLocation(),"street",g);
 
 				}
@@ -348,21 +348,21 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
 				//draw vertical line
-				//g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
+				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),15,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"sewer",g);
 
 			}
 			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
 				//draw horizontal line
-				//g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10);
+				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10);
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),15,"sewer",g);
 
 			}
 			else{
 				//draw diagonal line
 				for(int x=0; x<20; x++){
-					//g.drawLine(allSewers.get(i).getStartXLocation()+x, allSewers.get(i).getStartYLocation(), 
-						//	allSewers.get(i).getEndXLocation()+x, allSewers.get(i).getEndYLocation());
+					g.drawLine(allSewers.get(i).getStartXLocation()+x, allSewers.get(i).getStartYLocation(), 
+							allSewers.get(i).getEndXLocation()+x, allSewers.get(i).getEndYLocation());
 					generatePixelsDiagonal(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation(),allStreets.get(i).getEndYLocation(),"sewer",g);
 
 				}
@@ -386,7 +386,7 @@ public class VirusSimulation extends JFrame {
 	}
 	/*********** Pixel Generation Methods **********/
 	public void generatePixelsRectangle(int startX, int startY, int width, int height, String type, Graphics g){
-		g.setColor(Color.BLACK); 
+		//g.setColor(Color.BLACK); 
 		System.out.println("Y: " + startY + ",  Start y + height: " + (startY+height));
 		System.out.println("X: " + startX + ",  Start X + width: " + (startX+width));
 		for(int y= startY; y<(height + startY); y++){
@@ -398,15 +398,15 @@ public class VirusSimulation extends JFrame {
 				p.type = type; 
 				p.xLoc= x;
 				p.yLoc= y;
-				globalPixel.add(p);
-				g.fillRect(x, y, 1, 1);
+				//globalPixels.add(p);
+				//g.fillRect(x, y, 1, 1);
 				//System.out.println("x"+x);
 				//System.out.println(y);
 			}
 		}
 	}
 	public void generatePixelsDiagonal(int startX, int startY, int endX, int endY, String type, Graphics g){
-		g.setColor(Color.BLACK); 
+		//g.setColor(Color.BLACK); 
 		double slope = (endY-startY)/(endX-startX);
 		double b = startY - slope*startX;
 		double y = startY;
@@ -420,8 +420,8 @@ public class VirusSimulation extends JFrame {
 			p.type = type; 
 			p.xLoc= (int)x;
 			p.yLoc= (int)y;
-			globalPixel.add(p);
-			g.fillRect((int)x, (int)y, 1, 1);
+			//globalPixels.add(p);
+			//g.fillRect((int)x, (int)y, 1, 1);
 		}
 		}
 		else{
@@ -434,44 +434,43 @@ public class VirusSimulation extends JFrame {
 				p.type = type; 
 				p.xLoc= (int)x;
 				p.yLoc= (int)y;
-				g.fillRect((int)x, (int)y, 1, 1);
+				//g.fillRect((int)x, (int)y, 1, 1);
 			}
 		}
 	}
-}
 
-public void find_neighbors(int xLoc, int yLoc, Pixel p)
-{
-	find_pixel(xLoc + 1, yLoc, p);
-	find_pixel(xLoc - 1, yLoc, p);
-	find_pixel(xLoc + 1, yLoc+1, p);
-	find_pixel(xLoc, yLoc+1, p);
-	find_pixel(xLoc-1, yLoc+1, p);
-	find_pixel(xLoc-1, yLoc-1, p);
-	find_pixel(xLoc+1, yLoc-1, p);
-	find_pixel(xLoc, yLoc-1, p);
-}
-public void find_pixel(int xLoc, int yLoc, Pixel p)
-{
-	Boolean neighborExists = false;
-	Iterator<E> it = globalPixel.iterator();
-	while(it.hasNext())
-	{
-		if(it.xLoc == xLoc && it.yLoc == yLoc)
+
+	public void find_neighbors(int xLoc, int yLoc, Pixel p){
+		find_pixel(xLoc + 1, yLoc, p);
+		find_pixel(xLoc - 1, yLoc, p);
+		find_pixel(xLoc + 1, yLoc+1, p);
+		find_pixel(xLoc, yLoc+1, p);
+		find_pixel(xLoc-1, yLoc+1, p);
+		find_pixel(xLoc-1, yLoc-1, p);
+		find_pixel(xLoc+1, yLoc-1, p);
+		find_pixel(xLoc, yLoc-1, p);
+	}
+	public void find_pixel(int xLoc, int yLoc, Pixel p){
+		Boolean neighborExists = false;
+		Iterator<Pixel> it = globalPixels.iterator();
+		while(it.hasNext())
 		{
-			Iterator<E> neighborIterator = p.pixelNeighbors.iterator();
-			while(neighborIterator.hasNext()){
-				if(neighborIterator.xLoc == it.xLoc && neighborIterator.yLoc == it.yLoc){
-					neighborExists = true;
+			if(((Pixel)it).getxLoc() == xLoc && ((Pixel)it).getyLoc() == yLoc)
+			{
+				Iterator<Pixel> neighborIterator = p.pixelNeighbors.iterator();
+				while(neighborIterator.hasNext()){
+					if(((Pixel)neighborIterator).getxLoc() == ((Pixel)it).getxLoc() && ((Pixel)neighborIterator).getyLoc() == ((Pixel)it).getyLoc()){
+						neighborExists = true;
+					}
 				}
+				
+				if(!neighborExists){
+					p.pixelNeighbors.add((Pixel)it);
+					((Pixel)it).pixelNeighbors.add(p);
+				}
+				
+				
 			}
-			
-			if(!neighborExists){
-				p.pixelNeighbors.add(it);
-				it.pixelNeighbors.add(p);
-			}
-			
-			
 		}
 	}
 }
