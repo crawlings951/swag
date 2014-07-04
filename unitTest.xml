@@ -6,7 +6,7 @@
 				<y>300</y>
 			</startlocation>
 			<endlocation>
-				<x>610</x>
+				<x>609</x>
 				<y>300</y>
 			</endlocation>
 		</street>
@@ -17,37 +17,37 @@
 			</startlocation>
 			<endlocation>
 				<x>600</x>
-				<y>310</y>
+				<y>309</y>
 			</endlocation>
 		</street> 
 		<street>
 			<startlocation>
 				<x>600</x>
-				<y>310</y>
+				<y>309</y>
 			</startlocation>
 			<endlocation>
 				<x>610</x>
-				<y>310</y>
+				<y>309</y>
 			</endlocation>
 		</street>
 		<street>
 			<startlocation>
 				<x>600</x>
-				<y>309</y>
+				<y>308</y>
 			</startlocation>
 			<endlocation>
-				<x>610</x>
-				<y>309</y>
+				<x>609</x>
+				<y>308</y>
 			</endlocation>
 		</street>
 		<street>
 			<startlocation>
-				<x>610</x>
+				<x>609</x>
 				<y>300</y>
 			</startlocation>
 			<endlocation>
-				<x>610</x>
-				<y>310</y>
+				<x>609</x>
+				<y>309</y>
 			</endlocation>
 		</street>
 	</streets>
