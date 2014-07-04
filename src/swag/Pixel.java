@@ -7,8 +7,8 @@ public class Pixel {
 	
 	 int xLoc;
 	int yLoc;	
-	Vector<LivingBeing> livingBeingVector;
-	Vector<Pixel> pixelNeighborsVector;
+	Vector<LivingBeing> livingBeing;
+	Vector<Pixel> pixelNeighbors;
 	String type;
 	
 	Pixel(){

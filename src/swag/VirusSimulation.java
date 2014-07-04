@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.io.File;
+import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -30,6 +31,7 @@ public class VirusSimulation extends JFrame {
 	Vector<Street> allStreets;
 	Vector<Sewer> allSewers;
 	Vector<Hospital> allHospitals;
+	Vector<Pixel> globalPixels;
 	
 	JTextField ratField;
 	JTextField humansField;
@@ -396,6 +398,7 @@ public class VirusSimulation extends JFrame {
 				p.type = type; 
 				p.xLoc= x;
 				p.yLoc= y;
+				globalPixel.add(p);
 				g.fillRect(x, y, 1, 1);
 				//System.out.println("x"+x);
 				//System.out.println(y);
@@ -417,6 +420,7 @@ public class VirusSimulation extends JFrame {
 			p.type = type; 
 			p.xLoc= (int)x;
 			p.yLoc= (int)y;
+			globalPixel.add(p);
 			g.fillRect((int)x, (int)y, 1, 1);
 		}
 		}
@@ -435,4 +439,42 @@ public class VirusSimulation extends JFrame {
 		}
 	}
 }
+
+public void find_neighbors(int xLoc, int yLoc, Pixel p)
+{
+	find_pixel(xLoc + 1, yLoc, p);
+	find_pixel(xLoc - 1, yLoc, p);
+	find_pixel(xLoc + 1, yLoc+1, p);
+	find_pixel(xLoc, yLoc+1, p);
+	find_pixel(xLoc-1, yLoc+1, p);
+	find_pixel(xLoc-1, yLoc-1, p);
+	find_pixel(xLoc+1, yLoc-1, p);
+	find_pixel(xLoc, yLoc-1, p);
+}
+public void find_pixel(int xLoc, int yLoc, Pixel p)
+{
+	Boolean neighborExists = false;
+	Iterator<E> it = globalPixel.iterator();
+	while(it.hasNext())
+	{
+		if(it.xLoc == xLoc && it.yLoc == yLoc)
+		{
+			Iterator<E> neighborIterator = p.pixelNeighbors.iterator();
+			while(neighborIterator.hasNext()){
+				if(neighborIterator.xLoc == it.xLoc && neighborIterator.yLoc == it.yLoc){
+					neighborExists = true;
+				}
+			}
+			
+			if(!neighborExists){
+				p.pixelNeighbors.add(it);
+				it.pixelNeighbors.add(p);
+			}
+			
+			
+		}
+	}
+}
+
+
 
