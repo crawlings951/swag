@@ -59,7 +59,7 @@ public class VirusSimulation extends JFrame {
 		//TODO change this so we can add in a single file or multiple files depending 
 		//on what the user wants to do
 		//TODO don't hardcode in the file 
-		parseXMLData("./test2.xml");
+		parseXMLData("./unitTest.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
@@ -457,26 +457,22 @@ public class VirusSimulation extends JFrame {
 	}
 	public void find_pixel(int xLoc, int yLoc, Pixel p){
 		Boolean neighborExists = false;
-		Iterator<Pixel> it = globalPixels.iterator();
-		while(it.hasNext())
+		for(int i = 0; i < globalPixels.size(); i++)
 		{
-			if(((Pixel)it).getxLoc() == xLoc && ((Pixel)it).getyLoc() == yLoc)
-			{
-				Iterator<Pixel> neighborIterator = p.pixelNeighbors.iterator();
-				while(neighborIterator.hasNext()){
-					if(((Pixel)neighborIterator).getxLoc() == ((Pixel)it).getxLoc() && ((Pixel)neighborIterator).getyLoc() == ((Pixel)it).getyLoc()){
-						neighborExists = true;
-					}
+			if(globalPixels.get(i).getxLoc() == xLoc && globalPixels.get(i).getyLoc() == yLoc){
+				if(p.pixelNeighbors.contains(globalPixels.get(i))){
+					neighborExists = true;
+					System.out.println("Pixel ");
+					
 				}
-				
 				if(!neighborExists){
-					p.pixelNeighbors.add((Pixel)it);
-					((Pixel)it).pixelNeighbors.add(p);
+					p.pixelNeighbors.add(globalPixels.get(i));
+					globalPixels.get(i).pixelNeighbors.add(p);
+					
 				}
-				
-				
 			}
 		}
+		
 	}
 }
 
