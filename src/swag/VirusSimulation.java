@@ -53,6 +53,7 @@ public class VirusSimulation extends JFrame {
 		allStreets = new Vector<Street>();
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
+		globalPixels = new Vector<Pixel>();
 		
 		/******** Parse Data ********/
 		//TODO change this so we can add in a single file or multiple files depending 
@@ -398,7 +399,8 @@ public class VirusSimulation extends JFrame {
 				p.type = type; 
 				p.xLoc= x;
 				p.yLoc= y;
-				//globalPixels.add(p);
+				globalPixels.add(p);
+				find_neighbors((int)x,(int)y,p);
 				//g.fillRect(x, y, 1, 1);
 				//System.out.println("x"+x);
 				//System.out.println(y);
@@ -420,7 +422,8 @@ public class VirusSimulation extends JFrame {
 			p.type = type; 
 			p.xLoc= (int)x;
 			p.yLoc= (int)y;
-			//globalPixels.add(p);
+			globalPixels.add(p);
+			find_neighbors((int)x,(int)y,p);
 			//g.fillRect((int)x, (int)y, 1, 1);
 		}
 		}
@@ -428,12 +431,14 @@ public class VirusSimulation extends JFrame {
 			for(double x=endX; x>startX; x--){
 				y = Math.floor(slope*x +b);
 				Pixel p = new Pixel();
-				if(p.type != type){
+				if(p.type != type){	
 					p.type = "street_sewer";
 				}
 				p.type = type; 
 				p.xLoc= (int)x;
 				p.yLoc= (int)y;
+				globalPixels.add(p);
+				find_neighbors((int)x,(int)y,p);
 				//g.fillRect((int)x, (int)y, 1, 1);
 			}
 		}
