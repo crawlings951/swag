@@ -114,7 +114,6 @@ public class VirusSimulation extends JFrame {
 				        //TODO GET THE PATH USING sf.getPath();
 				        
 				        parseFullXMLData(sf.getPath());
-				        //repaint();
 				        
 						
 					}
@@ -131,7 +130,6 @@ public class VirusSimulation extends JFrame {
 	                    "New Simulation",
 	                    JOptionPane.OK_CANCEL_OPTION,
 	                    JOptionPane.PLAIN_MESSAGE);
-				repaint();
 				
 			}
 			
@@ -166,9 +164,7 @@ public class VirusSimulation extends JFrame {
 				        sewerT.setText(path);
 				        //System.out.println("path: " + path);
 						parseSewers(sf);
-						
-				        
-				        //TODO GET THE PATH USING sf.getPath();
+
 					}
 				});
 				
@@ -245,7 +241,7 @@ public class VirusSimulation extends JFrame {
 	                    JOptionPane.OK_CANCEL_OPTION,
 	                    JOptionPane.PLAIN_MESSAGE);
 				
-				repaint();
+				//repaint();
 				
 			}
 		});
@@ -312,8 +308,8 @@ public class VirusSimulation extends JFrame {
 		add(mainPanel);
 		
 		//TODO add these to happen on the press of a start button
-		genStreetPixels();
-		genSewerPixels();
+//		genStreetPixels();
+//		genSewerPixels();
 		
 		/******** Window Specifications ********/
 		setSize(1200, 800);
@@ -533,8 +529,17 @@ public class VirusSimulation extends JFrame {
 		ratField = new JTextField(10);
 		humansField = new JTextField(10);
 		contagionField = new JTextField(10);
-		// TODO add the numbers to the combobox 1-10
-		
+		JButton startButton = new JButton("Start Simulation");
+		startButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				
+				repaint();
+				genStreetPixels();
+				genSewerPixels();
+				
+			}
+		});
+
 		String options[] = new String[10];
 		for(int j=0; j< 10; j++){
 			options[j] = String.valueOf(j+1);
@@ -557,6 +562,7 @@ public class VirusSimulation extends JFrame {
 		bottomPanel.add(virusStrengthCombo);
 		bottomPanel.add(contagionLabel);
 		bottomPanel.add(contagionField);
+		bottomPanel.add(startButton);
 		
 		lowerPanel.add(topPanel);
 		lowerPanel.add(bottomPanel);
