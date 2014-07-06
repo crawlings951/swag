@@ -11,16 +11,16 @@ public class HumanFactory extends Thread {
 	}
 	
 	public void run(){
-		try{
+		//try{
 			
 			int humanNumber = 0;
 			while( humanNumber < VirusSimulation.totalHumans  ){
 				Human h = new Human();
 			}
 			
-		}catch (InterruptedException ie){
-			
-		}
+//		}catch (InterruptedException ie){
+//			
+//		}
 	}
 
 }

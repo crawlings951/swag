@@ -1,19 +1,28 @@
 package swag;
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -37,6 +46,8 @@ public class VirusSimulation extends JFrame {
 	JTextField humansField;
 	JTextField contagionField;
 	JComboBox virusStrengthCombo;
+	JMenuBar menuBar;
+	JMenu fileMenu, helpMenu, newSimulationMenu;
 	JPanel lowerPanel;
 	JPanel mainPanel, upperPanel;
 	JPanel topPanel, bottomPanel;
@@ -66,7 +77,175 @@ public class VirusSimulation extends JFrame {
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
 		// TODO fix the formatting and spacing of the lower panel
-		System.out.println("YOOOOOO");
+		
+		menuBar = new JMenuBar();
+		
+		/*** File Menu ***/
+		fileMenu = new JMenu("File");
+		JMenuItem exisitingSimulationItem = new JMenuItem("Exisiting Simulation");
+		//TODO add action listener for existing simulation
+		
+		//New simulation menu
+		newSimulationMenu = new JMenu("New Simulation");
+		JMenuItem singleFile = new JMenuItem("Single File");
+		
+		//TODO add action listener
+		JMenuItem multipleFiles = new JMenuItem("Multiple Files");
+		multipleFiles.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				
+				JPanel topP = new JPanel();
+				JPanel midP = new JPanel();
+				JPanel botP = new JPanel();
+				JPanel wholePanel = new JPanel();
+				wholePanel.setLayout(new BoxLayout(wholePanel, BoxLayout.Y_AXIS));
+				
+				JLabel sewerL = new JLabel("Sewer File:     ");
+				final JTextField sewerT = new JTextField(20);
+				JButton sewerB = new JButton("Select");
+				sewerB.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent ae){
+						//TODO open a jfilechooser and then add the path to the jtextfield
+						JFileChooser chooser = new JFileChooser();
+				        chooser.setMultiSelectionEnabled(false);
+				        File sf = null;
+				        
+				        int option = chooser.showOpenDialog(VirusSimulation.this);
+				        if (option == JFileChooser.APPROVE_OPTION) {
+				          sf = chooser.getSelectedFile();
+				        }
+				        String path = sf.getName();
+				        sewerT.setText(path);
+				        //System.out.println("path: " + path);
+				        
+				        //TODO GET THE PATH USING sf.getPath();
+					}
+				});
+				
+				JLabel roadL = new JLabel("Road File:      ");
+				final JTextField roadT = new JTextField(20);
+				JButton roadB = new JButton("Select");
+				roadB.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent ae){
+						
+						//TODO open a jfilechooser and then add the path to the jtextfield
+						JFileChooser chooser = new JFileChooser();
+				        chooser.setMultiSelectionEnabled(false);
+				        File sf = null;
+				        
+				        int option = chooser.showOpenDialog(VirusSimulation.this);
+				        if (option == JFileChooser.APPROVE_OPTION) {
+				          sf = chooser.getSelectedFile();
+				        }
+				        String path = sf.getName();
+				        roadT.setText(path);
+				        //System.out.println("path: " + path);
+				      //TODO GET THE PATH USING sf.getPath();
+						
+					}
+				});
+				
+				JLabel hospL = new JLabel("Hospital File: ");
+				final JTextField hospT = new JTextField(20);
+				JButton hospB = new JButton("Select");
+				hospB.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent ae){
+
+						//TODO open a jfilechooser and then add the path to the jtextfield
+						JFileChooser chooser = new JFileChooser();
+				        chooser.setMultiSelectionEnabled(false);
+				        File sf = null;
+				        
+				        int option = chooser.showOpenDialog(VirusSimulation.this);
+				        if (option == JFileChooser.APPROVE_OPTION) {
+				          sf = chooser.getSelectedFile();
+				        }
+				        String path = sf.getName();
+				        hospT.setText(path);
+				        //System.out.println("path: " + path);
+						
+				      //TODO GET THE PATH USING sf.getPath();
+						
+					}
+				});
+				
+				topP.add(sewerL);
+				topP.add(sewerT);
+				topP.add(sewerB);
+				
+				midP.add(roadL);
+				midP.add(roadT);
+				midP.add(roadB);
+				
+				botP.add(hospL);
+				botP.add(hospT);
+				botP.add(hospB);
+				
+				wholePanel.add(topP);
+				wholePanel.add(midP);
+				wholePanel.add(botP);
+				
+				JOptionPane.showConfirmDialog(null,
+	                    wholePanel,
+	                    "New Simulation",
+	                    JOptionPane.OK_CANCEL_OPTION,
+	                    JOptionPane.PLAIN_MESSAGE);
+				
+			}
+		});
+		
+		
+		//TODO add action listener
+		newSimulationMenu.add(singleFile);
+		newSimulationMenu.add(multipleFiles);
+		
+		fileMenu.add(exisitingSimulationItem);
+		fileMenu.add(newSimulationMenu);
+		
+		/*** Help Menu ***/
+		helpMenu = new JMenu("Help");
+		JMenuItem aboutItem = new JMenuItem("About");
+		aboutItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				JOptionPane.showMessageDialog(VirusSimulation.this, "Created by Connor Poole, Christine Hennes,"
+						+ " and Carter Rawlings", 
+						"About Virus Simulation", 
+						JOptionPane.INFORMATION_MESSAGE);
+	
+			}	
+		});
+		
+		JMenuItem helpItem = new JMenuItem("Help");
+		helpItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				JDialog jd = new JDialog();
+				jd.setResizable(false);
+				jd.setTitle("Help");
+				jd.setLocationRelativeTo(VirusSimulation.this);
+				jd.setSize(330,250);
+				
+				//TODO FIX ALL OF THE HELP STUFF
+				JPanel helpPanel = new JPanel();
+				JLabel aboutL = new JLabel("This is where all the help stuff is going to go");
+				helpPanel.add(aboutL);
+				jd.add(helpPanel);
+				jd.setVisible(true);
+				
+	
+			}	
+		});
+		helpMenu.add(aboutItem);
+		helpMenu.add(helpItem);
+		
+		menuBar.add(fileMenu);
+		menuBar.add(helpMenu);
+		setJMenuBar(menuBar);
+
+		//TODO add action listener 
+		
+		
+		
+		
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
 		upperPanel.setPreferredSize(new Dimension(1200, 605));
@@ -136,12 +315,12 @@ public class VirusSimulation extends JFrame {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 				
-				System.out.println("Street");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("\n\n");
+				//System.out.println("Street");
+				//System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+				//System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+				//System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+				//System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+				//System.out.println("\n\n");
 				
 				//SOS Need to create an object 
 				Street s = new Street(sX, sY, eX, eY);
@@ -172,12 +351,12 @@ public class VirusSimulation extends JFrame {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 
-				System.out.println("Sewer");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Sewer");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				Sewer s = new Sewer(sX, sY, eX, eY);
 				allSewers.add(s);
@@ -206,12 +385,12 @@ public class VirusSimulation extends JFrame {
 				int w = Integer.parseInt(eE.getElementsByTagName("width").item(0).getTextContent());
 				int h = Integer.parseInt(eE.getElementsByTagName("height").item(0).getTextContent());
 
-				System.out.println("Hospital");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
-				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Hospital");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
+//				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				Hospital hosp = new Hospital(sX, sY, w, h);
 				allHospitals.add(hosp);
@@ -382,6 +561,7 @@ public class VirusSimulation extends JFrame {
 		}
 		g.setColor(Color.BLACK); //reset color
 	}
+	
 	/*********** Pixel Generation Methods **********/
 	public void generatePixelsRectangle(int startX, int startY, int width, int height, String type){
 		//g.setColor(Color.BLACK); 
@@ -397,7 +577,7 @@ public class VirusSimulation extends JFrame {
 				p.xLoc= x;
 				p.yLoc= y;
 				globalPixels.add(p);
-				System.out.println(p.xLoc + ", " + p.yLoc + ", " + p.type);
+				//System.out.println(p.xLoc + ", " + p.yLoc + ", " + p.type);
 				find_neighbors((int)x,(int)y,p);
 				//g.fillRect(x, y, 1, 1);
 				//System.out.println("x"+x);
@@ -405,6 +585,7 @@ public class VirusSimulation extends JFrame {
 			}
 		}
 	}
+	
 	public void generatePixelsDiagonal(int startX, int startY, int endX, int endY, String type){
 		//g.setColor(Color.BLACK); 
 		double slope = (endY-startY)/(endX-startX);
@@ -421,7 +602,7 @@ public class VirusSimulation extends JFrame {
 			p.xLoc= (int)x;
 			p.yLoc= (int)y;
 			globalPixels.add(p);
-			System.out.println("YO");
+			//System.out.println("YO");
 			find_neighbors((int)x,(int)y,p);
 			//g.fillRect((int)x, (int)y, 1, 1);
 		}
@@ -437,7 +618,7 @@ public class VirusSimulation extends JFrame {
 				p.xLoc= (int)x;
 				p.yLoc= (int)y;
 				globalPixels.add(p);
-				System.out.println("YO2");
+				//System.out.println("YO2");
 				find_neighbors((int)x,(int)y,p);
 				//g.fillRect((int)x, (int)y, 1, 1);
 			}
@@ -493,6 +674,7 @@ public class VirusSimulation extends JFrame {
 		find_pixel(xLoc+1, yLoc-1, p);
 		find_pixel(xLoc, yLoc-1, p);
 	}
+	
 	public void find_pixel(int xLoc, int yLoc, Pixel p){
 		Boolean neighborExists = false;
 		for(int i = 0; i < globalPixels.size(); i++)
@@ -513,10 +695,10 @@ public class VirusSimulation extends JFrame {
 		
 		for(int k = 0; k < globalPixels.size(); k++)
 		{
-			System.out.println("Pixel " + globalPixels.get(k).xLoc + ", " + globalPixels.get(k).yLoc + ": ");
+			//System.out.println("Pixel " + globalPixels.get(k).xLoc + ", " + globalPixels.get(k).yLoc + ": ");
 			for(int l = 0; l < globalPixels.get(k).pixelNeighbors.size(); l++)
 			{
-				System.out.println(" - " + globalPixels.get(k).pixelNeighbors.get(l).xLoc + ", " + globalPixels.get(k).pixelNeighbors.get(l).yLoc);
+				//System.out.println(" - " + globalPixels.get(k).pixelNeighbors.get(l).xLoc + ", " + globalPixels.get(k).pixelNeighbors.get(l).yLoc);
 			}
 		}
 		
