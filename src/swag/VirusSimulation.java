@@ -3,8 +3,11 @@ package swag;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +15,7 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,7 +54,7 @@ public class VirusSimulation extends JFrame {
 	JMenu fileMenu, helpMenu, newSimulationMenu;
 	JPanel lowerPanel;
 	JPanel mainPanel, upperPanel;
-	JPanel topPanel, bottomPanel;
+	JPanel leftPanel, rightPanel, middlePanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 	public static int totalHumans;
 	public static int totalRats;
@@ -67,9 +71,7 @@ public class VirusSimulation extends JFrame {
 		globalPixels = new Vector<Pixel>();
 		
 		/******** Parse Data ********/
-		//TODO change this so we can add in a single file or multiple files depending 
-		//on what the user wants to do
-		//TODO don't hardcode in the file 
+		//This was done for testing purposes
 		//parseFullXMLData("./unitTest.xml");
 		
 		/******** Panel Declarations ********/
@@ -151,7 +153,7 @@ public class VirusSimulation extends JFrame {
 				JButton sewerB = new JButton("Select");
 				sewerB.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent ae){
-						//TODO open a jfilechooser and then add the path to the jtextfield
+
 						JFileChooser chooser = new JFileChooser();
 				        chooser.setMultiSelectionEnabled(false);
 				        File sf = null;
@@ -162,7 +164,6 @@ public class VirusSimulation extends JFrame {
 				        }
 				        String path = sf.getName();
 				        sewerT.setText(path);
-				        //System.out.println("path: " + path);
 						parseSewers(sf);
 
 					}
@@ -174,7 +175,6 @@ public class VirusSimulation extends JFrame {
 				roadB.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent ae){
 						
-						//TODO open a jfilechooser and then add the path to the jtextfield
 						JFileChooser chooser = new JFileChooser();
 				        chooser.setMultiSelectionEnabled(false);
 				        File sf = null;
@@ -187,9 +187,6 @@ public class VirusSimulation extends JFrame {
 				        roadT.setText(path);
 				        parseStreets(sf);
 
-				        //System.out.println("path: " + path);
-				      //TODO GET THE PATH USING sf.getPath();
-						
 					}
 				});
 				
@@ -199,7 +196,6 @@ public class VirusSimulation extends JFrame {
 				hospB.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent ae){
 
-						//TODO open a jfilechooser and then add the path to the jtextfield
 						JFileChooser chooser = new JFileChooser();
 				        chooser.setMultiSelectionEnabled(false);
 				        File sf = null;
@@ -213,8 +209,7 @@ public class VirusSimulation extends JFrame {
 				        //System.out.println("path: " + path);
 
 						parseHospitals(sf);
-						
-				      //TODO GET THE PATH USING sf.getPath();
+
 						
 					}
 				});
@@ -302,6 +297,7 @@ public class VirusSimulation extends JFrame {
 		lowerPanel = newLowerPanel();
 		upperPanel.setPreferredSize(new Dimension(1200, 605));
 		lowerPanel.setPreferredSize(new Dimension(1200, 195));
+		lowerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		mainPanel.add(upperPanel);
 		mainPanel.add(lowerPanel);
@@ -524,8 +520,10 @@ public class VirusSimulation extends JFrame {
 		
 
 		lowerPanel = new JPanel();
-		topPanel = new JPanel();
-		bottomPanel = new JPanel();
+		JPanel bot =  new JPanel();
+		bot.setLayout(new GridBagLayout());
+		leftPanel = new JPanel();
+		middlePanel = new JPanel();
 		ratField = new JTextField(10);
 		humansField = new JTextField(10);
 		contagionField = new JTextField(10);
@@ -546,27 +544,66 @@ public class VirusSimulation extends JFrame {
 		}
 		virusStrengthCombo = new JComboBox(options);
 		
-		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));		
-		ratLabel =  new JLabel("Number of Rats ");
+		lowerPanel.setLayout(new BoxLayout(lowerPanel, BoxLayout.Y_AXIS));	
+		ratLabel =  new JLabel("Number of Rats       ");
 		humanLabel = new JLabel("Number of Humans ");
-		strengthLabel = new JLabel("Strength of Virus");
+		strengthLabel = new JLabel("Strength of Virus        ");
 		contagionLabel = new JLabel("Contagion Level (0-1)");
+		GridBagConstraints gbc = new GridBagConstraints();
 		
 		//TODO insert a question mark button so people can see how many to enter etc
+		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
+		JPanel ratPanel = new JPanel();
+		JPanel humanPanel = new JPanel();
 		
-		topPanel.add(ratLabel);
-		topPanel.add(ratField);
-		topPanel.add(humanLabel);
-		topPanel.add(humansField);
-		bottomPanel.add(strengthLabel);
-		bottomPanel.add(virusStrengthCombo);
-		bottomPanel.add(contagionLabel);
-		bottomPanel.add(contagionField);
-		bottomPanel.add(startButton);
+		//Rat Panel
+		ratPanel.add(ratLabel);
+		ratPanel.add(ratField);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		bot.add(ratPanel, gbc);
+
+		//Human Panel
+		humanPanel.add(humanLabel);
+		humanPanel.add(humansField);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		bot.add(humanPanel, gbc);
 		
-		lowerPanel.add(topPanel);
-		lowerPanel.add(bottomPanel);
+		//Contagion Panel
+		JPanel contagionPanel = new JPanel();
+		contagionPanel.add(contagionLabel);
+		contagionPanel.add(contagionField);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		bot.add(contagionPanel, gbc);
+
+		//Virus Strength Panel
+		JPanel virusStrengthPanel = new JPanel();
+		virusStrengthPanel.add(strengthLabel);
+		virusStrengthPanel.add(virusStrengthCombo);
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		bot.add(virusStrengthPanel, gbc);
+
+		//Start Button
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		bot.add(startButton, gbc);
+
+		//Top Panel with Label
+		JPanel top = new JPanel();
+		JLabel topLabel = new JLabel("Virus Simulation Variables");
+		topLabel.setFont(new Font("Arial", Font.BOLD, 18));
+		top.add(topLabel);
 		
+		lowerPanel.add(top);
+		lowerPanel.add(bot);
 		
 		return lowerPanel;
 	}
