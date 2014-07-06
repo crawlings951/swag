@@ -526,26 +526,6 @@ public class VirusSimulation extends JFrame {
 		humansField = new JTextField(10);
 		contagionField = new JTextField(10);
 		JButton startButton = new JButton("Start Simulation");
-		startButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				
-				if(checkVariableEntries()){
-				
-					repaint();
-					genStreetPixels();
-					genSewerPixels();
-				}
-				else{
-				
-					JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one of more field", 
-							"Error", 
-							JOptionPane.ERROR_MESSAGE);
-		
-					
-				}
-				
-			}
-		});
 
 		String options[] = new String[10];
 		for(int j=0; j< 10; j++){
@@ -599,12 +579,31 @@ public class VirusSimulation extends JFrame {
 		bot.add(virusStrengthPanel, gbc);
 
 		//Start Button
+		startButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				
+				if(checkVariableEntries()){
+				
+					repaint();
+					genStreetPixels();
+					genSewerPixels();
+				}
+				else{
+				
+					JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one of more field", 
+							"Error", 
+							JOptionPane.ERROR_MESSAGE);
+		
+					
+				}
+				
+			}
+		});
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
 		bot.add(startButton, gbc);
-		
-		//TODO insert a question mark button so people can see how many to enter etc
+
 		//Question Button
 		JButton questionButton = new JButton("Variable Help (?)");
 		questionButton.addActionListener(new ActionListener(){
@@ -634,7 +633,6 @@ public class VirusSimulation extends JFrame {
 		gbc.anchor = GridBagConstraints.LINE_START;
 		bot.add(questionButton, gbc);
 		
-
 		//Top Panel with Label
 		JPanel top = new JPanel();
 		JLabel topLabel = new JLabel("Virus Simulation Variables");
