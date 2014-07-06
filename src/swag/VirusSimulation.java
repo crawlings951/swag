@@ -531,9 +531,22 @@ public class VirusSimulation extends JFrame {
 		startButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				
-				repaint();
-				genStreetPixels();
-				genSewerPixels();
+				if(checkVariableEntries()){
+				
+					//TODO need to go through and make sure that all fields have valid entries
+					repaint();
+					genStreetPixels();
+					genSewerPixels();
+				}
+				else{
+					//TODO code an error message or something
+				
+					JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one of more field", 
+							"Error", 
+							JOptionPane.ERROR_MESSAGE);
+		
+					
+				}
 				
 			}
 		});
@@ -607,22 +620,78 @@ public class VirusSimulation extends JFrame {
 		
 		return lowerPanel;
 	}
+	
+	public boolean checkVariableEntries(){
+		
+		boolean b;
+		
+		if(getContagionLevel() >=0 && getContagionLevel() <= 1){
+			if(getNumberofHumans() >= 100 && getNumberofHumans() <= 3000){
+				if(getNumberofRats() >= 20 && getNumberofRats() <= 500){
+					b = true;
+				}
+				else{
+					b = false;
+				}
+			}
+			else{
+				b = false;
+			}
+		}
+		else{
+			b = false;
+		}
+		
+		return b;
+	
+	}
 	 
 	/******** Accessor Methods to User Input Data ********/
-	public double getContagionLevel(){		
-		double contagion = Double.parseDouble(contagionField.getText());	
+	public double getContagionLevel(){	
+		double contagion = -1;
+		
+		if(!contagionField.getText().isEmpty()){
+			try{
+			contagion = Double.parseDouble(contagionField.getText());	
+			}
+			catch(Exception e){
+				contagion = -1;
+			}
+
+		}
+		
 		return contagion;
 		
 	}
 	
-	public void getNumberofHumans(){
-		totalHumans = Integer.parseInt(humansField.getText());
-		//return humans;
+	public int getNumberofHumans(){
+		
+		totalHumans = -1;
+		
+		if(!humansField.getText().isEmpty()){
+			try{
+				totalHumans = Integer.parseInt(humansField.getText());
+			}
+			catch(Exception e){
+				totalHumans = -1;
+			}
+		}
+		return totalHumans;
 	}
 	
-	public void getNumberofRats(){
-		totalRats = Integer.parseInt(ratField.getText());
-		//return rats;
+	public int getNumberofRats(){
+		
+		totalRats = -1;
+		
+		if(!ratField.getText().isEmpty()){
+			try{
+				totalRats = Integer.parseInt(ratField.getText());
+			}
+			catch(Exception e){
+				totalRats = -1;
+			}
+		}
+		return totalRats;
 	}
 	
 	public int getVirusStrength(){
@@ -846,6 +915,9 @@ public class VirusSimulation extends JFrame {
 		}
 		
 	}
+
+
+
 }
 
 
