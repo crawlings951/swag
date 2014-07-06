@@ -77,15 +77,19 @@ public class VirusSimulation extends JFrame {
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
-		// TODO fix the formatting and spacing of the lower panel
 		
 		menuBar = new JMenuBar();
 		
 		/*** File Menu ***/
 		fileMenu = new JMenu("File");
 		JMenuItem exisitingSimulationItem = new JMenuItem("Exisiting Simulation");
-		//TODO add action listener for existing simulation
+		
+		exisitingSimulationItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				System.out.println("Inside of exisiting simluation");
+				//TODO finish this by pulling out the data from the database
+			}
+		});
 		
 		//New simulation menu
 		newSimulationMenu = new JMenu("New Simulation");
@@ -241,8 +245,6 @@ public class VirusSimulation extends JFrame {
 			}
 		});
 		
-		
-		//TODO add action listener
 		newSimulationMenu.add(singleFile);
 		newSimulationMenu.add(multipleFiles);
 		
@@ -288,10 +290,6 @@ public class VirusSimulation extends JFrame {
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
 
-		//TODO add action listener 
-		
-		
-		
 		
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
@@ -533,13 +531,11 @@ public class VirusSimulation extends JFrame {
 				
 				if(checkVariableEntries()){
 				
-					//TODO need to go through and make sure that all fields have valid entries
 					repaint();
 					genStreetPixels();
 					genSewerPixels();
 				}
 				else{
-					//TODO code an error message or something
 				
 					JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one of more field", 
 							"Error", 
@@ -564,7 +560,6 @@ public class VirusSimulation extends JFrame {
 		contagionLabel = new JLabel("Contagion Level (0-1)");
 		GridBagConstraints gbc = new GridBagConstraints();
 		
-		//TODO insert a question mark button so people can see how many to enter etc
 		leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
 		JPanel ratPanel = new JPanel();
 		JPanel humanPanel = new JPanel();
@@ -608,6 +603,37 @@ public class VirusSimulation extends JFrame {
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
 		bot.add(startButton, gbc);
+		
+		//TODO insert a question mark button so people can see how many to enter etc
+		//Question Button
+		JButton questionButton = new JButton("Variable Help (?)");
+		questionButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				
+				JPanel questionPanel = new JPanel();
+				questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
+				JLabel ratHelpLabel = new JLabel("Rats: Enter number between 20 and 500");
+				JLabel humanHelpLabel = new JLabel("Humans: Enter number between 100 and 3000");
+				JLabel contagionHelpLabel = new JLabel("Contagion: Enter a number between 0 and 1");
+				
+				questionPanel.add(ratHelpLabel);
+				questionPanel.add(humanHelpLabel);
+				questionPanel.add(contagionHelpLabel);
+				
+				JOptionPane.showConfirmDialog(null,
+	                    questionPanel,
+	                    "Variable Help",
+	                    JOptionPane.PLAIN_MESSAGE);
+
+				
+				
+			}
+		});
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		gbc.anchor = GridBagConstraints.LINE_START;
+		bot.add(questionButton, gbc);
+		
 
 		//Top Panel with Label
 		JPanel top = new JPanel();
