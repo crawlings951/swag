@@ -1,0 +1,14 @@
+
+	<sewers>
+		<sewer>
+			<startlocation>
+				<x>0</x>
+				<y>0</y>
+			</startlocation>
+			<endlocation>
+				<x>0</x>
+				<y>0</y>
+			</endlocation>
+		</sewer>
+	</sewers>
+	

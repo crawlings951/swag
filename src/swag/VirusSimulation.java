@@ -70,7 +70,7 @@ public class VirusSimulation extends JFrame {
 		//TODO change this so we can add in a single file or multiple files depending 
 		//on what the user wants to do
 		//TODO don't hardcode in the file 
-		parseXMLData("./unitTest.xml");
+		//parseFullXMLData("./unitTest.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
@@ -88,6 +88,54 @@ public class VirusSimulation extends JFrame {
 		//New simulation menu
 		newSimulationMenu = new JMenu("New Simulation");
 		JMenuItem singleFile = new JMenuItem("Single File");
+		singleFile.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				
+				JPanel singlePanel = new JPanel();
+				JPanel centerPanel = new JPanel();
+				JLabel fileLabel = new JLabel("File: ");
+				final JTextField fileT = new JTextField(20);
+				JButton selectT = new JButton("Select");
+				selectT.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent ae){
+						
+						//TODO open a jfilechooser and then add the path to the jtextfield
+						JFileChooser chooser = new JFileChooser();
+				        chooser.setMultiSelectionEnabled(false);
+				        File sf = null;
+				        
+				        int option = chooser.showOpenDialog(VirusSimulation.this);
+				        if (option == JFileChooser.APPROVE_OPTION) {
+				          sf = chooser.getSelectedFile();
+				        }
+				        String path = sf.getName();
+				        fileT.setText(path);
+				        
+				        //TODO GET THE PATH USING sf.getPath();
+				        
+				        parseFullXMLData(sf.getPath());
+				        //repaint();
+				        
+						
+					}
+				});
+				
+				centerPanel.add(fileLabel);
+				centerPanel.add(fileT);
+				centerPanel.add(selectT);
+				
+				singlePanel.add(centerPanel);
+				
+				JOptionPane.showConfirmDialog(null,
+	                    singlePanel,
+	                    "New Simulation",
+	                    JOptionPane.OK_CANCEL_OPTION,
+	                    JOptionPane.PLAIN_MESSAGE);
+				repaint();
+				
+			}
+			
+		});
 		
 		//TODO add action listener
 		JMenuItem multipleFiles = new JMenuItem("Multiple Files");
@@ -117,6 +165,8 @@ public class VirusSimulation extends JFrame {
 				        String path = sf.getName();
 				        sewerT.setText(path);
 				        //System.out.println("path: " + path);
+						parseSewers(sf);
+						
 				        
 				        //TODO GET THE PATH USING sf.getPath();
 					}
@@ -139,6 +189,8 @@ public class VirusSimulation extends JFrame {
 				        }
 				        String path = sf.getName();
 				        roadT.setText(path);
+				        parseStreets(sf);
+
 				        //System.out.println("path: " + path);
 				      //TODO GET THE PATH USING sf.getPath();
 						
@@ -163,6 +215,8 @@ public class VirusSimulation extends JFrame {
 				        String path = sf.getName();
 				        hospT.setText(path);
 				        //System.out.println("path: " + path);
+
+						parseHospitals(sf);
 						
 				      //TODO GET THE PATH USING sf.getPath();
 						
@@ -190,6 +244,8 @@ public class VirusSimulation extends JFrame {
 	                    "New Simulation",
 	                    JOptionPane.OK_CANCEL_OPTION,
 	                    JOptionPane.PLAIN_MESSAGE);
+				
+				repaint();
 				
 			}
 		});
@@ -255,6 +311,7 @@ public class VirusSimulation extends JFrame {
 		mainPanel.add(lowerPanel);
 		add(mainPanel);
 		
+		//TODO add these to happen on the press of a start button
 		genStreetPixels();
 		genSewerPixels();
 		
@@ -273,7 +330,7 @@ public class VirusSimulation extends JFrame {
 	}
 	
 	/******** Parsing Methods ********/
-	public void parseXMLData(String path){
+	public void parseFullXMLData(String path){
 		try{
 			File fXmlFile = new File(path);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -281,9 +338,9 @@ public class VirusSimulation extends JFrame {
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
 			
-			parseStreets(doc);
-			parseSewers(doc);
-			parseHospitals(doc);
+			parseStreets(fXmlFile);
+			parseSewers(fXmlFile);
+			parseHospitals(fXmlFile);
 			
 			
 		} catch (Exception e) {
@@ -297,7 +354,20 @@ public class VirusSimulation extends JFrame {
 		
 	}
 
-	public void parseStreets(Document doc){
+	public void parseStreets(File file){
+		Document doc = null;
+		try{
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		doc = dBuilder.parse(file);
+		doc.getDocumentElement().normalize();
+		}
+		catch (Exception e) {
+	    	JOptionPane.showMessageDialog(VirusSimulation.this, 
+	    			"Incorrect file format", 
+	    			"Error", 
+	    			JOptionPane.ERROR_MESSAGE);
+	    }
 		
 		NodeList streetList = doc.getElementsByTagName("street");
 		
@@ -315,12 +385,12 @@ public class VirusSimulation extends JFrame {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 				
-				//System.out.println("Street");
-				//System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				//System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				//System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-				//System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-				//System.out.println("\n\n");
+				System.out.println("Street");
+				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("\n\n");
 				
 				//SOS Need to create an object 
 				Street s = new Street(sX, sY, eX, eY);
@@ -333,7 +403,21 @@ public class VirusSimulation extends JFrame {
 		
 	}
 	
-	public void parseSewers(Document doc){
+	public void parseSewers(File file){
+		
+		Document doc = null;
+		try{
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		doc = dBuilder.parse(file);
+		doc.getDocumentElement().normalize();
+		}
+		catch (Exception e) {
+	    	JOptionPane.showMessageDialog(VirusSimulation.this, 
+	    			"Incorrect file format", 
+	    			"Error", 
+	    			JOptionPane.ERROR_MESSAGE);
+	    }
 		
 		NodeList sewerList = doc.getElementsByTagName("sewer");
 		
@@ -367,7 +451,21 @@ public class VirusSimulation extends JFrame {
 		
 	}
 	
-	public void parseHospitals(Document doc){
+	public void parseHospitals(File file){
+		
+		Document doc = null;
+		try{
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		doc = dBuilder.parse(file);
+		doc.getDocumentElement().normalize();
+		}
+		catch (Exception e) {
+	    	JOptionPane.showMessageDialog(VirusSimulation.this, 
+	    			"Incorrect file format", 
+	    			"Error", 
+	    			JOptionPane.ERROR_MESSAGE);
+	    }
 		
 		NodeList hospitalList = doc.getElementsByTagName("hospital");
 		
@@ -385,12 +483,12 @@ public class VirusSimulation extends JFrame {
 				int w = Integer.parseInt(eE.getElementsByTagName("width").item(0).getTextContent());
 				int h = Integer.parseInt(eE.getElementsByTagName("height").item(0).getTextContent());
 
-//				System.out.println("Hospital");
-//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-//				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
-//				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
-//				System.out.println("\n\n");
+				System.out.println("Hospital");
+				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
+				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
+				System.out.println("\n\n");
 				
 				Hospital hosp = new Hospital(sX, sY, w, h);
 				allHospitals.add(hosp);
@@ -626,8 +724,10 @@ public class VirusSimulation extends JFrame {
 	}
 
 	public void genStreetPixels(){
+		
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
+				System.out.println("here");
 				//draw vertical line
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),1,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street");
 			}
