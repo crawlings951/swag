@@ -412,7 +412,6 @@ public class VirusSimulation extends JFrame {
 //				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
 //				System.out.println("\n\n");
 				
-				//SOS Need to create an object 
 				Street s = new Street(sX, sY, eX, eY);
 				allStreets.add(s);
 			}
@@ -530,10 +529,6 @@ public class VirusSimulation extends JFrame {
 			
 		}
 		
-//		Component(){
-//			
-//		}
-		
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
 			drawStreets(g);
@@ -542,8 +537,6 @@ public class VirusSimulation extends JFrame {
 			if(streetsDrawn && sewersDrawn)
 			{
 				System.out.println("Yerp");
-				//g.setColor(Color.magenta);
-				//g.fillRect(65, 565,20,20);
 				find_neighbors();
 				genRats();
 				genHumans();
@@ -552,9 +545,6 @@ public class VirusSimulation extends JFrame {
 				moveCharacters();
 			}
 			
-			//g.fillRect(100, 100, 5, 5);
-			
-			//add(newLowerPanel());
 		}
 		
 		
@@ -915,13 +905,12 @@ public class VirusSimulation extends JFrame {
 //			System.out.println("endY-startY: " +(endY-startY) );
 //			System.out.println("endX-startX: " + (endX-startX));
 			slope = -1.0*((1.0*(endY-startY))/(1.0*(endX-startX)));
-			//slope = ((-1.0*(endY-startY))/(endX-startX));
 //			System.out.println("Slope: " + slope);
 		}
 		else{
 			slope = 0;
 		}
-		//double test = 0;
+
 		double b = startY - (slope*startX);
 		double y = startY;
 		int index = (int)(1200*y + startX);
@@ -954,7 +943,6 @@ public class VirusSimulation extends JFrame {
 					globalPixels.get(index).type = "street_sewer";
 				}
 					//System.out.println("Index: " + index);
-					//TODO change this because it's always changing to a street_sewer
 					//System.out.println("changing it to street_sewer");
 					
 				else{
@@ -964,7 +952,6 @@ public class VirusSimulation extends JFrame {
 					    globalPixels.get(index).yLoc = (int)y;
 				}
 			    
-			    // test = x;
 			}
 		}
 		
@@ -1602,14 +1589,14 @@ public class VirusSimulation extends JFrame {
 		
 		for(int i = 0; i < allHumans.size(); i++)
 		{
-			int ratInd = allHumans.get(i).index;
-			int pnSize = globalPixels.get(ratInd).pixelNeighbors.size();
+			int humInd = allHumans.get(i).index;
+			int pnSize = globalPixels.get(humInd).pixelNeighbors.size();
 			int randValue = (int)Math.floor(Math.random() * pnSize);
-			if(globalPixels.get(ratInd).pixelNeighbors.size() > 0)
+			if(globalPixels.get(humInd).pixelNeighbors.size() > 0)
 			{
-				allHumans.get(i).setCurrentX(globalPixels.get(ratInd).pixelNeighbors.get(randValue).xLoc);
-				allHumans.get(i).setCurrentY(globalPixels.get(ratInd).pixelNeighbors.get(randValue).yLoc);
-				allHumans.get(i).index = globalPixels.get(ratInd).pixelNeighbors.get(randValue).index;
+				allHumans.get(i).setCurrentX(globalPixels.get(humInd).pixelNeighbors.get(randValue).xLoc);
+				allHumans.get(i).setCurrentY(globalPixels.get(humInd).pixelNeighbors.get(randValue).yLoc);
+				allHumans.get(i).index = globalPixels.get(humInd).pixelNeighbors.get(randValue).index;
 			}
 		}
 		for(int i = 0; i < allRats.size(); i++)
