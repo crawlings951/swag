@@ -45,7 +45,8 @@ public class VirusSimulation extends JFrame {
 	Vector<Sewer> allSewers;
 	Vector<Hospital> allHospitals;
 	Vector<Pixel> globalPixels;
-	
+	Vector<Human> allHumans;
+	Vector<Rat> allRats;
 	JTextField ratField;
 	JTextField humansField;
 	JTextField contagionField;
@@ -60,6 +61,7 @@ public class VirusSimulation extends JFrame {
 	public static int totalRats;
 	public Boolean streetsDrawn;
 	public Boolean sewersDrawn;
+	public Boolean beenPressed;
 	
 
 	/******** Constructor ********/
@@ -67,6 +69,8 @@ public class VirusSimulation extends JFrame {
 		super("Virus Simulation");
 		
 		/******** Vector Instantiations ********/
+		allRats = new Vector<Rat>();
+		allHumans = new Vector<Human>();
 		allStreets = new Vector<Street>();
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
@@ -80,6 +84,7 @@ public class VirusSimulation extends JFrame {
 				Pixel p = new Pixel();
 				p.xLoc = j;
 				p.yLoc = i;
+				p.index = i*1200 + j;
 				p.type = "error";
 				globalPixels.add(p);
 			}
@@ -526,7 +531,13 @@ public class VirusSimulation extends JFrame {
 			{
 				System.out.println("Yerp");
 				find_neighbors();
+				genRats();
+				genHumans();
+				drawRats(g);
+				drawHumans(g);
+				moveCharacters();
 			}
+			
 			//g.fillRect(100, 100, 5, 5);
 			
 			//add(newLowerPanel());
@@ -610,6 +621,9 @@ public class VirusSimulation extends JFrame {
 					repaint();
 					genStreetPixels();
 					genSewerPixels();
+					beenPressed = true;
+					//sewersDrawn = true;
+					
 					System.out.println("YO2");
 				}
 				else{
@@ -668,7 +682,7 @@ public class VirusSimulation extends JFrame {
 		
 		return lowerPanel;
 	}
-	
+
 	public boolean checkVariableEntries(){
 		
 		boolean b;
@@ -748,6 +762,23 @@ public class VirusSimulation extends JFrame {
 	}
 	
 	/******** Draw Components Methods ********/
+	public void drawRats(Graphics g)
+	{
+		for(int j = 0; j < allRats.size(); j++)
+		{
+			g.setColor(Color.RED);
+			g.fillRect(allRats.get(j).getCurrentX(), allRats.get(j).getCurrentY(), 3,3);
+		}
+	}
+	public void drawHumans(Graphics g)
+	{
+			for(int j = 0; j < allHumans.size(); j++)
+			{
+				g.setColor(Color.orange);
+				g.fillRect(allHumans.get(j).getCurrentX(), allHumans.get(j).getCurrentY(), 3, 3);
+			}
+		}
+
 	public void drawStreets(Graphics g){
 		
 		//System.out.println("here");
@@ -757,11 +788,11 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
 				//draw vertical line
-				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),1,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
+				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),10,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation());
 			}
 			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
 				//draw horizontal line
-				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),1);
+				g.fillRect(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),10);
 
 			}
 			else{
@@ -786,12 +817,12 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
 				//draw vertical line
-				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),1,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
+				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation());
 
 			}
 			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
 				//draw horizontal line
-				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),1);
+				g.fillRect(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10);
 
 			}
 			else{
@@ -811,7 +842,7 @@ public class VirusSimulation extends JFrame {
 	
 	public void drawHospitals(Graphics g){
 		
-		g.setColor(Color.RED);//Change color
+		g.setColor(Color.black);//Change color
 			
 		for(int i=0; i< allHospitals.size(); i++){
 			g.fillRect(allHospitals.get(i).getXLocation(), allHospitals.get(i).getYLocation(), 
@@ -830,6 +861,8 @@ public class VirusSimulation extends JFrame {
 				}
 				else{
 					globalPixels.get(index).type = type;
+					globalPixels.get(index).xLoc = x;
+					globalPixels.get(index).yLoc = y;
 				}
 			}
 		}
@@ -837,7 +870,12 @@ public class VirusSimulation extends JFrame {
 	
 	public void generatePixelsDiagonal(int startX, int startY, int endX, int endY, String type){
 		//g.setColor(Color.BLACK); 
-		double slope = (endY-startY)/(endX-startX);
+		double slope;
+		if(endX - startX > 0)
+		{slope = (endY-startY)/(endX-startX);}
+		else{
+			slope = 0;
+		}
 		double b = startY - slope*startX;
 		double y = startY;
 		if(startX < endX){
@@ -849,9 +887,10 @@ public class VirusSimulation extends JFrame {
 			}
 			else{
 				globalPixels.get(index).type = type;
+				  globalPixels.get(index).xLoc = (int)x;
+				    globalPixels.get(index).yLoc = (int)y;
 			}
-		//	globalPixels.get(index).xLoc = (int)x;
-			//globalPixels.get(index).yLoc = (int)y;
+		      
 		}
 		}
 		else{
@@ -863,6 +902,8 @@ public class VirusSimulation extends JFrame {
 				}
 				else{
 					globalPixels.get(index).type = type;
+					  globalPixels.get(index).xLoc = (int)x;
+					    globalPixels.get(index).yLoc = (int)y;
 				}
 			}
 		}
@@ -873,11 +914,11 @@ public class VirusSimulation extends JFrame {
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
 			//	System.out.println("hereSt");
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),1,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street");
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),10,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street");
 			}
 			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
 				//draw horizontal line
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),1,"street");
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),10,"street");
 			}
 			else{
 				//draw diagonal line
@@ -892,11 +933,11 @@ public class VirusSimulation extends JFrame {
 	public void genSewerPixels(){
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),1,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"sewer");
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),10,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"sewer");
 			}
 			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
 				//draw horizontal line
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),1,"sewer");
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),10,"sewer");
 			}
 			else{
 				//draw diagonal line
@@ -1385,44 +1426,100 @@ public class VirusSimulation extends JFrame {
 				}
 			}
 
-			if(globalPixels.get(i).pixelNeighbors.size()>0)
-			{
-				System.out.println("Size: " +i + " " + globalPixels.get(i).pixelNeighbors.size());
-			}
+			
 		}
+		
 	
 	}
 	
-	public void find_pixel(int xLoc, int yLoc, Pixel p){
-		Boolean neighborExists = false;
-		for(int i = 0; i < globalPixels.size(); i++)
-		{
-			if(globalPixels.get(i).getxLoc() == xLoc && globalPixels.get(i).getyLoc() == yLoc){
-				if(p.pixelNeighbors.contains(globalPixels.get(i))){
-					neighborExists = true;
-					
-					
-				}
-				if(!neighborExists){
-					p.pixelNeighbors.add(globalPixels.get(i));
-					globalPixels.get(i).pixelNeighbors.add(p);
-					
-				}
-			}
-		}
+	public void genHumans(){
 		
-		for(int k = 0; k < globalPixels.size(); k++)
-		{
-			//System.out.println("Pixel " + globalPixels.get(k).xLoc + ", " + globalPixels.get(k).yLoc + ": ");
-			for(int l = 0; l < globalPixels.get(k).pixelNeighbors.size(); l++)
-			{
-				//System.out.println(" - " + globalPixels.get(k).pixelNeighbors.get(l).xLoc + ", " + globalPixels.get(k).pixelNeighbors.get(l).yLoc);
-			}
-		}
 		
+		int numOfHumans = getNumberofHumans();
+		for(int i = 0; i < numOfHumans; i++)
+		{
+			int random = (int)Math.floor(Math.random()* 960000);
+			Boolean whatever = true;
+			Human h = new Human();
+				while(whatever)
+				{
+					if(random >= globalPixels.size())
+					{
+						random = 0;
+					}
+					if(globalPixels.get(random).type.equals("street"))
+					{
+						h.setCurrentX(globalPixels.get(random).xLoc);
+						h.setCurrentY(globalPixels.get(random).yLoc);
+						h.index = random;
+						globalPixels.get(random).livingBeing.add(h);
+						allHumans.add(h);
+						whatever = false;
+					}
+				random+=799;
+				}
+		}
+	}
+	public void genRats(){
+
+		
+		int numOfRats = getNumberofRats();
+		for(int i = 0; i < numOfRats; i++)
+		{
+			int random = (int)Math.floor(Math.random()* 960000);
+			Boolean whatever = true;
+			Rat r = new Rat();
+				while(whatever)
+		
+				{
+					if(random >= globalPixels.size())
+					{
+						random = 0;
+					}
+					if(globalPixels.get(random).type.equals("sewer") || globalPixels.get(random).type.equals("street_sewer"))
+					{
+						r.setCurrentX(globalPixels.get(random).xLoc);
+						r.setCurrentY(globalPixels.get(random).yLoc);
+						r.index = random;
+						globalPixels.get(random).livingBeing.add(r);
+						allRats.add(r);
+						whatever = false;
+					}
+				random+= 799;
+				}
+		}
 	}
 
-
+	public void moveCharacters()
+	{
+		
+		for(int i = 0; i < allHumans.size(); i++)
+		{
+			int ratInd = allHumans.get(i).index;
+			int pnSize = globalPixels.get(ratInd).pixelNeighbors.size();
+			int randValue = (int)Math.floor(Math.random() * pnSize);
+			if(globalPixels.get(ratInd).pixelNeighbors.size() > 0)
+			{
+				allHumans.get(i).setCurrentX(globalPixels.get(ratInd).pixelNeighbors.get(randValue).xLoc);
+				allHumans.get(i).setCurrentY(globalPixels.get(ratInd).pixelNeighbors.get(randValue).yLoc);
+				allHumans.get(i).index = globalPixels.get(ratInd).pixelNeighbors.get(randValue).index;
+			}
+		}
+		for(int i = 0; i < allRats.size(); i++)
+		{
+			int ratInd = allRats.get(i).index;
+			int pnSize = globalPixels.get(ratInd).pixelNeighbors.size();
+			int randValue = (int)Math.floor(Math.random() * pnSize);
+			if(globalPixels.get(ratInd).pixelNeighbors.size() > 0)
+			{
+				allRats.get(i).setCurrentX(globalPixels.get(ratInd).pixelNeighbors.get(randValue).xLoc);
+				allRats.get(i).setCurrentY(globalPixels.get(ratInd).pixelNeighbors.get(randValue).yLoc);
+				allRats.get(i).index = globalPixels.get(ratInd).pixelNeighbors.get(randValue).index;
+			}
+		
+		}
+		repaint();
+	}
 
 }
 

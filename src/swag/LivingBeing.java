@@ -10,6 +10,7 @@ public abstract class LivingBeing {
 	private int nextX;
 	private int nextY;
 	private int score;
+	public int index;
 	
 	LivingBeing(){
 		
