@@ -935,16 +935,16 @@ public class VirusSimulation extends JFrame {
 	public void genSewerPixels(){
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),10,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"sewer");
+				generatePixelsRectangle(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation(),"sewer");
 			}
 			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
 				//draw horizontal line
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),10,"sewer");
+				generatePixelsRectangle(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10,"sewer");
 			}
 			else{
 				//draw diagonal line
 				for(int x=0; x<20; x++){
-					generatePixelsDiagonal(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation(),allStreets.get(i).getEndYLocation(),"sewer");
+					generatePixelsDiagonal(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation(),allSewers.get(i).getEndYLocation(),"sewer");
 				}
 			}
 		}
