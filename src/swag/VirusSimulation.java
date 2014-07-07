@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -1438,7 +1439,9 @@ public class VirusSimulation extends JFrame {
 		int numOfHumans = getNumberofHumans();
 		for(int i = 0; i < numOfHumans; i++)
 		{
-			int random = (int)Math.floor(Math.random()* 960000);
+			Random randomGenerator = new Random();
+			
+			int random = randomGenerator.nextInt(960000);
 			Boolean whatever = true;
 			Human h = new Human();
 				while(whatever)
@@ -1466,7 +1469,9 @@ public class VirusSimulation extends JFrame {
 		int numOfRats = getNumberofRats();
 		for(int i = 0; i < numOfRats; i++)
 		{
-			int random = (int)Math.floor(Math.random()* 960000);
+			Random randomGenerator = new Random();
+			
+			int random = randomGenerator.nextInt(960000);
 			Boolean whatever = true;
 			Rat r = new Rat();
 				while(whatever)
