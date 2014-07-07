@@ -30,6 +30,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -304,7 +305,7 @@ public class VirusSimulation extends JFrame {
 				
 				//TODO FIX ALL OF THE HELP STUFF
 				JPanel helpPanel = new JPanel();
-				JLabel aboutL = new JLabel("This is where all the help stuff is going to go");
+				JTextArea aboutL = new JTextArea("This is where all the help stuff is going to go");
 				helpPanel.add(aboutL);
 				jd.add(helpPanel);
 				jd.setVisible(true);
