@@ -95,7 +95,7 @@ public class VirusSimulation extends JFrame {
 		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
-		//parseFullXMLData("./unitTest.xml");
+		parseFullXMLData("./test2.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
@@ -399,12 +399,12 @@ public class VirusSimulation extends JFrame {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 				
-				System.out.println("Street");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Street");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				//SOS Need to create an object 
 				Street s = new Street(sX, sY, eX, eY);
@@ -497,12 +497,12 @@ public class VirusSimulation extends JFrame {
 				int w = Integer.parseInt(eE.getElementsByTagName("width").item(0).getTextContent());
 				int h = Integer.parseInt(eE.getElementsByTagName("height").item(0).getTextContent());
 
-				System.out.println("Hospital");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
-				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Hospital");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
+//				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				Hospital hosp = new Hospital(sX, sY, w, h);
 				allHospitals.add(hosp);
@@ -532,6 +532,8 @@ public class VirusSimulation extends JFrame {
 			if(streetsDrawn && sewersDrawn)
 			{
 				System.out.println("Yerp");
+				//g.setColor(Color.magenta);
+				//g.fillRect(65, 565,20,20);
 				find_neighbors();
 				genRats();
 				genHumans();
@@ -772,6 +774,7 @@ public class VirusSimulation extends JFrame {
 			g.fillRect(allRats.get(j).getCurrentX(), allRats.get(j).getCurrentY(), 3,3);
 		}
 	}
+	
 	public void drawHumans(Graphics g)
 	{
 			for(int j = 0; j < allHumans.size(); j++)
@@ -859,9 +862,11 @@ public class VirusSimulation extends JFrame {
 			for(int x= startX; x<(width+startX); x++){				
 				int index = 1200*y + x;
 				if(!(globalPixels.get(index).type.equals("error"))){
+					//System.out.println("Changing rectangle to streer_sewer");
 					globalPixels.get(index).type = "street_sewer";
 				}
 				else{
+					//System.out.println("Where type is still normal type: " + type);
 					globalPixels.get(index).type = type;
 					globalPixels.get(index).xLoc = x;
 					globalPixels.get(index).yLoc = y;
@@ -871,38 +876,49 @@ public class VirusSimulation extends JFrame {
 	}
 	
 	public void generatePixelsDiagonal(int startX, int startY, int endX, int endY, String type){
+		
+		//System.out.println("In gen pix diag. type: " + type);
+		
 		//g.setColor(Color.BLACK); 
 		double slope;
-		if(endX - startX > 0)
-		{slope = (endY-startY)/(endX-startX);}
+		if(endX - startX > 0){
+			slope = -1*((endY-startY)/(endX-startX));
+			
+		}
 		else{
 			slope = 0;
 		}
-		double b = startY - slope*startX;
+		double b = startY - (slope*startX);
 		double y = startY;
 		if(startX < endX){
-		for(double x=startX; x<endX; x++){
-			y = Math.floor(slope*x +b);
-			int index = (int)(1200*y + x);
-			if(!(globalPixels.get(index).type.equals("error"))){
-				globalPixels.get(index).type = "street_sewer";
+			for(double x = startX; x < endX; x++){
+				y = Math.floor((-1*slope)*x +b);
+				//y = (-1*slope)*x +b;
+				int index = (int)(1200*y + x);
+				if(!(globalPixels.get(index).type.equals("error"))){
+					//System.out.println("Index: " + index);
+					//TODO change this because it's always changing to a street_sewer
+					//System.out.println("changing it to street_sewer");
+					globalPixels.get(index).type = "street_sewer";
+				}
+				else{
+					//System.out.println("Where type is still normal type: " + type);
+					globalPixels.get(index).type = type;
+					  globalPixels.get(index).xLoc = (int)x;
+					    globalPixels.get(index).yLoc = (int)y;
+				}
+			      
 			}
-			else{
-				globalPixels.get(index).type = type;
-				  globalPixels.get(index).xLoc = (int)x;
-				    globalPixels.get(index).yLoc = (int)y;
-			}
-		      
-		}
 		}
 		else{
 			for(double x=endX; x>startX; x--){
-				y = Math.floor(slope*x +b);
+				y = Math.floor((-1*slope)*x +b);
 				int index = (int)(1200*y + x);
 				if(!(globalPixels.get(index).type.equals("error"))){
 					globalPixels.get(index).type = "street_sewer";
 				}
 				else{
+					//System.out.println("Where type is still normal type: " + type);
 					globalPixels.get(index).type = type;
 					  globalPixels.get(index).xLoc = (int)x;
 					    globalPixels.get(index).yLoc = (int)y;
@@ -942,6 +958,7 @@ public class VirusSimulation extends JFrame {
 				generatePixelsRectangle(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()-allSewers.get(i).getStartXLocation(),10,"sewer");
 			}
 			else{
+				//System.out.println("about to call generate pixel diagonal");
 				//draw diagonal line
 				for(int x=0; x<20; x++){
 					generatePixelsDiagonal(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation(),allSewers.get(i).getEndYLocation(),"sewer");
@@ -1464,6 +1481,7 @@ public class VirusSimulation extends JFrame {
 				}
 		}
 	}
+	
 	public void genRats(){
 
 		
