@@ -58,6 +58,8 @@ public class VirusSimulation extends JFrame {
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 	public static int totalHumans;
 	public static int totalRats;
+	public Boolean streetsDrawn;
+	public Boolean sewersDrawn;
 	
 
 	/******** Constructor ********/
@@ -69,7 +71,21 @@ public class VirusSimulation extends JFrame {
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
 		globalPixels = new Vector<Pixel>();
-		
+		streetsDrawn = false;
+		sewersDrawn = false;
+		for(int i = 0; i < 1200; i++)
+		{
+			for(int j = 0; j < 800; j++)
+			{
+				Pixel p = new Pixel();
+				p.xLoc = i;
+				p.yLoc = j;
+				p.type = "error";
+				globalPixels.add(p);
+			}
+		}
+		System.out.println(globalPixels.size());
+		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
 		//parseFullXMLData("./unitTest.xml");
@@ -256,7 +272,7 @@ public class VirusSimulation extends JFrame {
 		JMenuItem aboutItem = new JMenuItem("About");
 		aboutItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				JOptionPane.showMessageDialog(VirusSimulation.this, "Created by Connor Poole, Christine Hennes,"
+				JOptionPane.showMessageDialog(VirusSimulation.this, "Created by Connor Poole, Angela Hou, Christine Hennes,"
 						+ " and Carter Rawlings", 
 						"About Virus Simulation", 
 						JOptionPane.INFORMATION_MESSAGE);
@@ -311,6 +327,7 @@ public class VirusSimulation extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
 
 	}
 	
@@ -505,6 +522,10 @@ public class VirusSimulation extends JFrame {
 			drawStreets(g);
 			drawSewers(g);
 			drawHospitals(g);
+			if(streetsDrawn && sewersDrawn)
+			{
+				find_neighbors();
+			}
 			//g.fillRect(100, 100, 5, 5);
 			
 			//add(newLowerPanel());
@@ -798,24 +819,21 @@ public class VirusSimulation extends JFrame {
 	
 	/*********** Pixel Generation Methods **********/
 	public void generatePixelsRectangle(int startX, int startY, int width, int height, String type){
-		//g.setColor(Color.BLACK); 
-		//System.out.println("Y: " + startY + ",  Start y + height: " + (startY+height));
-		//System.out.println("X: " + startX + ",  Start X + width: " + (startX+width));
 		for(int y= startY; y<(height + startY); y++){
 			for(int x= startX; x<(width+startX); x++){				
-				Pixel p = new Pixel();
-				if(p.type != type){
-					p.type = "street_sewer";
+				int index = 1200*y + x;
+				if(!(globalPixels.get(index).type.equals("error"))){
+					globalPixels.get(index).type = "street_sewer";
 				}
-				p.type = type; 
-				p.xLoc= x;
-				p.yLoc= y;
-				globalPixels.add(p);
-				//System.out.println(p.xLoc + ", " + p.yLoc + ", " + p.type);
-				find_neighbors((int)x,(int)y,p);
-				//g.fillRect(x, y, 1, 1);
-				//System.out.println("x"+x);
-				//System.out.println(y);
+				globalPixels.get(index).xLoc = x;
+				globalPixels.get(index).yLoc = y;
+				globalPixels.get(index).type = type;
+				
+				//p.type = type; 
+				//p.xLoc= x;
+				//p.yLoc= y;
+			//	globalPixels.add(p);
+				//find_neighbors((int)x,(int)y,p);
 			}
 		}
 	}
@@ -828,33 +846,30 @@ public class VirusSimulation extends JFrame {
 		if(startX < endX){
 		for(double x=startX; x<endX; x++){
 			y = Math.floor(slope*x +b);
-			Pixel p = new Pixel();
-			if(p.type != type){
-				p.type = "street_sewer";
+			int index = (int)(1200*y + x);
+			if(!(globalPixels.get(index).type.equals("error"))){
+				globalPixels.get(index).type = "street_sewer";
 			}
-			p.type = type; 
-			p.xLoc= (int)x;
-			p.yLoc= (int)y;
-			globalPixels.add(p);
-			//System.out.println("YO");
-			find_neighbors((int)x,(int)y,p);
-			//g.fillRect((int)x, (int)y, 1, 1);
+			globalPixels.get(index).xLoc = (int)x;
+			globalPixels.get(index).yLoc = (int)y;
+			globalPixels.get(index).type = type;
 		}
 		}
 		else{
 			for(double x=endX; x>startX; x--){
 				y = Math.floor(slope*x +b);
-				Pixel p = new Pixel();
-				if(p.type != type){	
-					p.type = "street_sewer";
+				int index = (int)(1200*y + x);
+				if(!(globalPixels.get(index).type.equals("error"))){
+					globalPixels.get(index).type = "street_sewer";
 				}
-				p.type = type; 
-				p.xLoc= (int)x;
-				p.yLoc= (int)y;
-				globalPixels.add(p);
-				//System.out.println("YO2");
-				find_neighbors((int)x,(int)y,p);
-				//g.fillRect((int)x, (int)y, 1, 1);
+				globalPixels.get(index).xLoc = (int)x;
+				globalPixels.get(index).yLoc = (int)y;
+				globalPixels.get(index).type = type;
+				//p.type = type; 
+				//p.xLoc= (int)x;
+				//p.yLoc= (int)y;
+				//globalPixels.add(p);
+				//find_neighbors((int)x,(int)y,p);
 			}
 		}
 	}
@@ -863,8 +878,7 @@ public class VirusSimulation extends JFrame {
 		
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
-				System.out.println("here");
-				//draw vertical line
+			//	System.out.println("hereSt");
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),1,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street");
 			}
 			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
@@ -878,12 +892,12 @@ public class VirusSimulation extends JFrame {
 				}
 			}
 		}
+		streetsDrawn = true;
 	}
 
 	public void genSewerPixels(){
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
-				//draw vertical line
 				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),1,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"sewer");
 			}
 			else if(allSewers.get(i).getStartYLocation() == allSewers.get(i).getEndYLocation()){
@@ -897,11 +911,475 @@ public class VirusSimulation extends JFrame {
 				}
 			}
 		}
+		sewersDrawn = true;
 	}
 
-	public void find_neighbors(int xLoc, int yLoc, Pixel p){
-		//System.out.println(globalPixels.size());
-		find_pixel(xLoc + 1, yLoc, p);
+	public void find_neighbors(){
+		
+		int xBasedOnIndex;
+		int yBasedOnIndex;
+		int getX;
+		int getY;
+		
+		for(int i = 0; i < globalPixels.size(); i++)
+		{
+			if(!(globalPixels.get(i).type.equals("error")))
+			{
+				xBasedOnIndex = i % 1200;
+				yBasedOnIndex = (int)Math.floor(i/1200);
+				getX = globalPixels.get(i).xLoc;
+				getY = globalPixels.get(i).yLoc;
+				//System.out.print("XBasedonIndex: " + xBasedOnIndex + "YBasedOnIndex: " + yBasedOnIndex);
+				if(yBasedOnIndex > 0 && yBasedOnIndex < 799 && xBasedOnIndex > 0 && xBasedOnIndex < 1199) //not on the edges
+				{
+					//System.out.println(" " + globalPixels.get(i-1).type + " " + globalPixels.get(i).type);
+					if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+					{
+						
+						if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+						{
+							System.out.println("Gets here: " + i);
+						}
+						else
+						{
+							
+							globalPixels.get(i-1).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
+						}
+					}
+					if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+					{
+						if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1201).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
+						}
+					}
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+					{
+						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+						}
+					}
+					if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+					{
+						if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1199).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
+						}
+					}
+					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+					{
+						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+						}
+					}
+					
+					if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+					{
+						if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1201).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1201));
+						}
+					}
+					if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+					{
+						if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
+						}
+					}
+					if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+					{
+						if(globalPixels.get(i-1199).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1199).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1199));
+						}
+					}
+					
+				}
+				else if(yBasedOnIndex == 0) //top row
+				{
+					if(xBasedOnIndex == 0) //checks for 0,0 Top Left
+					{
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						{
+							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
+							}
+						}
+						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+						{
+							if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+							}
+						}
+						if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+						{
+							if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1201).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1201));
+							}
+						}
+					}
+					else if(xBasedOnIndex == 1199) //checks for 0,1199 Top right
+					{
+						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+						{
+							if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+							}
+						}
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						{
+							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
+							}
+						}
+						if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+						{
+							if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1199).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
+							}
+						}
+					}
+					else
+					{
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						{
+							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
+							}
+						}
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						{
+							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
+							}
+							
+						}
+						if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+						{
+							if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1199).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
+							}
+						}
+						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+						{
+							if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+							}
+						}
+						if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+						{
+							if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1201).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1201));
+							}
+						}
+					}
+					
+				}
+				else if(yBasedOnIndex == 799) //bottom row
+				{
+					if(xBasedOnIndex == 0) //bottom left 0,799
+					{
+						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+						{
+							if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+							}
+						}
+						if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+						{
+							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1199).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1199));
+							}
+							
+						}
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						{
+							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
+							}
+						}
+						
+					}
+					else if(xBasedOnIndex == 1199) //bottom right 1199,799
+					{
+						if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+						{
+							if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1201).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
+							}
+						}
+						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+						{
+							if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+							}
+						}
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						{
+							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
+							}
+						}
+						
+					}
+					else
+					{
+						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+						{
+							if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+							}
+						}
+						if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+						{
+							if(globalPixels.get(i-1199).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1199).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1199));
+							}
+						}
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						{
+							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i+1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
+							}
+						}
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						{
+							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
+							}
+						}
+						if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+						{
+							if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
+							{}
+							else
+							{
+								globalPixels.get(i-1201).pixelNeighbors.add(globalPixels.get(i));
+								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
+							}
+						}
+					}
+				}
+				else if(xBasedOnIndex == 0) //left column
+				{
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+					{
+						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+						}
+					}
+					if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+					{
+						if(globalPixels.get(i-1199).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1199).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1199));
+						}
+					}
+					if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+					{
+						if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
+						}
+					}
+					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+					{
+						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+						}
+					}
+					if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+					{
+						if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1201).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1201));
+						}
+					}
+				}
+				else //right column
+				{
+					if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+					{
+						if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
+						}
+					}
+					if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+					{
+						if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1201).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
+						}
+					}
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+					{
+						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+						}
+					}
+					if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+					{
+						if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1199).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
+						}
+					}
+					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+					{
+						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+						}
+					}
+				}
+			}
+			System.out.println(globalPixels.get(i).pixelNeighbors.size());
+		}
+		
+		/*find_pixel(xLoc + 1, yLoc, p);
 		find_pixel(xLoc - 1, yLoc, p);
 		find_pixel(xLoc + 1, yLoc+1, p);
 		find_pixel(xLoc, yLoc+1, p);
@@ -909,6 +1387,9 @@ public class VirusSimulation extends JFrame {
 		find_pixel(xLoc-1, yLoc-1, p);
 		find_pixel(xLoc+1, yLoc-1, p);
 		find_pixel(xLoc, yLoc-1, p);
+		*/
+		System.out.println("GOOD");
+		//System.exit(0);
 	}
 	
 	public void find_pixel(int xLoc, int yLoc, Pixel p){

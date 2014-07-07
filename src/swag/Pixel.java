@@ -5,14 +5,14 @@ import java.util.Vector;
 public class Pixel {
 	
 	
-	 int xLoc;
+	int xLoc;
 	int yLoc;	
 	Vector<LivingBeing> livingBeing = new Vector<LivingBeing>();
-	Vector<Pixel> pixelNeighbors = new Vector<Pixel>();
+	Vector<Pixel> pixelNeighbors;
 	String type;
 	
 	Pixel(){
-		
+		 pixelNeighbors = new Vector<Pixel>();
 	}
 	
 	public void setXLoc(int x){
