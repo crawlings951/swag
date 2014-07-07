@@ -63,6 +63,9 @@ public class VirusSimulation extends JFrame {
 	public Boolean streetsDrawn;
 	public Boolean sewersDrawn;
 	public Boolean beenPressed;
+	public boolean parsedStreets;
+	public boolean parsedSewers;
+	public boolean parsedHospitals;
 	
 
 	/******** Constructor ********/
@@ -78,6 +81,9 @@ public class VirusSimulation extends JFrame {
 		globalPixels = new Vector<Pixel>();
 		streetsDrawn = false;
 		sewersDrawn = false;
+		parsedStreets = false;
+		parsedStreets = false; 
+		parsedHospitals = false; 
 		for(int i = 0; i < 800; i++)
 		{
 			for(int j = 0; j < 1200; j++)
@@ -95,7 +101,7 @@ public class VirusSimulation extends JFrame {
 		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
-		parseFullXMLData("./test2.xml");
+		//parseFullXMLData("./test2.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
@@ -413,7 +419,7 @@ public class VirusSimulation extends JFrame {
 			
 		}
 		
-		
+		parsedStreets = true; 
 		
 	}
 	
@@ -463,6 +469,8 @@ public class VirusSimulation extends JFrame {
 			
 		}
 		
+		parsedSewers = true; 
+		
 	}
 	
 	public void parseHospitals(File file){
@@ -509,6 +517,8 @@ public class VirusSimulation extends JFrame {
 		
 			}
 		}
+		
+		parsedHospitals = true; 
 	}
 	
 	
@@ -632,7 +642,7 @@ public class VirusSimulation extends JFrame {
 				}
 				else{
 				
-					JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one of more field", 
+					JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one or more field or error in loading file(s)", 
 							"Error", 
 							JOptionPane.ERROR_MESSAGE);
 		
@@ -694,7 +704,12 @@ public class VirusSimulation extends JFrame {
 		if(getContagionLevel() >=0 && getContagionLevel() <= 1){
 			if(getNumberofHumans() >= 100 && getNumberofHumans() <= 3000){
 				if(getNumberofRats() >= 20 && getNumberofRats() <= 500){
-					b = true;
+					if(parsedSewers && parsedStreets && parsedHospitals){
+						b = true;
+					}
+					else {
+						b = false;
+					}
 				}
 				else{
 					b = false;
