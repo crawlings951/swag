@@ -91,6 +91,7 @@ public class VirusSimulation extends JFrame {
 			}
 		}
 		System.out.println(globalPixels.size());
+		
 		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
@@ -315,8 +316,8 @@ public class VirusSimulation extends JFrame {
 		
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
-		upperPanel.setPreferredSize(new Dimension(1200, 605));
-		lowerPanel.setPreferredSize(new Dimension(1200, 195));
+		upperPanel.setPreferredSize(new Dimension(1200, 620));
+		lowerPanel.setPreferredSize(new Dimension(1200, 180));
 		lowerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		mainPanel.add(upperPanel);
@@ -328,7 +329,7 @@ public class VirusSimulation extends JFrame {
 //		genSewerPixels();
 		
 		/******** Window Specifications ********/
-		setSize(1200, 800);
+		setSize(1200, 840);
 		setLocation(100, 0);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
