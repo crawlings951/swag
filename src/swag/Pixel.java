@@ -13,6 +13,8 @@ public class Pixel {
 	
 	Pixel(){
 		 pixelNeighbors = new Vector<Pixel>();
+		 xLoc = 0;
+		 yLoc = 0;
 	}
 	
 	public void setXLoc(int x){

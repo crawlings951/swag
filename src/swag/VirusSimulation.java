@@ -73,13 +73,13 @@ public class VirusSimulation extends JFrame {
 		globalPixels = new Vector<Pixel>();
 		streetsDrawn = false;
 		sewersDrawn = false;
-		for(int i = 0; i < 1200; i++)
+		for(int i = 0; i < 800; i++)
 		{
-			for(int j = 0; j < 800; j++)
+			for(int j = 0; j < 1200; j++)
 			{
 				Pixel p = new Pixel();
-				p.xLoc = i;
-				p.yLoc = j;
+				p.xLoc = j;
+				p.yLoc = i;
 				p.type = "error";
 				globalPixels.add(p);
 			}
@@ -524,6 +524,7 @@ public class VirusSimulation extends JFrame {
 			drawHospitals(g);
 			if(streetsDrawn && sewersDrawn)
 			{
+				System.out.println("Yerp");
 				find_neighbors();
 			}
 			//g.fillRect(100, 100, 5, 5);
@@ -605,9 +606,11 @@ public class VirusSimulation extends JFrame {
 				
 				if(checkVariableEntries()){
 				
+					System.out.println("YO");
 					repaint();
 					genStreetPixels();
 					genSewerPixels();
+					System.out.println("YO2");
 				}
 				else{
 				
@@ -825,15 +828,9 @@ public class VirusSimulation extends JFrame {
 				if(!(globalPixels.get(index).type.equals("error"))){
 					globalPixels.get(index).type = "street_sewer";
 				}
-				globalPixels.get(index).xLoc = x;
-				globalPixels.get(index).yLoc = y;
-				globalPixels.get(index).type = type;
-				
-				//p.type = type; 
-				//p.xLoc= x;
-				//p.yLoc= y;
-			//	globalPixels.add(p);
-				//find_neighbors((int)x,(int)y,p);
+				else{
+					globalPixels.get(index).type = type;
+				}
 			}
 		}
 	}
@@ -850,9 +847,11 @@ public class VirusSimulation extends JFrame {
 			if(!(globalPixels.get(index).type.equals("error"))){
 				globalPixels.get(index).type = "street_sewer";
 			}
-			globalPixels.get(index).xLoc = (int)x;
-			globalPixels.get(index).yLoc = (int)y;
-			globalPixels.get(index).type = type;
+			else{
+				globalPixels.get(index).type = type;
+			}
+		//	globalPixels.get(index).xLoc = (int)x;
+			//globalPixels.get(index).yLoc = (int)y;
 		}
 		}
 		else{
@@ -862,18 +861,13 @@ public class VirusSimulation extends JFrame {
 				if(!(globalPixels.get(index).type.equals("error"))){
 					globalPixels.get(index).type = "street_sewer";
 				}
-				globalPixels.get(index).xLoc = (int)x;
-				globalPixels.get(index).yLoc = (int)y;
-				globalPixels.get(index).type = type;
-				//p.type = type; 
-				//p.xLoc= (int)x;
-				//p.yLoc= (int)y;
-				//globalPixels.add(p);
-				//find_neighbors((int)x,(int)y,p);
+				else{
+					globalPixels.get(index).type = type;
+				}
 			}
 		}
 	}
-
+	
 	public void genStreetPixels(){
 		
 		for(int i=0; i< allStreets.size(); i++){
@@ -920,16 +914,30 @@ public class VirusSimulation extends JFrame {
 		int yBasedOnIndex;
 		int getX;
 		int getY;
-		
+		/*
+		 * 
+		 * 
+		 * 
+		 * CHECK THE X, Y LOCATIONS OF NEIGHBORS TO MAKE SURE THEY ARE VALID
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 * 
+		 */
 		for(int i = 0; i < globalPixels.size(); i++)
 		{
+			
 			if(!(globalPixels.get(i).type.equals("error")))
 			{
 				xBasedOnIndex = i % 1200;
 				yBasedOnIndex = (int)Math.floor(i/1200);
-				getX = globalPixels.get(i).xLoc;
-				getY = globalPixels.get(i).yLoc;
-				//System.out.print("XBasedonIndex: " + xBasedOnIndex + "YBasedOnIndex: " + yBasedOnIndex);
 				if(yBasedOnIndex > 0 && yBasedOnIndex < 799 && xBasedOnIndex > 0 && xBasedOnIndex < 1199) //not on the edges
 				{
 					//System.out.println(" " + globalPixels.get(i-1).type + " " + globalPixels.get(i).type);
@@ -938,7 +946,7 @@ public class VirusSimulation extends JFrame {
 						
 						if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 						{
-							System.out.println("Gets here: " + i);
+							
 						}
 						else
 						{
@@ -1376,20 +1384,13 @@ public class VirusSimulation extends JFrame {
 					}
 				}
 			}
-			System.out.println(globalPixels.get(i).pixelNeighbors.size());
+
+			if(globalPixels.get(i).pixelNeighbors.size()>0)
+			{
+				System.out.println("Size: " +i + " " + globalPixels.get(i).pixelNeighbors.size());
+			}
 		}
-		
-		/*find_pixel(xLoc + 1, yLoc, p);
-		find_pixel(xLoc - 1, yLoc, p);
-		find_pixel(xLoc + 1, yLoc+1, p);
-		find_pixel(xLoc, yLoc+1, p);
-		find_pixel(xLoc-1, yLoc+1, p);
-		find_pixel(xLoc-1, yLoc-1, p);
-		find_pixel(xLoc+1, yLoc-1, p);
-		find_pixel(xLoc, yLoc-1, p);
-		*/
-		System.out.println("GOOD");
-		//System.exit(0);
+	
 	}
 	
 	public void find_pixel(int xLoc, int yLoc, Pixel p){
