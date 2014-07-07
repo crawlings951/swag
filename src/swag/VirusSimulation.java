@@ -95,7 +95,7 @@ public class VirusSimulation extends JFrame {
 		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
-		parseFullXMLData("./test2.xml");
+		parseFullXMLData("./test1.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
@@ -861,8 +861,14 @@ public class VirusSimulation extends JFrame {
 		for(int y= startY; y<(height + startY); y++){
 			for(int x= startX; x<(width+startX); x++){				
 				int index = 1200*y + x;
-				if(!(globalPixels.get(index).type.equals("error"))){
-					//System.out.println("Changing rectangle to streer_sewer");
+//				if(!(globalPixels.get(index).type.equals("error"))){
+//					//System.out.println("Changing rectangle to streer_sewer");
+//					globalPixels.get(index).type = "street_sewer";
+//				}
+				if(globalPixels.get(index).type.equals("street") && type.equals("sewer")){
+					globalPixels.get(index).type = "street_sewer";
+				}
+				else if (globalPixels.get(index).type.equals("sewer") && type.equals("street")){
 					globalPixels.get(index).type = "street_sewer";
 				}
 				else{
@@ -877,44 +883,83 @@ public class VirusSimulation extends JFrame {
 	
 	public void generatePixelsDiagonal(int startX, int startY, int endX, int endY, String type){
 		
-		//System.out.println("In gen pix diag. type: " + type);
+		System.out.println("starx: " + startX);
+		System.out.println("stary: " + startY);
+		System.out.println("endx: " + endX);
+		System.out.println("endy: " + endY);
+		System.out.println("In gen pix diag. type: " + type);
 		
 		//g.setColor(Color.BLACK); 
 		double slope;
 		if(endX - startX > 0){
-			slope = -1*((endY-startY)/(endX-startX));
-			
+			System.out.println("Calculating slope");
+			System.out.println("endY-startY: " +(endY-startY) );
+			System.out.println("endX-startX: " + (endX-startX));
+			slope = -1.0*((1.0*(endY-startY))/(1.0*(endX-startX)));
+			//slope = ((-1.0*(endY-startY))/(endX-startX));
+			System.out.println("Slope: " + slope);
 		}
 		else{
 			slope = 0;
 		}
+		//double test = 0;
 		double b = startY - (slope*startX);
 		double y = startY;
-		if(startX < endX){
+		int index = (int)(1200*y + startX);
+		System.out.println("Starting index: " + index);
+		System.out.println("Slope: " + slope);
+		System.out.println("Starting y: " + y);
+		//if(startX < endX){
+		if(startY < endY){
 			for(double x = startX; x < endX; x++){
-				y = Math.floor((-1*slope)*x +b);
+				y = Math.floor(y + slope);
+				
+				//y = Math.floor((-1*slope)*x +b);
 				//y = (-1*slope)*x +b;
-				int index = (int)(1200*y + x);
-				if(!(globalPixels.get(index).type.equals("error"))){
+//				int index = (int)(1200*y + x);
+				if(globalPixels.get(index).type.equals("street") && type.equals("sewer")){
+					globalPixels.get(index).type = "street_sewer";
+				}
+				else if (globalPixels.get(index).type.equals("sewer") && type.equals("street")){
+					globalPixels.get(index).type = "street_sewer";
+				}
 					//System.out.println("Index: " + index);
 					//TODO change this because it's always changing to a street_sewer
 					//System.out.println("changing it to street_sewer");
-					globalPixels.get(index).type = "street_sewer";
-				}
+					
 				else{
 					//System.out.println("Where type is still normal type: " + type);
 					globalPixels.get(index).type = type;
 					  globalPixels.get(index).xLoc = (int)x;
 					    globalPixels.get(index).yLoc = (int)y;
 				}
-			      
+			    
+			    // test = x;
 			}
 		}
+		
+		
 		else{
-			for(double x=endX; x>startX; x--){
-				y = Math.floor((-1*slope)*x +b);
-				int index = (int)(1200*y + x);
-				if(!(globalPixels.get(index).type.equals("error"))){
+			//for(double x=endX; x>startX; x--){
+			for(double x=startX; x < endX; x++){
+				System.out.println("Current x: " + x);
+				System.out.println("Current y: " + y);
+				
+				//y = Math.floor(y - slope);
+				y = y - slope;
+				if ( y< 0){
+					y = 0;
+				}
+				
+				System.out.println("New y: " + y);
+				//y = Math.floor((-1*slope)*x +b);
+//				int index = (int)(1200*y + x);
+				index = (int)(1200*y + x);
+				//index = (int)(index - (1200*y) + x);
+				if(globalPixels.get(index).type.equals("street") && type.equals("sewer")){
+					globalPixels.get(index).type = "street_sewer";
+				}
+				else if (globalPixels.get(index).type.equals("sewer") && type.equals("street")){
 					globalPixels.get(index).type = "street_sewer";
 				}
 				else{
@@ -923,8 +968,13 @@ public class VirusSimulation extends JFrame {
 					  globalPixels.get(index).xLoc = (int)x;
 					    globalPixels.get(index).yLoc = (int)y;
 				}
+//				System.out.println("x: " + x);
+//			     System.out.println("\n\n");
 			}
+			
 		}
+//		System.out.println("x: " + test);
+//	     System.out.println("\n\n");
 	}
 	
 	public void genStreetPixels(){
@@ -961,7 +1011,7 @@ public class VirusSimulation extends JFrame {
 				//System.out.println("about to call generate pixel diagonal");
 				//draw diagonal line
 				for(int x=0; x<20; x++){
-					generatePixelsDiagonal(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation(),allSewers.get(i).getEndYLocation(),"sewer");
+					generatePixelsDiagonal(allSewers.get(i).getStartXLocation()+x,allSewers.get(i).getStartYLocation(),allSewers.get(i).getEndXLocation()+x,allSewers.get(i).getEndYLocation(),"sewer");
 				}
 			}
 		}
