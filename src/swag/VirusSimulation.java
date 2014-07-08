@@ -160,6 +160,10 @@ public class VirusSimulation extends JFrame implements Runnable {
 		launchHuman = new AbstractAction("START"){
 			public void actionPerformed(ActionEvent ae){
 				
+				
+			if(checkVariableEntries()){
+				
+				
 				pool = Executors.newFixedThreadPool(getNumberofHumans() + getNumberofRats());
 				//TODO this is where all of the code needs to go where we hit submit
 				genStreetPixels();
@@ -196,11 +200,6 @@ public class VirusSimulation extends JFrame implements Runnable {
 						
 					random+=1201;
 					}
-					
-					//Need to add these in at some point I think
-//					drawStreets(g);
-//					drawSewers(g);
-//					drawHospitals(g);
 					
 					addToCollection("human",h);
 					allHumans.add(h);
@@ -244,6 +243,19 @@ public class VirusSimulation extends JFrame implements Runnable {
 						pool.execute(r);
 					
 				}
+				
+			}
+			
+			else{
+			
+				JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect entry for one or more field or error in loading file(s)", 
+						"Error", 
+						JOptionPane.ERROR_MESSAGE);
+	
+				
+			}
+				
+				
 			}
 		};
 		
