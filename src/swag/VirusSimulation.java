@@ -193,7 +193,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 //					drawSewers(g);
 //					drawHospitals(g);
 					
-					
+					addToCollection("human",h);
 					allHumans.add(h);
 					synchronized (this) {updateStatus();}
 					pool.execute(h);
@@ -542,6 +542,15 @@ public class VirusSimulation extends JFrame implements Runnable {
 				.append("capacity", ((Hospital)s).atCapacity())
 				.append("numOfOccupants", ((Hospital)s).getNumOccupants());
 			hospital_coll.insert(doc);
+		}
+		else if(type == "human"){
+			BasicDBObject doc = new BasicDBObject("type", "human")
+				.append("isInfected",((Human)s).getInfected())
+				.append("currentX", ((Human)s).getCurrentX())
+				.append("currentY", ((Human)s).getCurrentY())
+				.append("index", ((Human)s).getIndex())
+				.append("score", ((Human)s).getScore());
+			human_coll.insert(doc);
 		}
 		else if(type == "rat"){
 			BasicDBObject doc = new BasicDBObject("type", "rat")

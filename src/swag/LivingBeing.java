@@ -19,6 +19,14 @@ public abstract class LivingBeing {
 	}
 	
 	//Get Methods
+	public int getIndex(){
+		return this.index;
+	}
+
+	public int getScore(){
+		return this.score;
+	}
+	
 	public int getHomeX(){
 		return this.homeX;
 	}
@@ -48,6 +56,13 @@ public abstract class LivingBeing {
 	}
 	
 	//Set Methods
+	public void setIndex(int index){
+		this.index = index;
+	}
+	public void setScore(int score)
+	{
+		this.score = score;
+	}
 	public void setCurrentX(int x){
 		this.currentX = x;
 	}
