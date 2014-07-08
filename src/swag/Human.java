@@ -39,9 +39,10 @@ public class Human extends LivingBeing implements Runnable {
 //		{
 			int humInd = this.index;
 			int pnSize = globalPixels.get(humInd).pixelNeighbors.size();
+			//int randValue = random.nextInt(10) * 100;
 			int randValue = (int)Math.floor(Math.random() * pnSize);
 			
-			//System.out.println("Nieghbors size: " + pnSize);
+			//System.out.println("Nieghbors size: " + pnSize);z
 			
 			if(globalPixels.get(humInd).pixelNeighbors.size() > 0){
 //				allHumans.get(i).setCurrentX(globalPixels.get(humInd).pixelNeighbors.get(randValue).xLoc);
@@ -55,29 +56,7 @@ public class Human extends LivingBeing implements Runnable {
 				//System.out.println("Current x after update: " + this.getCurrentX());
 				this.index = globalPixels.get(humInd).pixelNeighbors.get(randValue).index;
 			}
-//			
-//			//TODO can add the bit about exploding
-//		//}
-		
-//		System.out.println("upperPanel width: " + VirusSimulation.upperPanel.getWidth());
-//		x += dx;
-//        y += dy;
-//        if (x < 0) {
-//            // Bounce off left wall.
-//            x = 0; dx = -dx;
-//        }
-//        if (x + RADIUS >= VirusSimulation.upperPanel.getWidth()) {
-//            // Bounce off right wall.
-//            x = VirusSimulation.upperPanel.getWidth() - RADIUS; dx = -dx;
-//        }
-//        if (y < 0) {
-//            // Bounce off top wall.
-//            y = 0; dy = -dy;
-//        }
-//        if (y + RADIUS >= VirusSimulation.upperPanel.getHeight()) {
-//            // Bounce off bottom wall.
-//            y = VirusSimulation.upperPanel.getHeight() - RADIUS; dy = -dy;
-//        }
+
         
         for(int i=0; i< allHumans.size(); i++){
         	if(allHumans.get(i) != this){

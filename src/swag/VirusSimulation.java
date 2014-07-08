@@ -172,8 +172,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 					
 					//Code from before
 					boolean foundLocation = true;
-					Random randomGenerator = new Random();				
-					int random = randomGenerator.nextInt(960000);
+					Random randomGenerator = new Random();	
+					int randomX = (randomGenerator.nextInt(1200));
+					int randomY = (randomGenerator.nextInt(600));
+					int random = randomY*1200 + randomX;
+					//int random = randomGenerator.nextInt(960000);
+					System.out.println("Random number: " + random);
 					while(foundLocation){
 						
 						if(random >= globalPixels.size()){
@@ -189,7 +193,8 @@ public class VirusSimulation extends JFrame implements Runnable {
 							//allHumans.add(h);
 							foundLocation = false;
 						}
-					random+=799;
+						
+					random+=1201;
 					}
 					
 					//Need to add these in at some point I think
@@ -209,7 +214,10 @@ public class VirusSimulation extends JFrame implements Runnable {
 					Rat r = new Rat();
 					
 					Random randomGenerator = new Random();	
-					int random = randomGenerator.nextInt(960000);
+					//int random = randomGenerator.nextInt(960000);
+					int randomX = (randomGenerator.nextInt(1200));
+					int randomY = (randomGenerator.nextInt(600));
+					int random = randomY*1200 + randomX;
 					Boolean foundLocation = true;
 						
 							while(foundLocation)
@@ -228,7 +236,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 									//allRats.add(r);
 									foundLocation = false;
 								}
-							random+= 799;
+							random+= 1201;
 							}
 						addToCollection("rat",r);
 						allRats.add(r);
