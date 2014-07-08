@@ -38,4 +38,7 @@ public class Pixel {
 	public int getyLoc(){
 		return this.yLoc;
 	}
+	public int getIndex(){
+		return this.index;
+	}
 }

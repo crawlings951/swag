@@ -18,6 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -59,6 +60,7 @@ import org.w3c.dom.NodeList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
 
 
@@ -73,7 +75,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 	DBCollection hospital_coll;
 	DBCollection human_coll;
 	DBCollection rat_coll;
-	DBCollection pixel_col;
+	DBCollection pixel_coll;
 	
 	////////////////
 	
@@ -132,6 +134,8 @@ public class VirusSimulation extends JFrame implements Runnable {
 		sewer_coll = db.getCollection("sewers");
 		hospital_coll = db.getCollection("hospital");
 		rat_coll = db.getCollection("rat");
+		human_coll = db.getCollection("human");
+		pixel_coll = db.getCollection("pixel");
 		
 		/******** Vector Instantiations ********/
 		//allRats = new Vector<Rat>();
@@ -494,7 +498,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
-		upperPanel.setPreferredSize(new Dimension(1200, 620));
+		upperPanel.setPreferredSize(new Dimension(1200, 720));
 		lowerPanel.setPreferredSize(new Dimension(1200, 180));
 		lowerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -507,7 +511,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 //		genSewerPixels();
 		
 		/******** Window Specifications ********/
-		setSize(1200, 840);
+		setSize(1200, 905);
 		setLocation(100, 0);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -561,6 +565,24 @@ public class VirusSimulation extends JFrame implements Runnable {
 				.append("score", ((Rat)s).getScore());
 			rat_coll.insert(doc);
 		}
+		else if(type == "pixel"){
+			List<BasicDBObject> neighbors = new ArrayList<>();
+			BasicDBObject query;
+			for(int i = 0; i < ((Pixel)s).pixelNeighbors.size(); i++){
+				query = new BasicDBObject("xLoc",((Pixel)s).pixelNeighbors.get(i).getxLoc())
+					.append("yLoc", ((Pixel)s).pixelNeighbors.get(i).getyLoc());
+				DBCursor cursor = pixel_coll.find(query);
+				System.out.println(cursor.getCursorId());
+				String name = "pixel " + i;
+				//neighbors.add(new BasicDBObject(name,uid);
+			}
+			BasicDBObject doc = new BasicDBObject("type","pixel")
+				.append("xLoc", ((Pixel)s).getxLoc())
+				.append("yLoc", ((Pixel)s).getyLoc())
+				.append("index", ((Pixel)s).getIndex());
+			pixel_coll.insert(doc);	
+						
+		}
 	}
 	
 	public void updateStatus() {
@@ -586,17 +608,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 		while (true){
 			gh.setColor(Color.white);
             gh.fillRect(0, 0, upperPanel.getWidth(), upperPanel.getHeight());
-//            gh.setColor(Color.BLACK);
-//            Font f = new Font("Arial", Font.BOLD, 42);
-//    		gh.setFont(f);
-//            gh.drawString("SWAG", 300, 300);
             this.drawSewers(gh);
             this.drawStreets(gh);
             this.drawHospitals(gh);
             synchronized (allHumans){
             	for (Human h : allHumans){
             		h.draw(gh);
-            		//System.out.println("here + i:" + i);
             	}
             }
             synchronized(allRats){
@@ -605,7 +622,7 @@ public class VirusSimulation extends JFrame implements Runnable {
             	}
             }
             if(parsedSewers && parsedStreets && parsedHospitals){
-            gc.drawImage(buffer, 0, 0, upperPanel);
+            gc.drawImage(buffer, 0, 65, upperPanel);
             try {Thread.sleep(5);} catch(InterruptedException e) {}
             }
 		}
