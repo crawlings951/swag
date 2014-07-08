@@ -115,6 +115,8 @@ public class VirusSimulation extends JFrame implements Runnable {
 	public boolean parsedHospitals;
 	public Action launchHuman;
 	public ExecutorService pool;
+	public boolean startButtonPressed;
+	public static VirusSimulation v;
 	
 
 	/******** Constructor ********/
@@ -152,6 +154,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 		parsedStreets = false;
 		parsedStreets = false; 
 		parsedHospitals = false; 
+		startButtonPressed = false;
 		
 		//totalHumans = 200;
 		//TODO this might not work because total humans hasn't been initialized yet
@@ -181,7 +184,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 					int randomY = (randomGenerator.nextInt(600));
 					int random = randomY*1200 + randomX;
 					//int random = randomGenerator.nextInt(960000);
-					System.out.println("Random number: " + random);
+					//System.out.println("Random number: " + random);
 					while(foundLocation){
 						
 						if(random >= globalPixels.size()){
@@ -203,12 +206,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 					
 					addToCollection("human",h);
 					allHumans.add(h);
-					synchronized (this) {updateStatus();}
+					synchronized (this) {}
 					pool.execute(h);
 				}
 				
 				for(int i=0; i< getNumberofRats(); i++){
-					System.out.println("here");
 					
 					Rat r = new Rat();
 					
@@ -239,10 +241,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 							}
 						addToCollection("rat",r);
 						allRats.add(r);
-						synchronized (this) {updateStatus();}
+						synchronized (this) {}
 						pool.execute(r);
 					
 				}
+				v.renderThread.start();
 				
 			}
 			
@@ -255,7 +258,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				
 			}
 				
-				
+				startButtonPressed = true;
 			}
 		};
 		
@@ -274,6 +277,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 		//System.out.println(globalPixels.size());
 		
 		//Creates a Vector holding each pixel in the frame
+		
 		/******** Parse Data ********/
 		//This was done for testing purposes
 		//parseFullXMLData("./test2.xml");
@@ -308,7 +312,6 @@ public class VirusSimulation extends JFrame implements Runnable {
 				selectT.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent ae){
 						
-						//TODO open a jfilechooser and then add the path to the jtextfield
 						JFileChooser chooser = new JFileChooser();
 				        chooser.setMultiSelectionEnabled(false);
 				        File sf = null;
@@ -605,15 +608,15 @@ public class VirusSimulation extends JFrame implements Runnable {
 		}
 	}
 	
-	public void updateStatus() {
-		final String text;
-	    synchronized (this) {
-	    	text = "Waiting: 0" + " Active: " + allHumans.size();
-	    }
-	    SwingUtilities.invokeLater(new Runnable() {
-	    	public void run() {/*statusLabel.setText(text);*/}
-	    });
-	}
+//	public void updateStatus() {
+//		final String text;
+//	    synchronized (this) {
+//	    	text = "Waiting: 0" + " Active: " + allHumans.size();
+//	    }
+//	    SwingUtilities.invokeLater(new Runnable() {
+//	    	public void run() {/*statusLabel.setText(text);*/}
+//	    });
+//	}
 	
 	/******* Run ********/
 	public void run(){
@@ -625,12 +628,19 @@ public class VirusSimulation extends JFrame implements Runnable {
 		Image buffer = createImage(upperPanel.getWidth(), upperPanel.getHeight());
 		Graphics gh = buffer.getGraphics();
 		Graphics gc = upperPanel.getGraphics();
-		while (true){
+		System.out.println("Above the while loop");
+		while(true){
+			
 			gh.setColor(Color.white);
             gh.fillRect(0, 0, upperPanel.getWidth(), upperPanel.getHeight());
+           
+            //if(startButtonPressed){
             this.drawSewers(gh);
+           // System.out.println("Getting drawn");
             this.drawStreets(gh);
             this.drawHospitals(gh);
+            //}
+            
             synchronized (allHumans){
             	for (Human h : allHumans){
             		h.draw(gh);
@@ -650,9 +660,10 @@ public class VirusSimulation extends JFrame implements Runnable {
 	
 	/******** Main Method ********/
 	public static void main(String args[]){	
-		VirusSimulation v = new VirusSimulation();
+		//VirusSimulation v = new VirusSimulation();
+		v = new VirusSimulation();
 		v.renderThread.setPriority(Thread.MAX_PRIORITY);
-		v.renderThread.start();
+		//v.renderThread.start();
 	}
 	
 	/******** Parsing Methods ********/

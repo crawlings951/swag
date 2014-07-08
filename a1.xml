@@ -1,52 +1,152 @@
-	<streets>
+<streets>
 		<street>
 			<startlocation>
-				<x>600</x>
-				<y>300</y>
+				<x>40</x>
+				<y>40</y>
 			</startlocation>
 			<endlocation>
-				<x>609</x>
-				<y>300</y>
+				<x>1160</x>
+				<y>40</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>40</x>
+				<y>144</y>
+			</startlocation>
+			<endlocation>
+				<x>1160</x>
+				<y>144</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>40</x>
+				<y>248</y>
+			</startlocation>
+			<endlocation>
+				<x>1160</x>
+				<y>248</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>40</x>
+				<y>352</y>
+			</startlocation>
+			<endlocation>
+				<x>1160</x>
+				<y>352</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>40</x>
+				<y>456</y>
+			</startlocation>
+			<endlocation>
+				<x>1160</x>
+				<y>456</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>40</x>
+				<y>560</y>
+			</startlocation>
+			<endlocation>
+				<x>1160</x>
+				<y>560</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>40</x>
+				<y>40</y>
+			</startlocation>
+			<endlocation>
+				<x>40</x>
+				<y>560</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>180</x>
+				<y>40</y>
+			</startlocation>
+			<endlocation>
+				<x>180</x>
+				<y>560</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>320</x>
+				<y>40</y>
+			</startlocation>
+			<endlocation>
+				<x>320</x>
+				<y>560</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>460</x>
+				<y>40</y>
+			</startlocation>
+			<endlocation>
+				<x>460</x>
+				<y>560</y>
 			</endlocation>
 		</street>
 		<street>
 			<startlocation>
 				<x>600</x>
-				<y>300</y>
+				<y>40</y>
 			</startlocation>
 			<endlocation>
 				<x>600</x>
-				<y>309</y>
-			</endlocation>
-		</street> 
-		<street>
-			<startlocation>
-				<x>600</x>
-				<y>309</y>
-			</startlocation>
-			<endlocation>
-				<x>610</x>
-				<y>309</y>
+				<y>560</y>
 			</endlocation>
 		</street>
 		<street>
 			<startlocation>
-				<x>600</x>
-				<y>308</y>
+				<x>740</x>
+				<y>40</y>
 			</startlocation>
 			<endlocation>
-				<x>609</x>
-				<y>308</y>
+				<x>740</x>
+				<y>560</y>
 			</endlocation>
 		</street>
 		<street>
 			<startlocation>
-				<x>609</x>
-				<y>300</y>
+				<x>880</x>
+				<y>40</y>
 			</startlocation>
 			<endlocation>
-				<x>609</x>
-				<y>309</y>
+				<x>880</x>
+				<y>560</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>1020</x>
+				<y>40</y>
+			</startlocation>
+			<endlocation>
+				<x>1020</x>
+				<y>560</y>
+			</endlocation>
+		</street>
+		<street>
+			<startlocation>
+				<x>1160</x>
+				<y>40</y>
+			</startlocation>
+			<endlocation>
+				<x>1160</x>
+				<y>560</y>
 			</endlocation>
 		</street>
 	</streets>

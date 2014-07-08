@@ -1,14 +1,82 @@
-
-	<sewers>
+<sewers>
 		<sewer>
 			<startlocation>
-				<x>0</x>
-				<y>0</y>
+				<x>20</x>
+				<y>20</y>
 			</startlocation>
 			<endlocation>
-				<x>0</x>
-				<y>0</y>
+				<x>1180</x>
+				<y>20</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>20</x>
+				<y>580</y>
+			</startlocation>
+			<endlocation>
+				<x>1180</x>
+				<y>580</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>20</x>
+				<y>20</y>
+			</startlocation>
+			<endlocation>
+				<x>20</x>
+				<y>580</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>1180</x>
+				<y>20</y>
+			</startlocation>
+			<endlocation>
+				<x>1180</x>
+				<y>580</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>20</x>
+				<y>252</y>
+			</startlocation>
+			<endlocation>
+				<x>464</x>
+				<y>20</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>20</x>
+				<y>460</y>
+			</startlocation>
+			<endlocation>
+				<x>744</x>
+				<y>20</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>464</x>
+				<y>580</y>
+			</startlocation>
+			<endlocation>
+				<x>1180</x>
+				<y>20</y>
+			</endlocation>
+		</sewer>
+		<sewer>
+			<startlocation>
+				<x>744</x>
+				<y>580</y>
+			</startlocation>
+			<endlocation>
+				<x>1180</x>
+				<y>244</y>
 			</endlocation>
 		</sewer>
 	</sewers>
-	
