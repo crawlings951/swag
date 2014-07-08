@@ -1,0 +1,89 @@
+******** XML Help ********
+
+For single file:
+	<virussimulation>
+		<streets>
+			<street>
+				<startlocation>
+					<x>"Insert x"</x>
+					<y>"Insert y"</y>
+				</startlocation>
+				<endlocation>
+					<x>"Insert x"</x>
+					<y>"Insert y"</y>
+				</endlocation>
+			</street>
+		</streets>
+		<sewers>
+			<sewer>
+				<startlocation>
+					<x>"Insert x"</x>
+					<y>"Insert y"</y>
+				</startlocation>
+				<endlocation>
+					<x>"Insert x"</x>
+					<y>"Insert y"</y>
+				</endlocation>
+			</sewer>
+		<sewers>
+		<hospitals>
+			<hospital>
+				<location>
+					<x>"Insert x"</x>
+					<y>"Insert y"</y>
+				</location>
+				<size>
+					<width>"Insert width"</width>
+					<height>"Insert height"</height>
+				</size>
+			</hospital>
+		</hospitals>
+	</virussimulation>
+
+For separate files:
+	Streets:
+
+	<streets>
+		<street>
+			<startlocation>
+				<x>"Insert x"</x>
+				<y>"Insert y"</y>
+			</startlocation>
+			<endlocation>
+				<x>"Insert x"</x>
+				<y>"Insert y"</y>
+			</endlocation>
+		</street>
+	</streets>
+
+	Sewers:
+
+	<sewers>
+		<sewer>
+			<startlocation>
+				<x>"Insert x"</x>
+				<y>"Insert y"</y>
+			</startlocation>
+			<endlocation>
+				<x>"Insert y"</x>
+				<y>"Insert y"</y>
+			</endlocation>
+		</sewer>
+	</sewers>
+
+	Hospitals:
+
+	<hospitals>
+		<hospital>
+			<location>
+				<x>"Insert x"</x>
+				<y>"Insert y"</y>
+			</location>
+			<size>
+				<width>"Insert width"</width>
+				<height>"Insert height"</height>
+			</size>
+		</hospital>
+	</hospitals>
+
+***Insert all data according to the "Insert" tags and continue adding streets/sewers/hospitals as you want

@@ -63,7 +63,6 @@ public abstract class LivingBeing {
 	//Other Methods
 	public abstract int calculateNextMove();
 	
-	public abstract int calculateHomeCoordinates();
 
 	public void diseaseTransmitted(LivingBeing lb){
 		if(!this.getInfected() && lb.getInfected()){

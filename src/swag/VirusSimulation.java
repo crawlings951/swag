@@ -9,13 +9,25 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -30,8 +42,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -41,14 +55,18 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 
-public class VirusSimulation extends JFrame {
+public class VirusSimulation extends JFrame implements Runnable {
+	
+	Thread renderThread = new Thread(this);
 	
 	Vector<Street> allStreets;
 	Vector<Sewer> allSewers;
 	Vector<Hospital> allHospitals;
-	Vector<Pixel> globalPixels;
-	Vector<Human> allHumans;
-	Vector<Rat> allRats;
+	public static Vector<Pixel> globalPixels;
+	//Vector<Human> allHumans;
+	public static List<Human> allHumans;
+	//Vector<Rat> allRats;
+	public static List<Rat> allRats;
 	JTextField ratField;
 	JTextField humansField;
 	JTextField contagionField;
@@ -56,7 +74,9 @@ public class VirusSimulation extends JFrame {
 	JMenuBar menuBar;
 	JMenu fileMenu, helpMenu, newSimulationMenu;
 	JPanel lowerPanel;
-	JPanel mainPanel, upperPanel;
+	public JPanel mainPanel;
+
+	public static JPanel upperPanel;
 	JPanel leftPanel, rightPanel, middlePanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 	public static int totalHumans;
@@ -67,6 +87,8 @@ public class VirusSimulation extends JFrame {
 	public boolean parsedStreets;
 	public boolean parsedSewers;
 	public boolean parsedHospitals;
+	public Action launchHuman;
+	public ExecutorService pool;
 	
 
 	/******** Constructor ********/
@@ -74,8 +96,11 @@ public class VirusSimulation extends JFrame {
 		super("Virus Simulation");
 		
 		/******** Vector Instantiations ********/
-		allRats = new Vector<Rat>();
-		allHumans = new Vector<Human>();
+		//allRats = new Vector<Rat>();
+		//allHumans = new Vector<Human>();
+		allHumans = Collections.synchronizedList(new Vector<Human>());
+		allRats = Collections.synchronizedList(new Vector<Rat>());
+		
 		allStreets = new Vector<Street>();
 		allSewers = new Vector<Sewer>();
 		allHospitals = new Vector<Hospital>();
@@ -85,10 +110,97 @@ public class VirusSimulation extends JFrame {
 		parsedStreets = false;
 		parsedStreets = false; 
 		parsedHospitals = false; 
-		for(int i = 0; i < 800; i++)
-		{
-			for(int j = 0; j < 1200; j++)
-			{
+		
+		//totalHumans = 200;
+		//TODO this might not work because total humans hasn't been initialized yet
+		//pool = Executors.newFixedThreadPool(totalHumans);
+		
+		launchHuman = new AbstractAction("START"){
+			public void actionPerformed(ActionEvent ae){
+				
+				pool = Executors.newFixedThreadPool(getNumberofHumans() + getNumberofRats());
+				//TODO this is where all of the code needs to go where we hit submit
+				genStreetPixels();
+				genSewerPixels();
+				find_neighbors();
+				
+				for(int i=0; i< getNumberofHumans(); i++){
+					
+					Human h = new Human();
+					
+					//Code from before
+					boolean foundLocation = true;
+					Random randomGenerator = new Random();				
+					int random = randomGenerator.nextInt(960000);
+					while(foundLocation){
+						
+						if(random >= globalPixels.size()){
+						
+							random = 0;
+						}
+						if(globalPixels.get(random).type.equals("street")){
+						
+							h.setCurrentX(globalPixels.get(random).xLoc);
+							h.setCurrentY(globalPixels.get(random).yLoc);
+							h.index = random;
+							globalPixels.get(random).livingBeing.add(h);
+							//allHumans.add(h);
+							foundLocation = false;
+						}
+					random+=799;
+					}
+					
+					//Need to add these in at some point I think
+//					drawStreets(g);
+//					drawSewers(g);
+//					drawHospitals(g);
+					
+					
+					allHumans.add(h);
+					synchronized (this) {updateStatus();}
+					pool.execute(h);
+				}
+				
+				for(int i=0; i< getNumberofRats(); i++){
+					System.out.println("here");
+					
+					Rat r = new Rat();
+					
+					Random randomGenerator = new Random();	
+					int random = randomGenerator.nextInt(960000);
+					Boolean foundLocation = true;
+						
+							while(foundLocation)
+					
+							{
+								if(random >= globalPixels.size())
+								{
+									random = 0;
+								}
+								if(globalPixels.get(random).type.equals("sewer") || globalPixels.get(random).type.equals("street_sewer"))
+								{
+									r.setCurrentX(globalPixels.get(random).xLoc);
+									r.setCurrentY(globalPixels.get(random).yLoc);
+									r.index = random;
+									globalPixels.get(random).livingBeing.add(r);
+									//allRats.add(r);
+									foundLocation = false;
+								}
+							random+= 799;
+							}
+						allRats.add(r);
+						synchronized (this) {updateStatus();}
+						pool.execute(r);
+					
+				}
+				
+				
+			}
+		};
+		
+		//Generate all pixels	
+		for(int i = 0; i < 800; i++){
+			for(int j = 0; j < 1200; j++){
 				Pixel p = new Pixel();
 				p.xLoc = j;
 				p.yLoc = i;
@@ -97,12 +209,13 @@ public class VirusSimulation extends JFrame {
 				globalPixels.add(p);
 			}
 		}
-		System.out.println(globalPixels.size());
+		
+		//System.out.println(globalPixels.size());
 		
 		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
-		//parseFullXMLData("./test2.xml");
+		parseFullXMLData("./test2.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
@@ -301,12 +414,35 @@ public class VirusSimulation extends JFrame {
 				jd.setResizable(false);
 				jd.setTitle("Help");
 				jd.setLocationRelativeTo(VirusSimulation.this);
-				jd.setSize(330,250);
+				jd.setSize(800,500);
 				
 				//TODO FIX ALL OF THE HELP STUFF
 				JPanel helpPanel = new JPanel();
-				JTextArea aboutL = new JTextArea("This is where all the help stuff is going to go");
-				helpPanel.add(aboutL);
+				//JScrollPane jsp = new JScrollPane();
+				JTextArea aboutL = new JTextArea();
+				JScrollPane jsp = new JScrollPane(aboutL);
+				
+				String path1 = "./xmlHelp.txt";
+				Scanner scan = new Scanner(path1);
+				try{
+					FileReader f = new FileReader(path1);
+					BufferedReader b = new BufferedReader(f);
+					
+					String line = b.readLine();
+					while(line!= null){
+						aboutL.append(line + "\n");
+						line = b.readLine();
+					}
+					
+				}catch(FileNotFoundException fnfe){
+					System.out.println("Error: " + fnfe.getMessage());
+				}
+				catch(IOException ioe){
+					System.out.println("Error: " + ioe.getMessage());
+				}
+				
+				
+				helpPanel.add(jsp);
 				jd.add(helpPanel);
 				jd.setVisible(true);
 				
@@ -345,9 +481,58 @@ public class VirusSimulation extends JFrame {
 
 	}
 	
+	 public void updateStatus() {
+	        final String text;
+	        synchronized (this) {
+	            text = "Waiting: 0" + " Active: " + allHumans.size();
+	        }
+	        SwingUtilities.invokeLater(new Runnable() {
+	            public void run() {/*statusLabel.setText(text);*/}
+	        });
+	    }
+	
+	/******* Run ********/
+	public void run(){
+		//genStreetPixels();
+		//genSewerPixels();
+		
+		//System.out.println("IN RUN. Size of all humans :" + allHumans.size());
+		
+		Image buffer = createImage(upperPanel.getWidth(), upperPanel.getHeight());
+		Graphics gh = buffer.getGraphics();
+		Graphics gc = upperPanel.getGraphics();
+		while (true){
+			gh.setColor(Color.white);
+            gh.fillRect(0, 0, upperPanel.getWidth(), upperPanel.getHeight());
+//            gh.setColor(Color.BLACK);
+//            Font f = new Font("Arial", Font.BOLD, 42);
+//    		gh.setFont(f);
+//            gh.drawString("SWAG", 300, 300);
+            this.drawSewers(gh);
+            this.drawStreets(gh);
+            this.drawHospitals(gh);
+            synchronized (allHumans){
+            	for (Human h : allHumans){
+            		h.draw(gh);
+            		//System.out.println("here + i:" + i);
+            	}
+            }
+            synchronized(allRats){
+            	for (Rat r: allRats){
+            		r.draw(gh);
+            	}
+            }
+            gc.drawImage(buffer, 0, 0, upperPanel);
+            try {Thread.sleep(5);} catch(InterruptedException e) {}
+		}
+		
+	}
+	
 	/******** Main Method ********/
 	public static void main(String args[]){	
-		new VirusSimulation();
+		VirusSimulation v = new VirusSimulation();
+		v.renderThread.setPriority(Thread.MAX_PRIORITY);
+		v.renderThread.start();
 	}
 	
 	/******** Parsing Methods ********/
@@ -532,19 +717,19 @@ public class VirusSimulation extends JFrame {
 		
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
-			drawStreets(g);
-			drawSewers(g);
-			drawHospitals(g);
-			if(streetsDrawn && sewersDrawn)
-			{
-				System.out.println("Yerp");
-				find_neighbors();
-				genRats();
-				genHumans();
-				drawRats(g);
-				drawHumans(g);
-				moveCharacters();
-			}
+//			drawStreets(g);
+//			drawSewers(g);
+//			drawHospitals(g);
+//			if(streetsDrawn && sewersDrawn)
+//			{
+//				System.out.println("Yerp");
+//				find_neighbors();
+//				genRats();
+//				genHumans();
+//				drawRats(g);
+//				drawHumans(g);
+//				moveCharacters();
+//			}
 			
 		}
 		
@@ -622,8 +807,9 @@ public class VirusSimulation extends JFrame {
 				
 				if(checkVariableEntries()){
 				
-					System.out.println("YO");
+					//System.out.println("YO");
 					repaint();
+					//TODO call the below functions somewhere else
 					genStreetPixels();
 					genSewerPixels();
 					beenPressed = true;
@@ -645,7 +831,8 @@ public class VirusSimulation extends JFrame {
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		bot.add(startButton, gbc);
+		bot.add(new JButton(launchHuman), gbc);
+		//bot.add(startButton, gbc);
 
 		//Question Button
 		JButton questionButton = new JButton("Variable Help (?)");
@@ -915,9 +1102,9 @@ public class VirusSimulation extends JFrame {
 		double b = startY - (slope*startX);
 		double y = startY;
 		int index = (int)(1200*y + startX);
-		System.out.println("Starting index: " + index);
-		System.out.println("Slope: " + slope);
-		System.out.println("Starting y: " + y);
+		//System.out.println("Starting index: " + index);
+		//System.out.println("Slope: " + slope);
+		//System.out.println("Starting y: " + y);
 		//if(startX < endX){
 		if(startY < endY){
 			for(double x = startX; x < endX; x++){
@@ -960,8 +1147,8 @@ public class VirusSimulation extends JFrame {
 		else{
 			//for(double x=endX; x>startX; x--){
 			for(double x=startX; x < endX; x++){
-				System.out.println("Current x: " + x);
-				System.out.println("Current y: " + y);
+				//System.out.println("Current x: " + x);
+				//System.out.println("Current y: " + y);
 				
 				//y = Math.floor(y - slope);
 				y = y - slope;
@@ -969,7 +1156,7 @@ public class VirusSimulation extends JFrame {
 					y = 0;
 				}
 				
-				System.out.println("New y: " + y);
+				//System.out.println("New y: " + y);
 				//y = Math.floor((-1*slope)*x +b);
 //				int index = (int)(1200*y + x);
 				index = (int)(1200*y + x);
