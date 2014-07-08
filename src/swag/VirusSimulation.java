@@ -1,6 +1,7 @@
 package swag;
 
 
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -12,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,6 +50,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -103,7 +106,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 	public static JPanel upperPanel;
 	JPanel leftPanel, rightPanel, middlePanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
-	
+	JLabel fileDisplay;
 	
 	public static int totalHumans;
 	public static int totalRats;
@@ -290,7 +293,9 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		/*** File Menu ***/
 		fileMenu = new JMenu("File");
+		fileMenu.setMnemonic('F');
 		JMenuItem exisitingSimulationItem = new JMenuItem("Exisiting Simulation");
+		exisitingSimulationItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
 		
 		exisitingSimulationItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
@@ -301,7 +306,9 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		//New simulation menu
 		newSimulationMenu = new JMenu("New Simulation");
+		newSimulationMenu.setMnemonic('N');
 		JMenuItem singleFile = new JMenuItem("Single File");
+		singleFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		singleFile.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				
@@ -323,6 +330,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				        }
 				        String path = sf.getName();
 				        fileT.setText(path);
+				        fileDisplay.setText("File Selected: " + path);
 				        
 				        //TODO GET THE PATH USING sf.getPath();
 				        
@@ -368,6 +376,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		//TODO add action listener
 		JMenuItem multipleFiles = new JMenuItem("Multiple Files");
+		multipleFiles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.CTRL_MASK));
 		multipleFiles.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				
@@ -484,7 +493,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				}
 				} while(!incorrectFileFormat);
 		
-				
+				fileDisplay.setText("File Selected: Multiple Files Selected");
 			}
 		});
 		
@@ -496,7 +505,9 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		/*** Help Menu ***/
 		helpMenu = new JMenu("Help");
+		helpMenu.setMnemonic('H');
 		JMenuItem aboutItem = new JMenuItem("About");
+		aboutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
 		aboutItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				JOptionPane.showMessageDialog(VirusSimulation.this, "Created by Connor Poole, Angela Hou, Christine Hennes,"
@@ -508,6 +519,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 		});
 		
 		JMenuItem helpItem = new JMenuItem("Help");
+		helpItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.CTRL_MASK));
 		helpItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				JDialog jd = new JDialog();
@@ -1025,9 +1037,14 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		//Top Panel with Label
 		JPanel top = new JPanel();
+		top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+		top.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel topLabel = new JLabel("Virus Simulation Variables");
 		topLabel.setFont(new Font("Arial", Font.BOLD, 18));
+		fileDisplay = new JLabel("File Selected: No File Currently Selected");
 		top.add(topLabel);
+//		top.add(Box.createVerticalGlue());
+		top.add(fileDisplay);
 		
 		lowerPanel.add(top);
 		lowerPanel.add(bot);
