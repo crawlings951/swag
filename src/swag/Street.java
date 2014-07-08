@@ -1,5 +1,6 @@
 package swag;
 
+
 public class Street {
 	
 	private int startXLocation;
@@ -13,7 +14,6 @@ public class Street {
 		this.startYLocation = startY;
 		this.endXLocation = endX;
 		this.endYLocation = endY;
-		
 		streetThickness = 10;
 	}
 	
@@ -35,6 +35,12 @@ public class Street {
 	
 	public int getStreetThickness(){
 		return this.streetThickness;
+	}
+	public void printMe(){
+		System.out.print("X start" + getStartXLocation()+ "   :");
+		System.out.print("Y Start" + getStartYLocation()+ "   :");
+		System.out.print("X end" + getEndXLocation()+ "   :");
+		System.out.println("Y end" + getEndYLocation());
 	}
 
 }

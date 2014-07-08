@@ -16,6 +16,15 @@ public class Hospital {
 		this.hospitalHeight = h;
 	}
 	
+	Hospital(int x, int y, int w, int h,int capacity, int numOfOccupants){
+		this.hospitalXLocation = x;
+		this.hospitalYLocation = y;
+		this.hospitalWidth = w;
+		this.hospitalHeight = h;
+		this.capacity =capacity;
+		this.numOfOccupants = numOfOccupants;
+	}
+	
 	//We technically don't need any set variables for x,y,w,h because of the consturctor
 	
 	//We need to write a method that will incrament the number of patients but I'm not sure how
@@ -37,8 +46,10 @@ public class Hospital {
 	public int getHospHeight(){
 		return this.hospitalHeight;
 	}
-	
-	public boolean atCapacitance(){
+	public int getNumOccupants(){
+		return this.numOfOccupants;
+	}
+	public boolean atCapacity(){
 		if(this.capacity == this.numOfOccupants){
 			return true;
 		}

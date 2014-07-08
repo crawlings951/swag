@@ -17,11 +17,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -54,8 +56,26 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
+
 
 public class VirusSimulation extends JFrame implements Runnable {
+	
+	/////////////////MONGO DB LOCAL VARS//////////////////////
+	MongoClient mongoClient;
+	DB db;
+	Set<String> colls;
+	DBCollection street_coll;
+	DBCollection sewer_coll;
+	DBCollection hospital_coll;
+	DBCollection human_coll;
+	DBCollection rat_coll;
+	DBCollection pixel_col;
+	
+	////////////////
 	
 	Thread renderThread = new Thread(this);
 	
@@ -67,6 +87,9 @@ public class VirusSimulation extends JFrame implements Runnable {
 	public static List<Human> allHumans;
 	//Vector<Rat> allRats;
 	public static List<Rat> allRats;
+	
+	
+	///////////////////////GUI VARS////////////////////////////
 	JTextField ratField;
 	JTextField humansField;
 	JTextField contagionField;
@@ -75,10 +98,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 	JMenu fileMenu, helpMenu, newSimulationMenu;
 	JPanel lowerPanel;
 	public JPanel mainPanel;
-
 	public static JPanel upperPanel;
 	JPanel leftPanel, rightPanel, middlePanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
+	
+	
 	public static int totalHumans;
 	public static int totalRats;
 	public Boolean streetsDrawn;
@@ -94,6 +118,19 @@ public class VirusSimulation extends JFrame implements Runnable {
 	/******** Constructor ********/
 	VirusSimulation(){
 		super("Virus Simulation");
+		/******** MONGO DB INSTANTIATION********/
+		try {
+			mongoClient = new MongoClient( "localhost" , 27017 );
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		//create new database
+		db = mongoClient.getDB( "mongo_practice" );
+		//retrieve a list of all database collections
+		colls = db.getCollectionNames();
+		street_coll = db.getCollection("streets");
+		sewer_coll = db.getCollection("sewers");
+		hospital_coll = db.getCollection("hospital");
 		
 		/******** Vector Instantiations ********/
 		//allRats = new Vector<Rat>();
@@ -193,8 +230,6 @@ public class VirusSimulation extends JFrame implements Runnable {
 						pool.execute(r);
 					
 				}
-				
-				
 			}
 		};
 		
@@ -215,12 +250,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 		//Creates a Vector holding each pixel in the frame
 		/******** Parse Data ********/
 		//This was done for testing purposes
-		parseFullXMLData("./test2.xml");
+		//parseFullXMLData("./test2.xml");
 		
 		/******** Panel Declarations ********/
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		
 		menuBar = new JMenuBar();
 		
 		/*** File Menu ***/
@@ -456,7 +490,6 @@ public class VirusSimulation extends JFrame implements Runnable {
 		menuBar.add(helpMenu);
 		setJMenuBar(menuBar);
 
-		
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
 		upperPanel.setPreferredSize(new Dimension(1200, 620));
@@ -477,19 +510,48 @@ public class VirusSimulation extends JFrame implements Runnable {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		
-
 	}
 	
-	 public void updateStatus() {
-	        final String text;
-	        synchronized (this) {
-	            text = "Waiting: 0" + " Active: " + allHumans.size();
-	        }
-	        SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {/*statusLabel.setText(text);*/}
-	        });
+	private void addToCollection(String type, Object s) {
+		if(type == "street"){
+			BasicDBObject doc = new BasicDBObject("type","street")
+				.append("startXLocation", ((Street)s).getStartXLocation())
+				.append("startYLocation", ((Street)s).getStartYLocation())
+				.append("endXLocation", ((Street)s).getEndXLocation())
+				.append("endYLocation", ((Street)s).getEndYLocation())
+				.append("streetThickness", ((Street)s).getStreetThickness());
+			street_coll.insert(doc);
+		}
+		else if(type == "sewer"){
+			BasicDBObject doc = new BasicDBObject("type","sewer")
+				.append("startXLocation", ((Sewer)s).getStartXLocation())
+				.append("startYLocation", ((Sewer)s).getStartYLocation())
+				.append("endXLocation", ((Sewer)s).getEndXLocation())
+				.append("endYLocation", ((Sewer)s).getEndYLocation())
+				.append("streetThickness", ((Sewer)s).getSewerThickness());
+			sewer_coll.insert(doc);
+		}
+		else if(type == "hospital"){
+			BasicDBObject doc = new BasicDBObject("type","street")
+				.append("hospitalXLocation", ((Hospital)s).getXLocation())
+				.append("hospitalYLocation", ((Hospital)s).getYLocation())
+				.append("hospitalWidth", ((Hospital)s).getHospWidth())
+				.append("hospitalHeight", ((Hospital)s).getHospHeight())
+				.append("capacity", ((Hospital)s).atCapacity())
+				.append("numOfOccupants", ((Hospital)s).getNumOccupants());
+			hospital_coll.insert(doc);
+		}
+	}
+	
+	public void updateStatus() {
+		final String text;
+	    synchronized (this) {
+	    	text = "Waiting: 0" + " Active: " + allHumans.size();
 	    }
+	    SwingUtilities.invokeLater(new Runnable() {
+	    	public void run() {/*statusLabel.setText(text);*/}
+	    });
+	}
 	
 	/******* Run ********/
 	public void run(){
@@ -524,8 +586,7 @@ public class VirusSimulation extends JFrame implements Runnable {
             }
             gc.drawImage(buffer, 0, 0, upperPanel);
             try {Thread.sleep(5);} catch(InterruptedException e) {}
-		}
-		
+		}	
 	}
 	
 	/******** Main Method ********/
@@ -599,13 +660,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 //				System.out.println("\n\n");
 				
 				Street s = new Street(sX, sY, eX, eY);
+				addToCollection("street", s);
 				allStreets.add(s);
 			}
-			
 		}
-		
 		parsedStreets = true; 
-		
 	}
 	
 	public void parseSewers(File file){
@@ -648,14 +707,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 //				System.out.println("\n\n");
 				
 				Sewer s = new Sewer(sX, sY, eX, eY);
+				addToCollection("sewer", s);
 				allSewers.add(s);
-				
 			}
-			
 		}
-		
 		parsedSewers = true; 
-		
 	}
 	
 	public void parseHospitals(File file){
@@ -698,23 +754,19 @@ public class VirusSimulation extends JFrame implements Runnable {
 //				System.out.println("\n\n");
 				
 				Hospital hosp = new Hospital(sX, sY, w, h);
+				addToCollection("hospital", hosp);
 				allHospitals.add(hosp);
-		
 			}
 		}
-		
 		parsedHospitals = true; 
 	}
-	
 	
 	/******** Panel Methods ********/
 	public class Panel extends JPanel{
 	//public class Component extends JComponent{
-		
 		Panel(){
 			
 		}
-		
 		protected void paintComponent(Graphics g){
 			super.paintComponent(g);
 //			drawStreets(g);
