@@ -165,6 +165,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				
 				
 			if(checkVariableEntries()){
+				System.out.println("Good to go");
 				
 				
 				pool = Executors.newFixedThreadPool(getNumberofHumans() + getNumberofRats());
@@ -327,6 +328,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				        
 				        parseFullXMLData(sf.getPath());
 				        
+				        
 						
 					}
 				});
@@ -337,11 +339,28 @@ public class VirusSimulation extends JFrame implements Runnable {
 				
 				singlePanel.add(centerPanel);
 				
-				JOptionPane.showConfirmDialog(null,
+				boolean incorrectFileFormat = false;
+				do{
+					
+				
+				int result  = JOptionPane.showConfirmDialog(null,
 	                    singlePanel,
 	                    "New Simulation",
 	                    JOptionPane.OK_CANCEL_OPTION,
 	                    JOptionPane.PLAIN_MESSAGE);
+				
+		  	
+						if(result  == JOptionPane.OK_OPTION && !(parsedSewers && parsedStreets && parsedHospitals)){
+							 JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect file entry", 
+								"Error", 
+								JOptionPane.ERROR_MESSAGE);
+				        }
+						else{
+							incorrectFileFormat = true;
+						}
+				} while(!incorrectFileFormat);
+				 
+				
 				
 			}
 			
@@ -352,11 +371,14 @@ public class VirusSimulation extends JFrame implements Runnable {
 		multipleFiles.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				
+				
 				JPanel topP = new JPanel();
 				JPanel midP = new JPanel();
 				JPanel botP = new JPanel();
 				JPanel wholePanel = new JPanel();
 				wholePanel.setLayout(new BoxLayout(wholePanel, BoxLayout.Y_AXIS));
+			
+				
 				
 				JLabel sewerL = new JLabel("Sewer File:     ");
 				final JTextField sewerT = new JTextField(20);
@@ -371,10 +393,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				        int option = chooser.showOpenDialog(VirusSimulation.this);
 				        if (option == JFileChooser.APPROVE_OPTION) {
 				          sf = chooser.getSelectedFile();
+				          System.out.println("Sewer path approved");
 				        }
 				        String path = sf.getName();
 				        sewerT.setText(path);
 						parseSewers(sf);
+				        
 
 					}
 				});
@@ -440,13 +464,26 @@ public class VirusSimulation extends JFrame implements Runnable {
 				wholePanel.add(midP);
 				wholePanel.add(botP);
 				
-				JOptionPane.showConfirmDialog(null,
+				boolean incorrectFileFormat = false;
+				do{
+				
+				int result = JOptionPane.showConfirmDialog(null,
 	                    wholePanel,
 	                    "New Simulation",
 	                    JOptionPane.OK_CANCEL_OPTION,
 	                    JOptionPane.PLAIN_MESSAGE);
 				
-				//repaint();
+				
+				if(result  == JOptionPane.OK_OPTION && !(parsedSewers && parsedStreets && parsedHospitals)){
+					 JOptionPane.showMessageDialog(VirusSimulation.this, "Incorrect file entry", 
+						"Error", 
+						JOptionPane.ERROR_MESSAGE);
+		        }
+				else{
+					incorrectFileFormat = true;
+				}
+				} while(!incorrectFileFormat);
+		
 				
 			}
 		});
@@ -722,12 +759,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 				
-//				System.out.println("Street");
-//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-//				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-//				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-//				System.out.println("\n\n");
+				System.out.println("Street");
+				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("\n\n");
 				
 				Street s = new Street(sX, sY, eX, eY);
 				addToCollection("street", s);
@@ -769,12 +806,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 
-//				System.out.println("Sewer");
-//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-//				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-//				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-//				System.out.println("\n\n");
+				System.out.println("Sewer");
+				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("\n\n");
 				
 				Sewer s = new Sewer(sX, sY, eX, eY);
 				addToCollection("sewer", s);
@@ -816,12 +853,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				int w = Integer.parseInt(eE.getElementsByTagName("width").item(0).getTextContent());
 				int h = Integer.parseInt(eE.getElementsByTagName("height").item(0).getTextContent());
 
-//				System.out.println("Hospital");
-//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-//				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
-//				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
-//				System.out.println("\n\n");
+				System.out.println("Hospital");
+				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
+				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
+				System.out.println("\n\n");
 				
 				Hospital hosp = new Hospital(sX, sY, w, h);
 				addToCollection("hospital", hosp);
@@ -829,6 +866,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 			}
 		}
 		parsedHospitals = true; 
+		System.out.println("Parsed hosiptals");
 	}
 	
 	/******** Panel Methods ********/

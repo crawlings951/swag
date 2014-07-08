@@ -1,152 +1,82 @@
-<streets>
-		<street>
+<sewers>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>40</y>
+				<x>20</x>
+				<y>20</y>
 			</startlocation>
 			<endlocation>
-				<x>1160</x>
-				<y>40</y>
+				<x>1180</x>
+				<y>20</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>144</y>
+				<x>20</x>
+				<y>580</y>
 			</startlocation>
 			<endlocation>
-				<x>1160</x>
-				<y>144</y>
+				<x>1180</x>
+				<y>580</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>248</y>
+				<x>20</x>
+				<y>20</y>
 			</startlocation>
 			<endlocation>
-				<x>1160</x>
-				<y>248</y>
+				<x>20</x>
+				<y>580</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>352</y>
+				<x>1180</x>
+				<y>20</y>
 			</startlocation>
 			<endlocation>
-				<x>1160</x>
-				<y>352</y>
+				<x>1180</x>
+				<y>580</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>456</y>
+				<x>20</x>
+				<y>252</y>
 			</startlocation>
 			<endlocation>
-				<x>1160</x>
-				<y>456</y>
+				<x>464</x>
+				<y>20</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>560</y>
+				<x>20</x>
+				<y>460</y>
 			</startlocation>
 			<endlocation>
-				<x>1160</x>
-				<y>560</y>
+				<x>744</x>
+				<y>20</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>40</x>
-				<y>40</y>
+				<x>464</x>
+				<y>580</y>
 			</startlocation>
 			<endlocation>
-				<x>40</x>
-				<y>560</y>
+				<x>1180</x>
+				<y>20</y>
 			</endlocation>
-		</street>
-		<street>
+		</sewer>
+		<sewer>
 			<startlocation>
-				<x>180</x>
-				<y>40</y>
+				<x>744</x>
+				<y>580</y>
 			</startlocation>
 			<endlocation>
-				<x>180</x>
-				<y>560</y>
+				<x>1180</x>
+				<y>244</y>
 			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>320</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>320</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>460</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>460</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>600</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>600</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>740</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>740</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>880</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>880</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>1020</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>1020</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-		<street>
-			<startlocation>
-				<x>1160</x>
-				<y>40</y>
-			</startlocation>
-			<endlocation>
-				<x>1160</x>
-				<y>560</y>
-			</endlocation>
-		</street>
-	</streets>
+		</sewer>
+	</sewers>
