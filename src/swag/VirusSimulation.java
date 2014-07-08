@@ -492,7 +492,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
-		upperPanel.setPreferredSize(new Dimension(1200, 720));
+		upperPanel.setPreferredSize(new Dimension(1200, 620));
 		lowerPanel.setPreferredSize(new Dimension(1200, 180));
 		lowerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -505,7 +505,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 //		genSewerPixels();
 		
 		/******** Window Specifications ********/
-		setSize(1200, 940);
+		setSize(1200, 840);
 		setLocation(100, 0);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -584,9 +584,11 @@ public class VirusSimulation extends JFrame implements Runnable {
             		r.draw(gh);
             	}
             }
-            gc.drawImage(buffer, 0, 100, upperPanel);
+            if(parsedSewers && parsedStreets && parsedHospitals){
+            gc.drawImage(buffer, 0, 0, upperPanel);
             try {Thread.sleep(5);} catch(InterruptedException e) {}
-		}	
+            }
+		}
 	}
 	
 	/******** Main Method ********/
