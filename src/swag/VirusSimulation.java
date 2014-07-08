@@ -131,6 +131,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 		street_coll = db.getCollection("streets");
 		sewer_coll = db.getCollection("sewers");
 		hospital_coll = db.getCollection("hospital");
+		rat_coll = db.getCollection("rat");
 		
 		/******** Vector Instantiations ********/
 		//allRats = new Vector<Rat>();
@@ -225,6 +226,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								}
 							random+= 799;
 							}
+						addToCollection("rat",r);
 						allRats.add(r);
 						synchronized (this) {updateStatus();}
 						pool.execute(r);
@@ -540,6 +542,15 @@ public class VirusSimulation extends JFrame implements Runnable {
 				.append("capacity", ((Hospital)s).atCapacity())
 				.append("numOfOccupants", ((Hospital)s).getNumOccupants());
 			hospital_coll.insert(doc);
+		}
+		else if(type == "rat"){
+			BasicDBObject doc = new BasicDBObject("type", "rat")
+				.append("isInfected",((Rat)s).getInfected())
+				.append("currentX", ((Rat)s).getCurrentX())
+				.append("currentY", ((Rat)s).getCurrentY())
+				.append("index", ((Rat)s).getIndex())
+				.append("score", ((Rat)s).getScore());
+			rat_coll.insert(doc);
 		}
 	}
 	
@@ -1858,6 +1869,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 	}
 
 }
+
 
 
 
