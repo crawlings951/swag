@@ -13,7 +13,9 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 
 public class TestClient extends JFrame {
@@ -29,6 +31,7 @@ public class TestClient extends JFrame {
 	Socket socket;
 	BufferedReader in;
 	PrintWriter out;
+	boolean initial = true;
 	
 	public TestClient(String serverAddress) throws Exception {
 		super("Virus Simulation Tracker");
@@ -38,9 +41,6 @@ public class TestClient extends JFrame {
 		in = new BufferedReader(new InputStreamReader(
 				socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
-		
-		//GUI Specifications
-		//mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 		
 		button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
@@ -56,24 +56,43 @@ public class TestClient extends JFrame {
 		refreshPanel.add(button);
 		refreshPanel.setPreferredSize(new Dimension(1200, 100));
 		refreshPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-//		frame.setSize(1200, 700);
-//		frame.setLocation(100, 0);
-//		frame.setResizable(false);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		frame.getContentPane().add(mainPanel, "Center");
 		frame.getContentPane().add(refreshPanel, "South");
-		//frame.getContentPane().add(messageLabel, "Center");
-		//frame.getContentPane().add(button, "South");
-		
-//		setSize(1200, 700);
-//		setLocation(100, 0);
-//		setResizable(false);
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		add(messageLabel, "Center");
-//		add(button, "South");
+
 	}
 	
 	public void play() throws Exception {
+		
+		
+		if(initial){
+			JPanel IPPanel = new JPanel();
+			JPanel centerPanel = new JPanel();
+			JLabel IPLabel = new JLabel("IP Address: ");
+			final JTextField IPField = new JTextField(20);
+			JButton submitButton = new JButton("Submit");
+			submitButton.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent ae){
+					
+					//Do some shit l8r
+					
+					
+				}
+			});
+			
+			centerPanel.add(IPLabel);
+			centerPanel.add(IPField);
+			centerPanel.add(submitButton);
+			
+			IPPanel.add(centerPanel);
+			
+			JOptionPane.showConfirmDialog(null, 
+					IPPanel,
+					"IP Address",
+					JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE);
+			
+		}
 		String response;
 		try {
 			while(true){
