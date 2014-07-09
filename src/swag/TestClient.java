@@ -211,7 +211,7 @@ public class TestClient extends JFrame implements Runnable{
 					System.out.println("LOADING XML");
 					messageLabel.setText("XML DATA IS BEING LOADED");
 					try {
-						mongoClient = new MongoClient( "10.120.32.77" , 27017 );
+						mongoClient = new MongoClient("10.120.32.77" , 27017 );
 					} catch (UnknownHostException e) {
 						e.printStackTrace();
 					}

@@ -643,7 +643,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 			sewer_coll.insert(doc);
 		}
 		else if(type == "hospital"){
-			BasicDBObject doc = new BasicDBObject("type","street")
+			BasicDBObject doc = new BasicDBObject("type","hospital")
 				.append("hospitalXLocation", ((Hospital)s).getXLocation())
 				.append("hospitalYLocation", ((Hospital)s).getYLocation())
 				.append("hospitalWidth", ((Hospital)s).getHospWidth())
