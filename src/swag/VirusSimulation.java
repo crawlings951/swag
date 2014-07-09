@@ -119,6 +119,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 	public boolean parsedStreets;
 	public boolean parsedSewers;
 	public boolean parsedHospitals;
+	static boolean validData = true;
 	public Action launchHuman;
 	public ExecutorService pool;
 	public boolean startButtonPressed;
@@ -352,7 +353,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				        //TODO GET THE PATH USING sf.getPath();
 				        
 				        parseFullXMLData(sf.getPath());
-				        
+				        validData = true;
 				        
 						
 					}
@@ -425,7 +426,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				        sewerT.setText(path);
 						parseSewers(sf);
 				        
-
+						validData=true;
 					}
 				});
 				
@@ -519,7 +520,22 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		fileMenu.add(exisitingSimulationItem);
 		fileMenu.add(newSimulationMenu);
-		
+		/*** CLEAR DATABASE MENU***/
+		JMenuItem clearData = new JMenuItem("Clear Database");
+		clearData.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.CTRL_MASK));
+			clearData.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				validData = false;
+				street_coll.drop();
+				sewer_coll.drop();
+				hospital_coll.drop();
+				pixel_coll.drop();
+				human_coll.drop();
+				rat_coll.drop();
+				
+			}
+		});
+		fileMenu.add(clearData);
 		/*** Help Menu ***/
 		helpMenu = new JMenu("Help");
 		helpMenu.setMnemonic('H');
@@ -632,7 +648,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				.append("hospitalYLocation", ((Hospital)s).getYLocation())
 				.append("hospitalWidth", ((Hospital)s).getHospWidth())
 				.append("hospitalHeight", ((Hospital)s).getHospHeight())
-				.append("capacity", ((Hospital)s).atCapacity())
+				.append("capacity", ((Hospital)s).getCapacity())
 				.append("numOfOccupants", ((Hospital)s).getNumOccupants());
 			hospital_coll.insert(doc);
 		}

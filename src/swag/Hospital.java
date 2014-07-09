@@ -16,7 +16,7 @@ public class Hospital {
 		this.hospitalHeight = h;
 	}
 	
-	Hospital(int x, int y, int w, int h,int capacity, int numOfOccupants){
+	Hospital(int x, int y, int w, int h, int capacity, int numOfOccupants){
 		this.hospitalXLocation = x;
 		this.hospitalYLocation = y;
 		this.hospitalWidth = w;
@@ -48,6 +48,9 @@ public class Hospital {
 	}
 	public int getNumOccupants(){
 		return this.numOfOccupants;
+	}
+	public int getCapacity(){
+		return this.capacity;
 	}
 	public boolean atCapacity(){
 		if(this.capacity == this.numOfOccupants){

@@ -39,10 +39,9 @@ public class Server {
 				try{
 				while(true){
 					String command = input.readLine();
-					if(command.equals("pressed")){
+					if(command.equals("pressed") && VirusSimulation.validData){
 						System.out.println("Button was pressed according to server");
-						output.println("cool");
-						
+						output.println("available");	
 					}
 				}
 				} catch (IOException ie){
@@ -50,12 +49,6 @@ public class Server {
 				} finally {
 					try {socket.close();} catch (IOException e){}
 				}
-				
-				
-			
-			
 		}
-		
 	}
-	
 }
