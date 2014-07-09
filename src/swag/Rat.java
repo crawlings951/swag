@@ -91,7 +91,7 @@ public class Rat extends LivingBeing implements Runnable{
 //		}
 		
 		while(true){
-			move(VirusSimulation.allRats, VirusSimulation.allHumans, VirusSimulation.globalPixels);
+			move(TestClient.allRats, TestClient.allHumans,TestClient.globalPixels);
 			try{
 				Thread.sleep(20);
 			}catch(InterruptedException e){}

@@ -76,23 +76,27 @@ import swag.VirusSimulation.Panel;
 
 public class TestClient extends JFrame implements Runnable{
 	
+	//////////////////GUI VARS/////////////////////////
+	JMenuBar menuBar;
+	JMenu helpMenu, newSimulationMenu;
+	
 	JPanel mainPanel = new JPanel();
 	JPanel refreshPanel = new JPanel();
-	JFrame frame = new JFrame("Virus Simulation Tracker");
-	JLabel messageLabel = new JLabel("Simulation will begin shortly");
-	JButton button = new JButton("Refresh");
+	JFrame frame = new JFrame("Virus Simulation Tracker Remote Client");
+	JLabel messageLabel = new JLabel("Please Click Connect to Retrieve Remote XML data");
+	JButton button = new JButton("Connect");
 	JTextField ratField;
 	JTextField humansField;
 	JTextField contagionField;
 	JComboBox virusStrengthCombo;
-	JMenuBar menuBar;
-	JMenu helpMenu, newSimulationMenu;
+	
 	JPanel lowerPanel;
 	public static JPanel upperPanel;
 	JPanel leftPanel, rightPanel, middlePanel;
 	JLabel ratLabel, humanLabel, strengthLabel, contagionLabel;
 	JLabel fileDisplay;
 	
+	/////////////////EXECUTION VARS///////////////////////
 	public static int totalHumans;
 	public static int totalRats;
 	public Boolean streetsDrawn;
@@ -101,12 +105,15 @@ public class TestClient extends JFrame implements Runnable{
 	public boolean parsedStreets;
 	public boolean parsedSewers;
 	public boolean parsedHospitals;
-	public Action launchHuman;
-	public ExecutorService pool;
 	public boolean startButtonPressed;
-	public static TestClient client;
 	public static int numInfectedRats;
 	public static int numInfectedHumans;
+	
+	public ExecutorService pool;
+	Thread renderThread = new Thread(this);
+	public Action launchHuman;
+	
+	public static TestClient client;
 	
 	///////////////SERVER VARS////////////////////
 	static int PORT = 8901;
@@ -116,15 +123,14 @@ public class TestClient extends JFrame implements Runnable{
 	boolean initial = true;
 	String serverAddress;
 	
-	///////////VIRUS SIMULATION VARIABLES//////////
+	///////////VIRUS SIMULATION Arrays and Vectors//////////
 	Vector<Street> allStreets = new Vector<Street>();
 	Vector<Sewer> allSewers = new Vector<Sewer>();
 	Vector<Hospital> allHospitals = new Vector<Hospital>();
+
 	public static List<Human> allHumans;
 	public static List<Rat> allRats;
 	public static Vector<Pixel> globalPixels;
-	
-	Thread renderThread = new Thread(this);
 	
 	/////////////////LAN MONGO/////////////////////
 	MongoClient mongoClient;
@@ -138,11 +144,9 @@ public class TestClient extends JFrame implements Runnable{
 	public JSONObject obj;
 	public String combined_string;	
 	
-	public TestClient() throws Exception {
-		super("Virus Simulation Tracker");
+	TestClient() throws Exception {
 		allHumans = Collections.synchronizedList(new Vector<Human>());
 		allRats = Collections.synchronizedList(new Vector<Rat>());
-		
 		
 		if(initial){
 			JPanel IPPanel = new JPanel();
@@ -204,8 +208,8 @@ public class TestClient extends JFrame implements Runnable{
 			while(true){
 				response = in.readLine();
 				if(response.equals("available")){
-					System.out.println("XML DATA HAS BEEN LOADED");
-					messageLabel.setText("XML DATA HAS BEEN LOADED");
+					System.out.println("LOADING XML");
+					messageLabel.setText("XML DATA IS BEING LOADED");
 					try {
 						mongoClient = new MongoClient( "10.120.32.77" , 27017 );
 					} catch (UnknownHostException e) {
@@ -215,13 +219,14 @@ public class TestClient extends JFrame implements Runnable{
 					db = mongoClient.getDB( "mongo_practice" );
 					//create collection
 					street_coll= db.getCollection("streets");
-					sewer_coll = db.getCollection("sewer");
+					sewer_coll = db.getCollection("sewers");
 					hospital_coll = db.getCollection("hospital");
 					//print all items in a collection
 					DBCursor cursor = street_coll.find();
 					try {
 					   while(cursor.hasNext()) {
 					       try {
+					    	 System.out.println("Street yo");
 							json_parse(cursor.next().toString(), "street");
 					       } catch (JSONException e) {
 							// TODO Auto-generated catch block
@@ -235,6 +240,7 @@ public class TestClient extends JFrame implements Runnable{
 					try{
 						while(cursor.hasNext()){
 							try{
+								System.out.println("Sewer yo");
 								json_parse(cursor.next().toString(), "sewer");
 							} catch (JSONException e) {
 								e.printStackTrace();
@@ -265,14 +271,6 @@ public class TestClient extends JFrame implements Runnable{
 	}
 	private void setup(){
 		/******** Vector Instantiations ********/
-		//allRats = new Vector<Rat>();
-		//allHumans = new Vector<Human>();
-		allHumans = Collections.synchronizedList(new Vector<Human>());
-		allRats = Collections.synchronizedList(new Vector<Rat>());
-		
-		allStreets = new Vector<Street>();
-		allSewers = new Vector<Sewer>();
-		allHospitals = new Vector<Hospital>();
 		globalPixels = new Vector<Pixel>();
 		streetsDrawn = false;
 		sewersDrawn = false;
@@ -282,6 +280,18 @@ public class TestClient extends JFrame implements Runnable{
 		startButtonPressed = false;
 		numInfectedRats = 0;
 		numInfectedHumans = 0;
+		
+		//Generate all pixels	
+		for(int i = 0; i < 800; i++){
+			for(int j = 0; j < 1200; j++){
+				Pixel p = new Pixel();
+				p.xLoc = j;
+				p.yLoc = i;
+				p.index = i*1200 + j;
+				p.type = "error";
+				globalPixels.add(p);
+			}
+		}
 		
 		//totalHumans = 200;
 		//TODO this might not work because total humans hasn't been initialized yet
@@ -300,16 +310,12 @@ public class TestClient extends JFrame implements Runnable{
 				genStreetPixels();
 				genSewerPixels();
 				find_neighbors();
-				
+				System.out.println("made it out of find_neighbors");
+				System.out.println("numOfHumans = " + getNumberofHumans());
 				for(int i=0; i< getNumberofHumans(); i++){
 					
 					Human h = new Human();
-//					if(i < 15){
-//						h.setInfected(true);
-//						h.color = Color.red;
-//						numInfectedHumans++;
-//					}
-					
+					System.out.println("made a new human");
 					//Code from before
 					boolean foundLocation = true;
 					Random randomGenerator = new Random();	
@@ -319,13 +325,12 @@ public class TestClient extends JFrame implements Runnable{
 					//int random = randomGenerator.nextInt(960000);
 					//System.out.println("Random number: " + random);
 					while(foundLocation){
-						
+						//System.out.println(globalPixels.size());
 						if(random >= globalPixels.size()){
-						
+							System.out.println("line 327");
 							random = 0;
 						}
 						if(globalPixels.get(random).type.equals("street")){
-						
 							h.setCurrentX(globalPixels.get(random).xLoc);
 							h.setCurrentY(globalPixels.get(random).yLoc);
 							h.index = random;
@@ -334,14 +339,15 @@ public class TestClient extends JFrame implements Runnable{
 							foundLocation = false;
 						}
 						
-					random+=1201;
+						random+=1201;
 					}
 					
 					allHumans.add(h);
 					synchronized (this) {}
 					pool.execute(h);
 				}
-				
+				System.out.println("made all of the humans");
+				System.out.println("numOfRats:  " + getNumberofRats());
 				for(int i=0; i< getNumberofRats(); i++){
 					
 					Rat r = new Rat();
@@ -356,13 +362,14 @@ public class TestClient extends JFrame implements Runnable{
 					int randomX = (randomGenerator.nextInt(1200));
 					int randomY = (randomGenerator.nextInt(600));
 					int random = randomY*1200 + randomX;
-					Boolean foundLocation = true;
-						
+					boolean foundLocation = true;
+						System.out.println("HI");
 							while(foundLocation)
 					
 							{
 								if(random >= globalPixels.size())
 								{
+									//System.out.println("line 370");
 									random = 0;
 								}
 								if(globalPixels.get(random).type.equals("sewer") || globalPixels.get(random).type.equals("street_sewer"))
@@ -376,39 +383,18 @@ public class TestClient extends JFrame implements Runnable{
 								}
 							random+= 1201;
 							}
+							System.out.println("made rat");
 						allRats.add(r);
 						synchronized (this) {}
 						pool.execute(r);
 					
 				}
+				System.out.println("made all of the rats");
 				client.renderThread.start();
-				
-//			}
-//			
-//			else{
-//			
-//				JOptionPane.showMessageDialog(TestClient.this, "Incorrect entry for one or more field or error in loading file(s)", 
-//						"Error", 
-//						JOptionPane.ERROR_MESSAGE);
-//	
-//				
-//			}
-				
 				startButtonPressed = true;
 			}
 		};
 		
-		//Generate all pixels	
-		for(int i = 0; i < 800; i++){
-			for(int j = 0; j < 1200; j++){
-				Pixel p = new Pixel();
-				p.xLoc = j;
-				p.yLoc = i;
-				p.index = i*1200 + j;
-				p.type = "error";
-				globalPixels.add(p);
-			}
-		}
 		
 		//System.out.println(globalPixels.size());
 		
@@ -496,10 +482,6 @@ public class TestClient extends JFrame implements Runnable{
 		mainPanel.add(lowerPanel);
 		add(mainPanel);
 		
-		//TODO add these to happen on the press of a start button
-//		genStreetPixels();
-//		genSewerPixels();
-		
 		/******** Window Specifications ********/
 		setSize(1200, 905);
 		setLocation(100, 0);
@@ -509,12 +491,7 @@ public class TestClient extends JFrame implements Runnable{
 	}
 	
 	/******* Run ********/
-	public void run(){
-		//genStreetPixels();
-		//genSewerPixels();
-		
-		//System.out.println("IN RUN. Size of all humans :" + allHumans.size());
-		
+	public void run(){		
 		Image buffer = createImage(upperPanel.getWidth(), upperPanel.getHeight());
 		Graphics gh = buffer.getGraphics();
 		Graphics gc = upperPanel.getGraphics();
@@ -629,8 +606,8 @@ public class TestClient extends JFrame implements Runnable{
 					//System.out.println("YO");
 					repaint();
 					//TODO call the below functions somewhere else
-					genStreetPixels();
-					genSewerPixels();
+					//genStreetPixels();
+					//genSewerPixels();
 					beenPressed = true;
 					//sewersDrawn = true;
 					
@@ -827,7 +804,7 @@ public class TestClient extends JFrame implements Runnable{
 			}
 			
 		}
-		
+		this.parsedStreets = true;
 		g.setColor(Color.BLACK); //reset color
 		
 	}
@@ -857,7 +834,7 @@ public class TestClient extends JFrame implements Runnable{
 			}
 			
 		}
-		
+		this.parsedSewers = true;
 		g.setColor(Color.BLACK); //reset color
 		
 	}
@@ -870,6 +847,7 @@ public class TestClient extends JFrame implements Runnable{
 			g.fillRect(allHospitals.get(i).getXLocation(), allHospitals.get(i).getYLocation(), 
 					allHospitals.get(i).getHospWidth(), allHospitals.get(i).getHospHeight());
 		}
+		this.parsedHospitals = true;
 		g.setColor(Color.BLACK); //reset color
 	}
 	
@@ -1029,6 +1007,7 @@ public class TestClient extends JFrame implements Runnable{
 	}
 
 	public void genSewerPixels(){
+		System.out.println("SIze of sewere pixels is: " + allSewers.size());
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
 				generatePixelsRectangle(allSewers.get(i).getStartXLocation(),allSewers.get(i).getStartYLocation(),10,allSewers.get(i).getEndYLocation()-allSewers.get(i).getStartYLocation(),"sewer");
@@ -1049,7 +1028,7 @@ public class TestClient extends JFrame implements Runnable{
 	}
 	
 	public void find_neighbors(){
-		System.out.println("YO");
+		System.out.println("YO line 1048");
 		int xBasedOnIndex;
 		int yBasedOnIndex;
 		int getX;
@@ -1596,11 +1575,14 @@ public class TestClient extends JFrame implements Runnable{
 		if(type == "street"){
 			Street s = new Street(obj.getInt("startXLocation"),obj.getInt("startYLocation"),obj.getInt("endXLocation"),obj.getInt("endYLocation"));
 			allStreets.add(s);
+			s.printMe();
+			System.out.println("adding streets");
 		}
 		else if(type == "sewer"){
 			//Sewer(int startX, int startY, int endX, int endY){
 			Sewer s = new Sewer(obj.getInt("startXLocation"),obj.getInt("startYLocation"),obj.getInt("endXLocation"),obj.getInt("endYLocation"));
 			allSewers.add(s);
+			System.out.println("Adding sewers");
 		}
 		else if(type == "hospital"){
 			//Hospital(int x, int y, int w, int h,int capacity, int numOfOccupants){

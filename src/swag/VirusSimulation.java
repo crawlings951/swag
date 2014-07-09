@@ -765,9 +765,6 @@ public class VirusSimulation extends JFrame implements Runnable {
 		}catch(IOException ie){
 			ie.printStackTrace();
 		}
-		
-		
-		//v.renderThread.start();
 	}
 	
 	/******** Parsing Methods ********/

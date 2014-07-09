@@ -39,12 +39,12 @@ public class Human extends LivingBeing implements Runnable {
 //		for(int i = 0; i < allHumans.size(); i++)
 //		{
 			int humInd = this.index;
-			int pnSize = globalPixels.get(humInd).pixelNeighbors.size();
+			//int pnSize = globalPixels.get(humInd).pixelNeighbors.size();
 			//int randValue = random.nextInt(10) * 100;
-			int randValue = (int)Math.floor(Math.random() * pnSize);
+			//int randValue = (int)Math.floor(Math.random() * pnSize);
 			
 			//System.out.println("Nieghbors size: " + pnSize);z
-			
+			//System.out.println(humInd + " = humInd");
 			if(globalPixels.get(humInd).pixelNeighbors.size() > 0){
 //				allHumans.get(i).setCurrentX(globalPixels.get(humInd).pixelNeighbors.get(randValue).xLoc);
 //				allHumans.get(i).setCurrentY(globalPixels.get(humInd).pixelNeighbors.get(randValue).yLoc);
@@ -503,7 +503,7 @@ public class Human extends LivingBeing implements Runnable {
 		synchronized (this) { }
 		for(int i=1; i<= 5000; i++){
 			//System.out.println("Inside run for human");
-			move(VirusSimulation.allHumans, VirusSimulation.allRats, VirusSimulation.globalPixels);
+			move(TestClient.allHumans, TestClient.allRats, TestClient.globalPixels);
 			try{
 				Thread.sleep(20);
 			}catch(InterruptedException e) {}
