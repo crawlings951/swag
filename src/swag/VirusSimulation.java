@@ -184,6 +184,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 				for(int i=0; i< getNumberofHumans(); i++){
 					
 					Human h = new Human();
+//					if(i < 15){
+//						h.setInfected(true);
+//						h.color = Color.red;
+//						numInfectedHumans++;
+//					}
 					
 					//Code from before
 					boolean foundLocation = true;

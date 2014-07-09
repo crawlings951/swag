@@ -19,7 +19,7 @@ public class Human extends LivingBeing implements Runnable {
 
 	Human(){
 		super();
-		 color = Color.DARK_GRAY;
+		 color = Color.yellow;
 	}
 	
 	@Override
@@ -34,7 +34,7 @@ public class Human extends LivingBeing implements Runnable {
 		g.fillRect(this.getCurrentX(), this.getCurrentY(), RADIUS, RADIUS);
 	}
 	
-	public void move(List<Human> allHumans, Vector<Pixel> globalPixels){
+	public void move(List<Human> allHumans, List<Rat> allRats, Vector<Pixel> globalPixels){
 		
 //		for(int i = 0; i < allHumans.size(); i++)
 //		{
@@ -456,20 +456,46 @@ public class Human extends LivingBeing implements Runnable {
 			}
 
  
-        for(int i=0; i< allHumans.size(); i++){
-        	if(allHumans.get(i) != this){
-            	if(allHumans.get(i).getCurrentX() == this.getCurrentX() && allHumans.get(i).getCurrentY() == this.getCurrentY()){
-            		if(allHumans.get(i).getInfected()){
-            		//System.out.println("COLLISION");
-            		color = color.red;
-            		this.setInfected(true);
-            		
-            		//TODO need to change the color of the other person??
-            		//allHumans.get(i).RADIUS = 20;
-            		}
-            	}
-        	}
-        }
+			for(int i=0; i< allHumans.size(); i++){
+	        	if(allHumans.get(i) != this){
+	            	if((allHumans.get(i).getCurrentX() == this.getCurrentX() && allHumans.get(i).getCurrentY() == this.getCurrentY()) 
+	            			|| (allHumans.get(i).getCurrentX()-1 == this.getCurrentX() && allHumans.get(i).getCurrentY()-1 == this.getCurrentY())
+	            			|| (allHumans.get(i).getCurrentX()-2 == this.getCurrentX() && allHumans.get(i).getCurrentY()-2 == this.getCurrentY())
+	            			|| (allHumans.get(i).getCurrentX() == this.getCurrentX() && allHumans.get(i).getCurrentY()-2 == this.getCurrentY())
+	            			|| (allHumans.get(i).getCurrentX() == this.getCurrentX() && allHumans.get(i).getCurrentY()-1 == this.getCurrentY())
+	            			|| (allHumans.get(i).getCurrentX()-1 == this.getCurrentX() && allHumans.get(i).getCurrentY() == this.getCurrentY())
+	            			|| (allHumans.get(i).getCurrentX()-2 == this.getCurrentX() && allHumans.get(i).getCurrentY() == this.getCurrentY()) ){
+	            		if(allHumans.get(i).getInfected()){
+	            		//System.out.println("COLLISION");
+	            		color = color.red;
+	            		this.setInfected(true);
+	            		
+	            		//TODO need to change the color of the other person??
+	            		//allHumans.get(i).RADIUS = 20;
+	            		}
+	            	}
+	        	}
+	        }
+			for(int i=0; i< allRats.size(); i++){
+	        	
+	        		if((allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()) 
+	            			|| (allRats.get(i).getCurrentX()-1 == this.getCurrentX() && allRats.get(i).getCurrentY()-1 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-2 == this.getCurrentX() && allRats.get(i).getCurrentY()-2 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()-2 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()-1 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-1 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-2 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()) ){
+	            		if(allRats.get(i).getInfected()){
+	            		//System.out.println("COLLISION");
+	            		color = color.red;
+	            		this.setInfected(true);
+	            		VirusSimulation.numInfectedRats++;
+	            		
+
+	            		}
+	            	}
+	        	
+	        }
 		
 	}
 	
@@ -477,7 +503,7 @@ public class Human extends LivingBeing implements Runnable {
 		synchronized (this) { }
 		for(int i=1; i<= 5000; i++){
 			//System.out.println("Inside run for human");
-			move(VirusSimulation.allHumans, VirusSimulation.globalPixels);
+			move(VirusSimulation.allHumans, VirusSimulation.allRats, VirusSimulation.globalPixels);
 			try{
 				Thread.sleep(20);
 			}catch(InterruptedException e) {}

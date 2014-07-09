@@ -29,7 +29,7 @@ public class Rat extends LivingBeing implements Runnable{
 		g.fillRect(this.getCurrentX(), this.getCurrentY(), RADIUS, RADIUS);
 	}
 	
-	public void move(List<Rat> allRats, Vector<Pixel> globalPixels){
+	public void move(List<Rat> allRats, List<Human> allHumans, Vector<Pixel> globalPixels){
 		
 		int ratInd = this.index;
 		int pnSize = globalPixels.get(ratInd).pixelNeighbors.size();
@@ -44,7 +44,27 @@ public class Rat extends LivingBeing implements Runnable{
 
 		 for(int i=0; i< allRats.size(); i++){
 	        	if(allRats.get(i) != this){
-	            	if(allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()){
+	        		if((allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()) 
+	            			|| (allRats.get(i).getCurrentX()-1 == this.getCurrentX() && allRats.get(i).getCurrentY()-1 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-2 == this.getCurrentX() && allRats.get(i).getCurrentY()-2 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-3 == this.getCurrentX() && allRats.get(i).getCurrentY()-3 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()-3 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()-2 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()-1 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-1 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-2 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()-3 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()) 
+	            			|| (allRats.get(i).getCurrentX()+1 == this.getCurrentX() && allRats.get(i).getCurrentY()+1 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()+2 == this.getCurrentX() && allRats.get(i).getCurrentY()+2 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()+3 == this.getCurrentX() && allRats.get(i).getCurrentY()+3 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()+3 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()+2 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY()+1 == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()+1 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()+2 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY())
+	            			|| (allRats.get(i).getCurrentX()+3 == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY())
+	        				
+	        				){
 	            		if(allRats.get(i).getInfected()){
 	            		//System.out.println("COLLISION");
 	            		color = color.red;
@@ -71,7 +91,7 @@ public class Rat extends LivingBeing implements Runnable{
 //		}
 		
 		while(true){
-			move(VirusSimulation.allRats, VirusSimulation.globalPixels);
+			move(VirusSimulation.allRats, VirusSimulation.allHumans, VirusSimulation.globalPixels);
 			try{
 				Thread.sleep(20);
 			}catch(InterruptedException e){}
