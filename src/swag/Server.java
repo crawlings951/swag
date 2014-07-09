@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-import swag.Test.Viewer;
+//import swag.Test.Viewer;
 
 public class Server {
 	
