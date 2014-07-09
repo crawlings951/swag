@@ -46,7 +46,7 @@ public class Rat extends LivingBeing implements Runnable{
 	        	if(allRats.get(i) != this){
 	            	if(allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()){
 	            		if(allRats.get(i).getInfected()){
-	            		System.out.println("COLLISION");
+	            		//System.out.println("COLLISION");
 	            		color = color.red;
 	            		this.setInfected(true);
 	            		VirusSimulation.numInfectedRats++;

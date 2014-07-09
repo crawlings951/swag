@@ -13,10 +13,24 @@ public abstract class LivingBeing {
 	private int nextY;
 	private int score;
 	public int index;
+	protected Boolean movingRight;
+	protected Boolean movingDown;
+	protected Boolean movingLeft;
+	protected Boolean movingUp;
+	protected Boolean wentUp;
+	protected Boolean wentDown;
 	
 	LivingBeing(){
 		
 		this.isInfected = false;
+		//this.atTop = false;
+		//this.atBottom = false;
+		this.wentUp = true;
+		this.wentDown = true;
+		this.movingDown = false;
+		this.movingRight = false;
+		this.movingLeft = true;
+		this.movingUp = false;
 		
 	}
 	

@@ -579,7 +579,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 
 		upperPanel = new Panel();
 		lowerPanel = newLowerPanel();
-		upperPanel.setPreferredSize(new Dimension(1200, 720));
+		upperPanel.setPreferredSize(new Dimension(1200, 800));
 		lowerPanel.setPreferredSize(new Dimension(1200, 180));
 		lowerPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 
@@ -1196,7 +1196,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 
 	public void drawSewers(Graphics g){
 
-		g.setColor(Color.DARK_GRAY);//Change color
+		g.setColor(Color.GRAY);//Change color
 		
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){
@@ -1255,7 +1255,6 @@ public class VirusSimulation extends JFrame implements Runnable {
 				}
 				
 				else{
-					//System.out.println("Where type is still normal type: " + type);
 					globalPixels.get(index).type = type;
 					globalPixels.get(index).xLoc = x;
 					globalPixels.get(index).yLoc = y;
@@ -1375,12 +1374,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
-			//	System.out.println("hereSt");
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),10,allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation(),"street");
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),10,(allStreets.get(i).getEndYLocation()-allStreets.get(i).getStartYLocation()),"street");
 			}
 			else if(allStreets.get(i).getStartYLocation() == allStreets.get(i).getEndYLocation()){
 				//draw horizontal line
-				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation(),10,"street");
+				generatePixelsRectangle(allStreets.get(i).getStartXLocation(),allStreets.get(i).getStartYLocation(),(allStreets.get(i).getEndXLocation()-allStreets.get(i).getStartXLocation()),10,"street");
 			}
 			else{
 				//draw diagonal line
@@ -1413,28 +1411,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 	}
 
 	public void find_neighbors(){
-		
+		System.out.println("YO");
 		int xBasedOnIndex;
 		int yBasedOnIndex;
 		int getX;
 		int getY;
-		/*
-		 * 
-		 * 
-		 * 
-		 * CHECK THE X, Y LOCATIONS OF NEIGHBORS TO MAKE SURE THEY ARE VALID
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
 		for(int i = 0; i < globalPixels.size(); i++)
 		{
 			
@@ -1444,8 +1425,8 @@ public class VirusSimulation extends JFrame implements Runnable {
 				yBasedOnIndex = (int)Math.floor(i/1200);
 				if(yBasedOnIndex > 0 && yBasedOnIndex < 799 && xBasedOnIndex > 0 && xBasedOnIndex < 1199) //not on the edges
 				{
-					//System.out.println(" " + globalPixels.get(i-1).type + " " + globalPixels.get(i).type);
-					if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+					
+					if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type) || globalPixels.get(i-1).type.equals("street_sewer")))//check left
 					{
 						
 						if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
@@ -1459,58 +1440,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
 						}
 					}
-					if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
-					{
-						if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
-						{}
-						else
-						{
-							globalPixels.get(i-1201).pixelNeighbors.add(globalPixels.get(i));
-							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
-						}
-					}
-					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
-					{
-						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
-						{}
-						else
-						{
-							globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
-							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
-						}
-					}
-					if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
-					{
-						if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
-						{}
-						else
-						{
-							globalPixels.get(i+1199).pixelNeighbors.add(globalPixels.get(i));
-							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
-						}
-					}
-					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
-					{
-						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
-						{}
-						else
-						{
-							globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
-							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
-						}
-					}
-					
-					if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
-					{
-						if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
-						{}
-						else
-						{
-							globalPixels.get(i+1201).pixelNeighbors.add(globalPixels.get(i));
-							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1201));
-						}
-					}
-					if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+					if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1).type.equals("street_sewer"))) //check right
 					{
 						if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1520,7 +1450,70 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
 						}
 					}
-					if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1200).type.equals("street_sewer"))) //check up
+					{
+						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+						}
+					}
+					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1200).type.equals("street_sewer"))) //check down
+					{
+						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
+						}
+					}
+					if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1201).type.equals("street_sewer"))) //check up left
+					{
+						if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1201).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
+						}
+					}
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1200).type.equals("street_sewer"))) //check up
+					{
+						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i-1200).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
+						}
+					}
+					if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1199).type.equals("street_sewer"))) //check down left
+					{
+						if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1199).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
+						}
+					}
+					
+					
+					if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1201).type.equals("street_sewer"))) //checks down right
+					{
+						if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
+						{}
+						else
+						{
+							globalPixels.get(i+1201).pixelNeighbors.add(globalPixels.get(i));
+							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1201));
+						}
+					}
+					
+					if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1199).type.equals("street_sewer"))) //check up right
 					{
 						if(globalPixels.get(i-1199).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1536,7 +1529,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				{
 					if(xBasedOnIndex == 0) //checks for 0,0 Top Left
 					{
-						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1).type.equals("street_sewer"))) //check right
 						{
 							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1546,7 +1539,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
 							}
 						}
-						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1200).type.equals("street_sewer"))) //check down
 						{
 							if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1556,7 +1549,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
 							}
 						}
-						if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+						if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1201).type.equals("street_sewer"))) //checks down right
 						{
 							if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1569,7 +1562,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 					}
 					else if(xBasedOnIndex == 1199) //checks for 0,1199 Top right
 					{
-						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1200).type.equals("street_sewer"))) //check down
 						{
 							if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1579,7 +1572,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
 							}
 						}
-						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1).type.equals("street_sewer")))//check left
 						{
 							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1589,7 +1582,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
 							}
 						}
-						if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+						if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1199).type.equals("street_sewer"))) //check down left
 						{
 							if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1602,7 +1595,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 					}
 					else
 					{
-						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1).type.equals("street_sewer")))//check left
 						{
 							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1612,7 +1605,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
 							}
 						}
-						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1).type.equals("street_sewer"))) //check right
 						{
 							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1623,7 +1616,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							}
 							
 						}
-						if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+						if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1199).type.equals("street_sewer"))) //check down left
 						{
 							if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1633,7 +1626,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
 							}
 						}
-						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+						if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1200).type.equals("street_sewer"))) //check down
 						{
 							if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1643,7 +1636,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
 							}
 						}
-						if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+						if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1201).type.equals("street_sewer"))) //checks down right
 						{
 							if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1660,7 +1653,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				{
 					if(xBasedOnIndex == 0) //bottom left 0,799
 					{
-						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1200).type.equals("street_sewer"))) //check up
 						{
 							if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1670,7 +1663,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
 							}
 						}
-						if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+						if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type)|| globalPixels.get(i-1199).type.equals("street_sewer"))) //check up right
 						{
 							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1681,7 +1674,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							}
 							
 						}
-						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type)|| globalPixels.get(i+1).type.equals("street_sewer"))) //check right
 						{
 							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1695,7 +1688,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 					}
 					else if(xBasedOnIndex == 1199) //bottom right 1199,799
 					{
-						if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+						if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1201).type.equals("street_sewer")) //check up left
 						{
 							if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1705,7 +1698,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
 							}
 						}
-						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1200).type.equals("street_sewer")) //check up
 						{
 							if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1715,7 +1708,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
 							}
 						}
-						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1).type.equals("street_sewer"))//check left
 						{
 							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1729,7 +1722,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 					}
 					else
 					{
-						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+						if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1200).type.equals("street_sewer")) //check up
 						{
 							if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1739,7 +1732,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
 							}
 						}
-						if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+						if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1199).type.equals("street_sewer")) //check up right
 						{
 							if(globalPixels.get(i-1199).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1749,7 +1742,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1199));
 							}
 						}
-						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+						if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))|| globalPixels.get(i+1).type.equals("street_sewer")) //check right
 						{
 							if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1759,7 +1752,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
 							}
 						}
-						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+						if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1).type.equals("street_sewer"))//check left
 						{
 							if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1769,7 +1762,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 								globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
 							}
 						}
-						if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+						if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1201).type.equals("street_sewer")) //check up left
 						{
 							if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
 							{}
@@ -1783,7 +1776,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				}
 				else if(xBasedOnIndex == 0) //left column
 				{
-					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1200).type.equals("street_sewer")) //check up
 					{
 						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1793,7 +1786,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
 						}
 					}
-					if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))) //check up right
+					if((globalPixels.get(i-1199).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1199).type.equals("street_sewer")) //check up right
 					{
 						if(globalPixels.get(i-1199).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1803,7 +1796,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1199));
 						}
 					}
-					if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))) //check right
+					if((globalPixels.get(i+1).type.equals(globalPixels.get(i).type))|| globalPixels.get(i+1).type.equals("street_sewer")) //check right
 					{
 						if(globalPixels.get(i+1).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1813,7 +1806,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1));
 						}
 					}
-					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))|| globalPixels.get(i+1200).type.equals("street_sewer")) //check down
 					{
 						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1823,7 +1816,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1200));
 						}
 					}
-					if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))) //checks down right
+					if((globalPixels.get(i+1201).type.equals(globalPixels.get(i).type))|| globalPixels.get(i+1201).type.equals("street_sewer")) //checks down right
 					{
 						if(globalPixels.get(i+1201).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1836,7 +1829,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 				}
 				else //right column
 				{
-					if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type)))//check left
+					if((globalPixels.get(i-1).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1).type.equals("street_sewer"))//check left
 					{
 						if(globalPixels.get(i-1).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1846,7 +1839,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1));
 						}
 					}
-					if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))) //check up left
+					if((globalPixels.get(i-1201).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1201).type.equals("street_sewer")) //check up left
 					{
 						if(globalPixels.get(i-1201).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1856,7 +1849,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1201));
 						}
 					}
-					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))) //check up
+					if((globalPixels.get(i-1200).type.equals(globalPixels.get(i).type))|| globalPixels.get(i-1200).type.equals("street_sewer")) //check up
 					{
 						if(globalPixels.get(i-1200).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1866,7 +1859,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i-1200));
 						}
 					}
-					if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))) //check down left
+					if((globalPixels.get(i + 1199).type.equals(globalPixels.get(i).type))|| globalPixels.get(i+1199).type.equals("street_sewer")) //check down left
 					{
 						if(globalPixels.get(i+1199).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1876,7 +1869,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 							globalPixels.get(i).pixelNeighbors.add(globalPixels.get(i+1199));
 						}
 					}
-					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))) //check down
+					if((globalPixels.get(i + 1200).type.equals(globalPixels.get(i).type))|| globalPixels.get(i+1200).type.equals("street_sewer")) //check down
 					{
 						if(globalPixels.get(i+1200).pixelNeighbors.contains(globalPixels.get(i)))
 						{}
@@ -1912,7 +1905,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 					{
 						random = 0;
 					}
-					if(globalPixels.get(random).type.equals("street"))
+					if(globalPixels.get(random).type.equals("street") || globalPixels.get(random).type.equals("street_sewer"))
 					{
 						h.setCurrentX(globalPixels.get(random).xLoc);
 						h.setCurrentY(globalPixels.get(random).yLoc);
@@ -1960,18 +1953,74 @@ public class VirusSimulation extends JFrame implements Runnable {
 
 	public void moveCharacters()
 	{
-		
+		System.out.println("YO");
 		for(int i = 0; i < allHumans.size(); i++)
 		{
 			int humInd = allHumans.get(i).index;
 			int pnSize = globalPixels.get(humInd).pixelNeighbors.size();
 			int randValue = (int)Math.floor(Math.random() * pnSize);
-			if(globalPixels.get(humInd).pixelNeighbors.size() > 0)
+//			if(globalPixels.get(humInd).pixelNeighbors.size() > 0)
+//			{
+//				allHumans.get(i).setCurrentX(globalPixels.get(humInd).pixelNeighbors.get(0).xLoc);
+//				allHumans.get(i).setCurrentY(globalPixels.get(humInd).pixelNeighbors.get(0).yLoc);
+//				allHumans.get(i).index = globalPixels.get(humInd).pixelNeighbors.get(0).index;
+//
+//
+//			}
+			if(allHumans.get(i).getCurrentY() == 0)//top row
 			{
-				allHumans.get(i).setCurrentX(globalPixels.get(humInd).pixelNeighbors.get(randValue).xLoc);
-				allHumans.get(i).setCurrentY(globalPixels.get(humInd).pixelNeighbors.get(randValue).yLoc);
-				allHumans.get(i).index = globalPixels.get(humInd).pixelNeighbors.get(randValue).index;
+				if(allHumans.get(i).getCurrentX() <799) //not at very right
+				{allHumans.get(i).setCurrentY(allHumans.get(i).getCurrentY()+1);} //move right
+				else{
+					allHumans.get(i).setCurrentY(allHumans.get(i).getCurrentY()+1); //at very right move down
+				}
 			}
+			else if(allHumans.get(i).getCurrentY() == 1199)//very bottom
+			{
+				if(allHumans.get(i).getCurrentX() <799) //not at very right
+				{allHumans.get(i).setCurrentY(allHumans.get(i).getCurrentY()+1);} //move right
+				else{
+					allHumans.get(i).setCurrentY(allHumans.get(i).getCurrentY()-1); //at very right move up
+				}
+			}
+		
+			else if(allHumans.get(i).getCurrentX() == 0) // very left
+			{
+				if(allHumans.get(i).getCurrentX() < 1199)
+				{allHumans.get(i).setCurrentY(allHumans.get(i).getCurrentY()+1);} //move down til at bottom
+				else
+				{
+					allHumans.get(i).setCurrentX(allHumans.get(i).getCurrentX()+1); //move right
+				}
+			}
+			else if(allHumans.get(i).getCurrentX() == 799) //very right 
+			{
+				if(allHumans.get(i).getCurrentX() < 1199) //not at bottom
+				{allHumans.get(i).setCurrentY(allHumans.get(i).getCurrentY()+1);} //go down
+				else
+				{
+					allHumans.get(i).setCurrentX(allHumans.get(i).getCurrentX()-1); //go left
+				} 
+			}
+			else
+			{
+				if(allHumans.get(i).getCurrentY() < 300)
+				{
+					allHumans.get(i).setCurrentX(allHumans.get(i).getCurrentX()+1);
+				}
+				else if(allHumans.get(i).getCurrentY() < 600)
+				{
+					allHumans.get(i).setCurrentX(allHumans.get(i).getCurrentX()+1);
+				}
+				else if(allHumans.get(i).getCurrentY() < 900)
+				{
+					allHumans.get(i).setCurrentX(allHumans.get(i).getCurrentX()+1);
+				}
+				else{
+					allHumans.get(i).setCurrentX(allHumans.get(i).getCurrentX()+1);
+				}
+			}
+			
 		}
 		for(int i = 0; i < allRats.size(); i++)
 		{
@@ -1980,9 +2029,9 @@ public class VirusSimulation extends JFrame implements Runnable {
 			int randValue = (int)Math.floor(Math.random() * pnSize);
 			if(globalPixels.get(ratInd).pixelNeighbors.size() > 0)
 			{
-				allRats.get(i).setCurrentX(globalPixels.get(ratInd).pixelNeighbors.get(randValue).xLoc);
-				allRats.get(i).setCurrentY(globalPixels.get(ratInd).pixelNeighbors.get(randValue).yLoc);
-				allRats.get(i).index = globalPixels.get(ratInd).pixelNeighbors.get(randValue).index;
+				allRats.get(i).setCurrentX(globalPixels.get(ratInd).pixelNeighbors.get(0).xLoc);
+				allRats.get(i).setCurrentY(globalPixels.get(ratInd).pixelNeighbors.get(0).yLoc);
+				allRats.get(i).index = globalPixels.get(ratInd).pixelNeighbors.get(0).index;
 			}
 		
 		}
