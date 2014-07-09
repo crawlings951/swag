@@ -9,12 +9,13 @@ import java.util.Vector;
 public class Rat extends LivingBeing implements Runnable{
 	
 	Random random = new Random();
-	public Color color = Color.RED;
+	public Color color;
 	public int RADIUS = 3;
 	
 	
 	Rat(){
 		super();
+		color =Color.cyan;
 	}
 
 
@@ -54,6 +55,9 @@ public class Rat extends LivingBeing implements Runnable{
 			}catch(InterruptedException e){}
 			synchronized (this) {}
 		}
+		
+		
+		//Add collision code here
 		
 	}
 	

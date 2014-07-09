@@ -1140,7 +1140,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 	{
 		for(int j = 0; j < allRats.size(); j++)
 		{
-			g.setColor(Color.RED);
+			g.setColor(Color.CYAN);
 			g.fillRect(allRats.get(j).getCurrentX(), allRats.get(j).getCurrentY(), 3,3);
 		}
 	}
@@ -1149,7 +1149,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 	{
 			for(int j = 0; j < allHumans.size(); j++)
 			{
-				g.setColor(Color.orange);
+				//g.setColor(Color.orange);
 				g.fillRect(allHumans.get(j).getCurrentX(), allHumans.get(j).getCurrentY(), 3, 3);
 			}
 		}
@@ -1158,7 +1158,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 		
 		//System.out.println("here");
 		
-		g.setColor(Color.blue);//Change color
+		g.setColor(Color.LIGHT_GRAY);//Change color
 		//System.out.println(allStreets.size());
 		for(int i=0; i< allStreets.size(); i++){
 			if(allStreets.get(i).getStartXLocation() == allStreets.get(i).getEndXLocation()){
@@ -1187,7 +1187,7 @@ public class VirusSimulation extends JFrame implements Runnable {
 
 	public void drawSewers(Graphics g){
 
-		g.setColor(Color.green);//Change color
+		g.setColor(Color.DARK_GRAY);//Change color
 		
 		for(int i=0; i< allSewers.size(); i++){
 			if(allSewers.get(i).getStartXLocation() == allSewers.get(i).getEndXLocation()){

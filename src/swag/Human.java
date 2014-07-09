@@ -9,7 +9,7 @@ import java.util.Vector;
 public class Human extends LivingBeing implements Runnable {
 	
 	Random random = new Random();
-	public Color color = Color.YELLOW;
+	public Color color;
 		
 //        public int x = random.nextInt(VirusSimulation.upperPanel.getWidth());
 //        public int y = random.nextInt(VirusSimulation.upperPanel.getWidth());
@@ -19,6 +19,7 @@ public class Human extends LivingBeing implements Runnable {
 
 	Human(){
 		super();
+		 color = Color.YELLOW;
 	}
 	
 	@Override
@@ -62,8 +63,10 @@ public class Human extends LivingBeing implements Runnable {
         	if(allHumans.get(i) != this){
             	if(allHumans.get(i).getCurrentX() == this.getCurrentX() && allHumans.get(i).getCurrentY() == this.getCurrentY()){
             		//System.out.println("COLLISION");
-            		RADIUS = 20;
-            		allHumans.get(i).RADIUS = 20;
+            		color = color.red;
+            		
+            		//TODO need to change the color of the other person??
+            		//allHumans.get(i).RADIUS = 20;
             	}
         	}
         }
