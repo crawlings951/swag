@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +60,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import swag.Test.Viewer;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
@@ -726,6 +729,28 @@ public class VirusSimulation extends JFrame implements Runnable {
 		//VirusSimulation v = new VirusSimulation();
 		v = new VirusSimulation();
 		v.renderThread.setPriority(Thread.MAX_PRIORITY);
+		
+		try{
+			ServerSocket listener = new ServerSocket(8901);
+			System.out.println("Server is running from Virus Simulation");
+			try{
+				while(true){
+					Server server = new Server();
+					Server.Viewer viewer = server.new Viewer(listener.accept());
+					server.currentViewer = viewer;
+					viewer.start();
+				}
+		
+			} 
+			finally {
+				listener.close();
+			}
+			
+		}catch(IOException ie){
+			ie.printStackTrace();
+		}
+		
+		
 		//v.renderThread.start();
 	}
 	
