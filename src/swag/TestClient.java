@@ -177,15 +177,15 @@ public class TestClient extends JFrame implements Runnable{
 			
 			
 		}
-		socket = new Socket(serverAddress, PORT);
-		in = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
-		out = new PrintWriter(socket.getOutputStream(), true);
+//		socket = new Socket(serverAddress, PORT);
+//		in = new BufferedReader(new InputStreamReader(
+//				socket.getInputStream()));
+//		out = new PrintWriter(socket.getOutputStream(), true);
 		
 		button.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				System.out.println("Button pressed");
-				out.println("pressed");
+				//out.println("pressed");
 				
 			}
 		});
@@ -206,7 +206,7 @@ public class TestClient extends JFrame implements Runnable{
 		String response;
 		try {
 			while(true){
-				response = in.readLine();
+				response = "available"; //in.readLine();
 				if(response.equals("available")){
 					System.out.println("LOADING XML");
 					messageLabel.setText("XML DATA IS BEING LOADED");
