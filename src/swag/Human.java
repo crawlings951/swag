@@ -62,11 +62,14 @@ public class Human extends LivingBeing implements Runnable {
         for(int i=0; i< allHumans.size(); i++){
         	if(allHumans.get(i) != this){
             	if(allHumans.get(i).getCurrentX() == this.getCurrentX() && allHumans.get(i).getCurrentY() == this.getCurrentY()){
-            		//System.out.println("COLLISION");
+            		if(allHumans.get(i).getInfected()){
+            		System.out.println("COLLISION");
             		color = color.red;
+            		this.setInfected(true);
             		
             		//TODO need to change the color of the other person??
             		//allHumans.get(i).RADIUS = 20;
+            		}
             	}
         	}
         }

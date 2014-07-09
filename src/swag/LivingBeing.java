@@ -1,5 +1,7 @@
 package swag;
 
+import java.awt.Color;
+
 public abstract class LivingBeing {
 	
 	private int homeX; 

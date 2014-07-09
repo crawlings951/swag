@@ -120,6 +120,8 @@ public class VirusSimulation extends JFrame implements Runnable {
 	public ExecutorService pool;
 	public boolean startButtonPressed;
 	public static VirusSimulation v;
+	public static int numInfectedRats;
+	public static int numInfectedHumans;
 	
 
 	/******** Constructor ********/
@@ -158,6 +160,8 @@ public class VirusSimulation extends JFrame implements Runnable {
 		parsedStreets = false; 
 		parsedHospitals = false; 
 		startButtonPressed = false;
+		numInfectedRats = 0;
+		numInfectedHumans = 0;
 		
 		//totalHumans = 200;
 		//TODO this might not work because total humans hasn't been initialized yet
@@ -217,6 +221,11 @@ public class VirusSimulation extends JFrame implements Runnable {
 				for(int i=0; i< getNumberofRats(); i++){
 					
 					Rat r = new Rat();
+					if(i < 15){
+						r.setInfected(true);
+						r.color = Color.red;
+						numInfectedRats++;
+					}
 					
 					Random randomGenerator = new Random();	
 					//int random = randomGenerator.nextInt(960000);
@@ -771,12 +780,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 				
-				System.out.println("Street");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Street");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				Street s = new Street(sX, sY, eX, eY);
 				addToCollection("street", s);
@@ -818,12 +827,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				int eX = Integer.parseInt(eE.getElementsByTagName("x").item(0).getTextContent());
 				int eY = Integer.parseInt(eE.getElementsByTagName("y").item(0).getTextContent());
 
-				System.out.println("Sewer");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Sewer");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("End x: " + eE.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("End y: " + eE.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				Sewer s = new Sewer(sX, sY, eX, eY);
 				addToCollection("sewer", s);
@@ -865,12 +874,12 @@ public class VirusSimulation extends JFrame implements Runnable {
 				int w = Integer.parseInt(eE.getElementsByTagName("width").item(0).getTextContent());
 				int h = Integer.parseInt(eE.getElementsByTagName("height").item(0).getTextContent());
 
-				System.out.println("Hospital");
-				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
-				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
-				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
-				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
-				System.out.println("\n\n");
+//				System.out.println("Hospital");
+//				System.out.println("Start x: " + eS.getElementsByTagName("x").item(0).getTextContent());
+//				System.out.println("Start y: " + eS.getElementsByTagName("y").item(0).getTextContent());
+//				System.out.println("Width: " + eE.getElementsByTagName("width").item(0).getTextContent());
+//				System.out.println("Height: " + eE.getElementsByTagName("height").item(0).getTextContent());
+//				System.out.println("\n\n");
 				
 				Hospital hosp = new Hospital(sX, sY, w, h);
 				addToCollection("hospital", hosp);

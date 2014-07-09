@@ -15,7 +15,7 @@ public class Rat extends LivingBeing implements Runnable{
 	
 	Rat(){
 		super();
-		color =Color.cyan;
+		color = Color.cyan;
 	}
 
 
@@ -41,20 +41,57 @@ public class Rat extends LivingBeing implements Runnable{
 			this.index = globalPixels.get(ratInd).pixelNeighbors.get(randValue).index;
 		}
 		
-		//Add collision code l8r
+
+		 for(int i=0; i< allRats.size(); i++){
+	        	if(allRats.get(i) != this){
+	            	if(allRats.get(i).getCurrentX() == this.getCurrentX() && allRats.get(i).getCurrentY() == this.getCurrentY()){
+	            		if(allRats.get(i).getInfected()){
+	            		System.out.println("COLLISION");
+	            		color = color.red;
+	            		this.setInfected(true);
+	            		VirusSimulation.numInfectedRats++;
+	            		
+
+	            		}
+	            	}
+	        	}
+	        }
 		
 		
 	}
 	
 	public void run(){
 		synchronized (this) {}
-		for(int i=1; i<= 5000; i++){
+//		for(int i=1; i<= 5000; i++){
+//			move(VirusSimulation.allRats, VirusSimulation.globalPixels);
+//			try{
+//				Thread.sleep(20);
+//			}catch(InterruptedException e){}
+//			synchronized (this) {}
+//		}
+		
+		while(true){
 			move(VirusSimulation.allRats, VirusSimulation.globalPixels);
 			try{
 				Thread.sleep(20);
 			}catch(InterruptedException e){}
-			synchronized (this) {}
+			
 		}
+//		System.out.println("Num infected rats: " + VirusSimulation.numInfectedRats);
+//		try{
+//			Thread.sleep(1000000000);
+//		}catch(InterruptedException e){}
+//		
+//		if(this.getInfected()){
+//			for(int i=0; i< 200; i++){
+//				move(VirusSimulation.allRats, VirusSimulation.globalPixels);
+//				try{
+//					Thread.sleep(20);
+//				}catch(InterruptedException e){}
+//				
+//			}
+//			VirusSimulation.allRats.remove(this);
+//		}
 		
 		
 		//Add collision code here
